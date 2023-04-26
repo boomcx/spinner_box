@@ -47,7 +47,6 @@ class _GroupHeader extends StatelessWidget {
               group.entity.suffixIcon,
               height: 15,
               fit: BoxFit.fitHeight,
-              package: 'spinner_box',
             ),
           // const Icon(Icons.hotel_class_sharp,
           //     size: 16, color: Colors.black26),
