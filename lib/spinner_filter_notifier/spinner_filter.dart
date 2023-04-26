@@ -107,6 +107,7 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
         return _FilterNotiferScope(
           notifier: notifier,
           child: Material(
+            color: Colors.white,
             child: Container(
               margin: const EdgeInsets.only(bottom: 12),
               child: Stack(

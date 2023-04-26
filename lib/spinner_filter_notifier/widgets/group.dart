@@ -43,8 +43,10 @@ class _GroupHeader extends StatelessWidget {
           if (group.entity.desc.isNotEmpty)
             _ExplainIcon(desc: group.entity.desc),
           if (group.entity.suffixIcon.isNotEmpty)
-            const Icon(Icons.hotel_class_sharp,
-                size: 16, color: Colors.black26),
+            Image.asset(group.entity.suffixIcon,
+                height: 15, fit: BoxFit.fitHeight),
+          // const Icon(Icons.hotel_class_sharp,
+          //     size: 16, color: Colors.black26),
           // Assets.images.searchIconVip
           //     .image(width: 32, height: 16, fit: BoxFit.contain)
         ],

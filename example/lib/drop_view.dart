@@ -205,12 +205,17 @@ class _FilterView extends StatelessWidget {
 }
 
 var def = [
-  SpinnerFilterEntity(key: 'group1', title: '分组1-多选', isRadio: false, items: [
-    const SpinnerFilterItem(name: '不限', value: '', isMutex: true),
-    ...List.generate(10, (index) {
-      return SpinnerFilterItem(name: '分组1-$index', value: index);
-    }),
-  ]),
+  SpinnerFilterEntity(
+      key: 'group1',
+      title: '分组1-多选',
+      isRadio: false,
+      suffixIcon: 'assets/icon.png',
+      items: [
+        const SpinnerFilterItem(name: '不限', value: '', isMutex: true),
+        ...List.generate(10, (index) {
+          return SpinnerFilterItem(name: '分组1-$index', value: index);
+        }),
+      ]),
   SpinnerFilterEntity(key: 'group2', title: '分组2-单选', items: [
     const SpinnerFilterItem(name: '不限', value: ''),
     ...List.generate(10, (index) {

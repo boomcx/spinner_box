@@ -16,7 +16,7 @@ class _ExplainIcon extends StatelessWidget {
         style: const TextStyle(color: Colors.white, height: 1.5, fontSize: 13),
       ),
       child: const Icon(
-        Icons.circle_notifications_outlined,
+        Icons.help_outline_outlined,
         size: 15,
         color: Colors.black26,
       ),
