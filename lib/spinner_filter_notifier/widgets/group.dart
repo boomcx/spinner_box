@@ -103,22 +103,26 @@ class _GroupBtnsCnt extends StatelessWidget {
     final items = tuple.item1.changeList;
 
     return Wrap(spacing: 10, runSpacing: 10, children: [
-      ...List.generate(
-        items.length,
-        (index) {
-          final item = items[index];
-          return ValueListenableBuilder(
-            valueListenable: item,
-            builder: (context, value, child) => _Button(
-              item.data.name,
-              item.selected,
-              onPressed: () {
-                notifier.itemOnClick(tuple, index);
-              },
-            ),
-          );
-        },
-      ),
+      ...List.generate(items.length, (index) {
+        final item = items[index];
+        return ValueListenableBuilder(
+          valueListenable: item,
+          builder: (context, value, child) => _Button(
+            item.data.name,
+            item.selected,
+            onPressed: () {
+              notifier.itemOnClick(tuple, index);
+            },
+          ),
+        );
+      }),
+      ...List.generate(notifier.attachment.length, (index) {
+        final attach = notifier.attachment[index];
+        if (attach.entity.key == tuple.item1.entity.key) {
+          return attach;
+        }
+        return const SizedBox();
+      })
     ]);
   }
 }

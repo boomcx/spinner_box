@@ -15,7 +15,13 @@ part './widgets/buttons.dart';
 part './widgets/group.dart';
 part './widgets/check_list_item.dart';
 part './widgets/explain_icon.dart';
+part './widgets/attachment_view.dart';
 
+/// 点击拦截的回调
+typedef SpinnerItemIntercept = FutureOr<bool> Function(
+    SpinnerFilterEntity, int);
+
+/// 完成筛选的回调
 typedef SpinnerFilterResponse = Function(
   Map<String, List> result,
   String name,
@@ -41,7 +47,7 @@ class SpinnerFilter extends StatefulWidget {
   /// 选中项目的时候，拦截处理（用于交互前的特殊判断）
   /// 返回值 `true`，表示拦截选中事件
   /// `false` 则可以选中
-  final FutureOr<bool> Function(SpinnerFilterItem, int)? onItemIntercept;
+  final SpinnerItemIntercept? onItemIntercept;
 
   /// 选择完成回调
   /// `result` 返回结果 key.values
@@ -50,9 +56,9 @@ class SpinnerFilter extends StatefulWidget {
   final SpinnerFilterResponse onCompleted;
 
   /// 外部出入的自定义组件
-  /// `int` 期望组件位置 在`data`排序基础上计算 默认0开始
+  /// `int` 期望跟随`Grop`的位置 由`data`排序 默认0开始
   /// `Widget` 组件
-  final List<AttachmentEntity> attachment;
+  final List<AttachmentView> attachment;
 
   @override
   State<SpinnerFilter> createState() => _SpinnerFilterState();
@@ -161,40 +167,18 @@ class _MoreFilterContent extends StatelessWidget {
         bottom: single ? 0 : kBotBtnHeight + 10,
       ),
       itemBuilder: (context, index) {
-        // 外部自定义条件筛选
-        if (attachment.isNotEmpty) {
-          for (var attach in notifier.attachment) {
-            if (attach.item1 == index) {
-              attachment.remove(attach);
-              return Align(
-                alignment: Alignment.topLeft,
-                child: attach.item2,
-              );
-            }
-          }
-        }
-        // 固定格式条件筛选
-        var idx = index - (notifier.attachment.length - attachment.length);
         return _FilterGroupScope(
-          data: Tuple2(items[idx], idx),
+          data: Tuple2(items[index], index),
           child: const _GroupContent(),
         );
       },
       separatorBuilder: (context, index) {
-        // if (attachment.isNotEmpty) {
-        //   for (var attach in notifier.attachment) {
-        //     if (attach.item1 == index) {
-        //       return const SizedBox();
-        //     }
-        //   }
-        // }
-
         return const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
           child: Divider(height: 1, color: Color(0xffEEEEEE)),
         );
       },
-      itemCount: items.length + attachment.length,
+      itemCount: items.length,
     );
   }
 }
@@ -225,7 +209,10 @@ class _BotButtons extends StatelessWidget {
           _PopBotButton(
             isReset: true,
             name: '重置',
-            onPressed: notifier.reset,
+            onPressed: () {
+              notifier.reset();
+              notifier.resetAttachment();
+            },
           ),
           _PopBotButton(
             onPressed: notifier.completed,

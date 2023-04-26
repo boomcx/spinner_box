@@ -92,7 +92,14 @@ class TapScope extends StatelessWidget {
       padding: EdgeInsets.zero,
       borderRadius: BorderRadius.circular(0),
       minSize: 10,
-      onPressed: onPressed,
+      onPressed: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus!.unfocus();
+        }
+        onPressed?.call();
+      },
       child: child,
     );
   }

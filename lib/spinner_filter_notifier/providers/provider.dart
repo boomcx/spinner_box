@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'entity.dart';
+import '../spinner_filter.dart';
 import 'state.dart';
 import 'package:tuple/tuple.dart';
 
 // part 'provider.g.dart';
 
 const double kBotBtnHeight = 56.0;
-
-typedef AttachmentEntity = Tuple2<int, Widget>;
 
 class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   SpinnerFilterNotifier(
@@ -21,9 +19,9 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 构造方法
   factory SpinnerFilterNotifier.init(
     List<SpinnerFilterEntity> data,
-    List<AttachmentEntity> attachList,
+    List<AttachmentView> attachList,
     VoidCallback? onReseted,
-    FutureOr<bool> Function(SpinnerFilterItem, int)? onItemIntercept,
+    SpinnerItemIntercept? onItemIntercept,
   ) {
     if (data.isEmpty) {
       return SpinnerFilterNotifier(
@@ -39,10 +37,10 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   final VoidCallback? onReseted;
 
   /// 事件传递
-  final FutureOr<bool> Function(SpinnerFilterItem, int)? onItemIntercept;
+  final SpinnerItemIntercept? onItemIntercept;
 
   /// 外部传入自定义视图
-  List<Tuple2<int, Widget>> attachment = [];
+  List<AttachmentView> attachment = [];
 
   /// 需要返回至外部得数据，与传入数据一致，同步状态筛选状态
   List<SpinnerFilterEntity> get outside => value.items.map((e) {
@@ -55,44 +53,10 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         return entity.copyWith(items: tempList);
       }).toList();
 
-  updateState(
-      List<SpinnerFilterEntity> data, List<AttachmentEntity> attachList) {
+  updateState(List<SpinnerFilterEntity> data, List<AttachmentView> attachList) {
     value = _getState(data);
     updateAttach(attachList);
     notifyListeners();
-  }
-
-  /// 外部视图排序
-  updateAttach(List<AttachmentEntity> attachList) {
-    final foxList = [
-      ...attachList,
-      ...List.generate(value.items.length, (index) => index)
-    ];
-
-    foxList.sort((p0, p1) {
-      int index0 = 0, index1 = 0;
-      if (p0 is AttachmentEntity) {
-        index0 = p0.item1;
-      } else if (p0 is int) {
-        index0 = p0;
-      }
-      if (p1 is AttachmentEntity) {
-        index1 = p1.item1;
-      } else if (p1 is int) {
-        index1 = p1;
-      }
-      return index0.compareTo(index1);
-    });
-
-    final sortAttach = <AttachmentEntity>[];
-    for (var i = 0; i < foxList.length; i++) {
-      var item = foxList[i];
-      if (item is AttachmentEntity) {
-        sortAttach.add(Tuple2(i, item.item2));
-      }
-    }
-
-    attachment = sortAttach;
   }
 
   static SpinnerFilterState _getState(
@@ -108,20 +72,79 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     );
   }
 
+  /// 外部视图排序
+  updateAttach(List<AttachmentView> attachList) {
+    attachment = List.of(attachList);
+    addAttachListener();
+  }
+
+  /// 设置自定组件的监听数据变化
+  addAttachListener() {
+    for (var e in attachment) {
+      e.isChanged.addListener(() {
+        reset(e.entity.key);
+      });
+    }
+  }
+
+  /// 移除监听
+  removeAttachListener() {
+    for (var e in attachment) {
+      e.isChanged.dispose();
+    }
+  }
+
+  @override
+  void dispose() {
+    removeAttachListener();
+    super.dispose();
+  }
+
   /// 完成筛选
   void completed() {
     value = value.copyWith(isCompleted: true);
   }
 
+  /// 重置自定义外部输入
+  /// `key` 当前组的字段
+  void resetAttachment([String? key]) {
+    if (attachment.isEmpty) {
+      return;
+    }
+    for (var element in attachment) {
+      if (key != null) {
+        if (element.entity.key == key) {
+          element.reset();
+          break;
+        }
+      } else {
+        element.reset();
+      }
+    }
+  }
+
   /// 重置
-  void reset() {
+  /// `key` 当前组的字段
+  void reset([String? key]) {
+    // 按钮重置
     var groups = value.items;
     for (var i = 0; i < groups.length; i++) {
       var tempGroup = groups[i];
-      // 修改按钮选中状态
-      var items = tempGroup.changeList;
-      for (var k = 0; k < items.length; k++) {
-        items[k].selected = false;
+      if (key != null) {
+        if (tempGroup.entity.key == key) {
+          // 修改按钮选中状态
+          var items = tempGroup.changeList;
+          for (var k = 0; k < items.length; k++) {
+            items[k].selected = false;
+          }
+          break;
+        }
+      } else {
+        // 修改按钮选中状态
+        var items = tempGroup.changeList;
+        for (var k = 0; k < items.length; k++) {
+          items[k].selected = false;
+        }
       }
     }
     onReseted?.call();
@@ -135,16 +158,32 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
 
     for (var group in items) {
       final key = group.entity.key;
-      final resGroup = {key: []};
+      var resGroup = {key: []};
 
-      final list = group.changeList;
-      for (var item in list) {
-        if (item.selected) {
-          resGroup[key]!.add(item.value);
-          reslutNames.add(item.data.name);
+      // r如果有拼接组件，则先从自定义组件中寻找是否选定结果
+      if (attachment.isNotEmpty) {
+        for (var element in attachment) {
+          if (element.entity.key == key && element.entity.extraData != null) {
+            final res = element.gerResult();
+            resGroup = res.item1;
+            if (res.item2.isNotEmpty) {
+              reslutNames.add(res.item2);
+            }
+            break;
+          }
         }
       }
-      reslut.addAll(resGroup);
+      // 如果自定义组件没有选择，则检索筛选项是否选中
+      if (resGroup[key]?.isEmpty == true) {
+        final list = group.changeList;
+        for (var item in list) {
+          if (item.selected) {
+            resGroup[key]!.add(item.value);
+            reslutNames.add(item.data.name);
+          }
+        }
+        reslut.addAll(resGroup);
+      }
     }
 
     return Tuple2(reslut, reslutNames.join('/'));
@@ -156,14 +195,18 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   void itemOnClick(Tuple2<EntityNotifier, int> tuple, int index) async {
     if (onItemIntercept != null) {
       final isIntercept =
-          await onItemIntercept!.call(tuple.item1.entity.items[index], index);
+          await onItemIntercept!.call(tuple.item1.entity, index);
       if (isIntercept == true) {
         return;
       }
     }
 
+    // 重置额外输入（可添加互斥，额外输入与筛选按钮可合并返回）
+    resetAttachment(tuple.item1.entity.key);
+
     final group = tuple.item1;
     final single = group.entity.isRadio;
+
     var groups = value.items;
     for (var i = 0; i < groups.length; i++) {
       var tempGroup = groups[i];

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import 'package:spinner_box/spinner_box.dart';
@@ -56,35 +58,27 @@ class _DropViewPageState extends State<DropViewPage> {
                 SpinnerFilter(
                   data: _filterData,
                   attachment: [
-                    const Tuple2(2, Text('attachment1')),
-                    Tuple2(
-                        2,
-                        Container(
-                          height: 130,
-                          color: Colors.red,
-                          child: const Text('attachment2'),
-                        )),
-                    Tuple2(
-                      2,
-                      TextField(
-                        controller: _textEditing,
-                        decoration:
-                            const InputDecoration(hintText: 'input hint'),
-                      ),
-                    ),
+                    // const Tuple2(2, Text('attachment1')),
+                    // Tuple2(
+                    //     2,
+                    //     Container(
+                    //       height: 130,
+                    //       color: Colors.red,
+                    //       child: const Text('attachment2'),
+                    //     )),
+                    MyWidget2(),
+                    MyWidget1(_textEditing),
                   ],
-                  onReseted: () {
-                    _textEditing.clear();
-                  },
+                  onReseted: () {},
                   onItemIntercept: (p0, p1) {
                     if (p1 == 2) {
-                      print('index = 2, 我拦截的选中事件');
+                      print('key = ${p0.key}; index = 2, 我拦截的选中事件');
                       return true;
                     }
                     return false;
                   },
                   onCompleted: (result, name, data) {
-                    _controller.updateName('$name${_textEditing.text}');
+                    _controller.updateName(name);
 
                     // 建议局部刷新/状态管理
                     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -120,6 +114,67 @@ class _DropViewPageState extends State<DropViewPage> {
         ),
       ),
     );
+  }
+}
+
+/// 仅需要`key`和`extraData`
+class MyWidget1 extends AttachmentView {
+  MyWidget1(this.textEditing, {super.key});
+  final TextEditingController textEditing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: TextField(
+        controller: textEditing,
+        decoration: const InputDecoration(hintText: 'input hint'),
+        onChanged: (value) {
+          entity = entity.copyWith(extraData: value);
+        },
+      ),
+    );
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    textEditing.clear();
+  }
+
+  @override
+  SpinnerFilterEntity get entity {
+    return SpinnerFilterEntity(key: 'group2', extraData: textEditing.text);
+  }
+}
+
+class MyWidget2 extends AttachmentView {
+  MyWidget2({super.key});
+  final textEditing = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: TextField(
+        controller: textEditing,
+        decoration: const InputDecoration(hintText: 'input hint222222'),
+        onChanged: (value) {
+          entity = entity.copyWith(extraData: value);
+        },
+      ),
+    );
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    textEditing.clear();
+  }
+
+  @override
+  SpinnerFilterEntity get entity {
+    return SpinnerFilterEntity(key: 'group1', extraData: textEditing.text);
   }
 }
 

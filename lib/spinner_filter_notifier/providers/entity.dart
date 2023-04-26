@@ -72,6 +72,9 @@ class SpinnerFilterEntity {
   /// 标题，空不显示
   final String title;
 
+  /// 额外视图的选择结构（eg: picker，input...）
+  final dynamic extraData;
+
   /// 每组内容的显示风格
   final MoreContentType type;
 
@@ -92,6 +95,7 @@ class SpinnerFilterEntity {
     this.desc = '',
     this.suffixIcon = '',
     this.items = const [],
+    this.extraData,
   });
 
   factory SpinnerFilterEntity.fromJson(Map<String, dynamic> json) {
@@ -99,6 +103,9 @@ class SpinnerFilterEntity {
     // if (json["key"] is String) {
     //   key = json["key"];
     // }
+
+    entity = entity.copyWith(extraData: json["extraData"]);
+
     if (json["isRadio"] is bool) {
       entity = entity.copyWith(isRadio: json["isRadio"]);
     }
@@ -148,6 +155,7 @@ class SpinnerFilterEntity {
     MoreContentType? type,
     String? desc,
     String? suffixIcon,
+    dynamic extraData,
     List<SpinnerFilterItem>? items,
   }) =>
       SpinnerFilterEntity(
@@ -158,6 +166,7 @@ class SpinnerFilterEntity {
         desc: desc ?? this.desc,
         suffixIcon: suffixIcon ?? this.suffixIcon,
         items: items ?? this.items,
+        extraData: extraData ?? this.extraData,
       );
 }
 
