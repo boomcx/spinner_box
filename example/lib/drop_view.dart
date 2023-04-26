@@ -56,7 +56,7 @@ class _DropViewPageState extends State<DropViewPage> {
                 SpinnerFilter(
                   data: _filterData,
                   attachment: [
-                    const Tuple2(-1, Text('attachment1')),
+                    const Tuple2(2, Text('attachment1')),
                     Tuple2(
                         2,
                         Container(
