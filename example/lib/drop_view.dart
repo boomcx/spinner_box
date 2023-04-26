@@ -71,9 +71,9 @@ class _DropViewPageState extends State<DropViewPage> {
                     _textEditing.clear();
                   },
                   onCompleted: (result, name, data) {
-                    _controller.updateName('$name/${_textEditing.text}');
+                    _controller.updateName('$name${_textEditing.text}');
 
-                    // 建议使用状态管理，局部刷新
+                    // 建议局部刷新/状态管理
                     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                       setState(() {
                         _filterData = data;

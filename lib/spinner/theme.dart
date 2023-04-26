@@ -20,7 +20,7 @@ class SpinnerScope {
 
 extension SpinnerBoxExt on Widget {
   /// 快速构建 `PopupBtns` builder 数组集
-  SpinnerScope scope([double scale = 0.7]) {
+  SpinnerScope height([double scale = 0.7]) {
     return SpinnerScope(child: this, scale: scale);
   }
 
