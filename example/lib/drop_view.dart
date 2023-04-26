@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:spinner_box/spinner_box.dart';
-import 'package:tuple/tuple.dart';
 
 class DropViewPage extends StatefulWidget {
   const DropViewPage({super.key});
@@ -72,6 +71,7 @@ class _DropViewPageState extends State<DropViewPage> {
                   onReseted: () {},
                   onItemIntercept: (p0, p1) {
                     if (p1 == 2) {
+                      // ignore: avoid_print
                       print('key = ${p0.key}; index = 2, 我拦截的选中事件');
                       return true;
                     }

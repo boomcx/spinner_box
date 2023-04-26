@@ -155,7 +155,6 @@ class _MoreFilterContent extends StatelessWidget {
     final notifier = _FilterNotiferScope.of(context);
     final items = notifier.value.items;
     final single = notifier.value.singleConditionAndSingleSelect;
-    var attachment = List.of(notifier.attachment);
 
     return ListView.separated(
       physics: const ClampingScrollPhysics(),
