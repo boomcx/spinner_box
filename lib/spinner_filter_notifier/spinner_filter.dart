@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
@@ -26,6 +28,7 @@ class SpinnerFilter extends StatefulWidget {
     required this.data,
     required this.onCompleted,
     this.onReseted,
+    this.onItemIntercept,
     this.attachment = const [],
   });
 
@@ -34,6 +37,11 @@ class SpinnerFilter extends StatefulWidget {
 
   /// 重置回调
   final VoidCallback? onReseted;
+
+  /// 选中项目的时候，拦截处理（用于交互前的特殊判断）
+  /// 返回值 `true`，表示拦截选中事件
+  /// `false` 则可以选中
+  final FutureOr<bool> Function(SpinnerFilterItem, int)? onItemIntercept;
 
   /// 选择完成回调
   /// `result` 返回结果 key.values
@@ -61,6 +69,7 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
       widget.data,
       widget.attachment,
       widget.onReseted,
+      widget.onItemIntercept,
     );
 
     notifier.addListener(() {

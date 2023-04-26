@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'entity.dart';
 import 'state.dart';
@@ -10,25 +12,34 @@ const double kBotBtnHeight = 56.0;
 typedef AttachmentEntity = Tuple2<int, Widget>;
 
 class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
-  SpinnerFilterNotifier(SpinnerFilterState state, this.onReseted)
-      : super(state);
+  SpinnerFilterNotifier(
+    SpinnerFilterState state,
+    this.onReseted,
+    this.onItemIntercept,
+  ) : super(state);
 
   /// 构造方法
   factory SpinnerFilterNotifier.init(
     List<SpinnerFilterEntity> data,
     List<AttachmentEntity> attachList,
     VoidCallback? onReseted,
+    FutureOr<bool> Function(SpinnerFilterItem, int)? onItemIntercept,
   ) {
     if (data.isEmpty) {
-      return SpinnerFilterNotifier(const SpinnerFilterState(), onReseted);
+      return SpinnerFilterNotifier(
+          const SpinnerFilterState(), onReseted, onItemIntercept);
     }
-    final instance = SpinnerFilterNotifier(_getState(data), onReseted);
+    final instance =
+        SpinnerFilterNotifier(_getState(data), onReseted, onItemIntercept);
     instance.updateAttach(attachList);
     return instance;
   }
 
-  /// 重置事件传递
+  /// 件传递
   final VoidCallback? onReseted;
+
+  /// 事件传递
+  final FutureOr<bool> Function(SpinnerFilterItem, int)? onItemIntercept;
 
   /// 外部传入自定义视图
   List<Tuple2<int, Widget>> attachment = [];
@@ -142,7 +153,15 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 点击按钮选项
   /// `tuple` 包含当前点击的分组数据 和 分组下标
   /// `index` 按钮下标
-  void itemOnClick(Tuple2<EntityNotifier, int> tuple, int index) {
+  void itemOnClick(Tuple2<EntityNotifier, int> tuple, int index) async {
+    if (onItemIntercept != null) {
+      final isIntercept =
+          await onItemIntercept!.call(tuple.item1.entity.items[index], index);
+      if (isIntercept == true) {
+        return;
+      }
+    }
+
     final group = tuple.item1;
     final single = group.entity.isRadio;
     var groups = value.items;

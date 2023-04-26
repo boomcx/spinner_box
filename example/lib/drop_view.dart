@@ -70,6 +70,13 @@ class _DropViewPageState extends State<DropViewPage> {
                   onReseted: () {
                     _textEditing.clear();
                   },
+                  onItemIntercept: (p0, p1) {
+                    if (p1 == 2) {
+                      print('index = 2, 我拦截的选中事件');
+                      return true;
+                    }
+                    return false;
+                  },
                   onCompleted: (result, name, data) {
                     _controller.updateName('$name${_textEditing.text}');
 
