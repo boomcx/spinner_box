@@ -16,6 +16,12 @@ class _DropViewPageState extends State<DropViewPage> {
   var _filterData = def;
 
   @override
+  void initState() {
+    super.initState();
+    _controller.setHighlight(1, true);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('下拉筛选框')),

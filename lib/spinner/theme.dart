@@ -39,10 +39,10 @@ class SpinnerBoxTheme {
   final EdgeInsets padding;
 
   /// 默认字体
-  final TextStyle textStyle;
+  final TextStyle style;
 
   /// 选中后的字体
-  final TextStyle changedStyle;
+  final TextStyle selectedStyle;
 
   /// 背景颜色
   final Color bgColor;
@@ -51,7 +51,7 @@ class SpinnerBoxTheme {
   final Color arrowColor;
 
   /// 标题改变后 是否标记选中状态
-  final bool changedMark;
+  final bool selectedMark;
 
   // 是否显示边框
   final bool isShowBorder;
@@ -61,15 +61,15 @@ class SpinnerBoxTheme {
 
   const SpinnerBoxTheme({
     this.height = kMinInteractiveDimensionCupertino,
-    this.textStyle = const TextStyle(
+    this.style = const TextStyle(
       color: Color(0xff20263A),
       fontSize: 14,
     ),
-    this.changedStyle = const TextStyle(
+    this.selectedStyle = const TextStyle(
       color: Color(0xffE72410),
       fontSize: 14,
     ),
-    this.changedMark = true,
+    this.selectedMark = true,
     this.isShowBorder = true,
     this.bgColor = Colors.white,
     this.arrowColor = const Color(0xff9B9EAC),
@@ -79,22 +79,22 @@ class SpinnerBoxTheme {
 
   SpinnerBoxTheme copyWith({
     double? height,
-    TextStyle? textStyle,
-    TextStyle? changedStyle,
+    TextStyle? style,
+    TextStyle? selectedStyle,
     Color? bgColor,
     Color? arrowColor,
-    bool? changedMark,
+    bool? selectedMark,
     bool? isShowBorder,
     EdgeInsets? padding,
     bool? outsideFocus,
   }) {
     return SpinnerBoxTheme(
       height: height ?? this.height,
-      textStyle: textStyle ?? this.textStyle,
-      changedStyle: changedStyle ?? this.changedStyle,
+      style: style ?? this.style,
+      selectedStyle: selectedStyle ?? this.selectedStyle,
       bgColor: bgColor ?? this.bgColor,
       arrowColor: arrowColor ?? this.arrowColor,
-      changedMark: changedMark ?? this.changedMark,
+      selectedMark: selectedMark ?? this.selectedMark,
       isShowBorder: isShowBorder ?? this.isShowBorder,
       padding: padding ?? this.padding,
       outsideFocus: outsideFocus ?? this.outsideFocus,

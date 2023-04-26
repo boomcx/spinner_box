@@ -319,9 +319,11 @@ class _CompsitedTarget extends StatelessWidget {
                           value.selected == index,
                           config,
                           maxWidth: constraints.minWidth,
-                          isChanged: config.changedMark
-                              ? value.items[index] != value.orginItems[index]
-                              : false,
+                          isHighlight: (config.selectedMark
+                                  ? value.items[index] !=
+                                      value.orginItems[index]
+                                  : false) ||
+                              value.highlightSpec['high_$index'] == true,
                         );
                       },
                     ),
@@ -351,20 +353,20 @@ class _Button extends StatelessWidget {
     this.isSelected,
     this.config, {
     this.maxWidth = 20,
-    this.isChanged = false,
+    this.isHighlight = false,
   });
 
   final double maxWidth;
   final String name;
   final bool isSelected;
-  final bool isChanged;
+  final bool isHighlight;
 
   /// 视图配置
   final SpinnerBoxTheme config;
 
   @override
   Widget build(BuildContext context) {
-    final flag = isSelected || isChanged;
+    final flag = isSelected || isHighlight;
     const double iconSize = 25;
 
     return Padding(
@@ -378,7 +380,7 @@ class _Button extends StatelessWidget {
             ),
             child: Text(
               name,
-              style: flag ? config.changedStyle : config.textStyle,
+              style: flag ? config.selectedStyle : config.style,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
@@ -390,7 +392,7 @@ class _Button extends StatelessWidget {
             child: Icon(
               Icons.arrow_drop_up_rounded,
               size: iconSize,
-              color: flag ? config.changedStyle.color : config.arrowColor,
+              color: flag ? config.selectedStyle.color : config.arrowColor,
             ),
           ),
         ],
