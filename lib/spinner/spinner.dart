@@ -387,7 +387,7 @@ class _Button extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           AnimatedRotation(
-            turns: isSelected ? -0.5 : 0,
+            turns: isSelected ? 0 : 0.5,
             duration: const Duration(milliseconds: 250),
             child: Icon(
               Icons.arrow_drop_up_rounded,

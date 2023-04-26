@@ -151,7 +151,7 @@ class _MoreFilterContent extends StatelessWidget {
     final single = notifier.value.singleConditionAndSingleSelect;
     var attachment = List.of(notifier.attachment);
 
-    return ListView.builder(
+    return ListView.separated(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       padding: EdgeInsets.only(
@@ -166,7 +166,10 @@ class _MoreFilterContent extends StatelessWidget {
           for (var attach in notifier.attachment) {
             if (attach.item1 == index) {
               attachment.remove(attach);
-              return attach.item2;
+              return Align(
+                alignment: Alignment.topLeft,
+                child: attach.item2,
+              );
             }
           }
         }
@@ -174,33 +177,23 @@ class _MoreFilterContent extends StatelessWidget {
         var idx = index - (notifier.attachment.length - attachment.length);
         return _FilterGroupScope(
           data: Tuple2(items[idx], idx),
-          child: Column(
-            children: [
-              index == 0
-                  ? const SizedBox()
-                  : const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Divider(height: 1, color: Color(0xffEEEEEE)),
-                    ),
-              const _GroupContent(),
-            ],
-          ),
+          child: const _GroupContent(),
         );
       },
-      // separatorBuilder: (context, index) {
-      //   if (attachment.isNotEmpty) {
-      //     for (var attach in notifier.attachment) {
-      //       if (attach.item1 == index) {
-      //         return const SizedBox();
-      //       }
-      //     }
-      //   }
+      separatorBuilder: (context, index) {
+        // if (attachment.isNotEmpty) {
+        //   for (var attach in notifier.attachment) {
+        //     if (attach.item1 == index) {
+        //       return const SizedBox();
+        //     }
+        //   }
+        // }
 
-      //   return const Padding(
-      //     padding: EdgeInsets.symmetric(vertical: 16),
-      //     child: Divider(height: 1, color: Color(0xffEEEEEE)),
-      //   );
-      // },
+        return const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Divider(height: 1, color: Color(0xffEEEEEE)),
+        );
+      },
       itemCount: items.length + attachment.length,
     );
   }
