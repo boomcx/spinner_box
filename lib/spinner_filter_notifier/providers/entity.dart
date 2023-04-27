@@ -166,7 +166,7 @@ class SpinnerFilterEntity {
         desc: desc ?? this.desc,
         suffixIcon: suffixIcon ?? this.suffixIcon,
         items: items ?? this.items,
-        extraData: extraData ?? this.extraData,
+        extraData: extraData,
       );
 }
 
