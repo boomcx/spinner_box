@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import 'package:spinner_box/spinner_box.dart';
@@ -76,7 +78,6 @@ class _DropViewPageState extends State<DropViewPage> {
                     return false;
                   },
                   onCompleted: (result, name, data) {
-                    print(result);
                     _controller.updateName(name);
 
                     // 建议局部刷新/状态管理
