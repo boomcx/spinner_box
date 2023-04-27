@@ -165,19 +165,8 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       final key = group.entity.key;
       var resGroup = {key: []};
 
-      // 如果自定义组件没有选择，则检索筛选项是否选中
-      // if (resGroup[key]?.isEmpty == true) {
-      final list = group.changeList;
-      for (var item in list) {
-        if (item.selected) {
-          resGroup[key]!.add(item.data.value);
-          reslutNames.add(item.data.name);
-        }
-      }
-      // }
-
       // 如果有拼接组件，则先从自定义组件中寻找是否选定结果
-      if (attachment.isNotEmpty && resGroup[key]?.isEmpty == true) {
+      if (attachment.isNotEmpty) {
         for (var element in attachment) {
           if (element.groupKey == key && element.extraData != null) {
             final res = element.gerResult();
@@ -186,6 +175,17 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
               reslutNames.add(res.item2);
             }
             break;
+          }
+        }
+      }
+
+      // 如果自定义组件没有选择，则检索筛选项是否选中
+      if (resGroup[key]?.isEmpty == true) {
+        final list = group.changeList;
+        for (var item in list) {
+          if (item.selected) {
+            resGroup[key]!.add(item.data.value);
+            reslutNames.add(item.data.name);
           }
         }
       }
