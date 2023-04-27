@@ -3,6 +3,8 @@ import './state.dart';
 import 'route/trans_dialog.dart';
 import 'theme.dart';
 
+typedef SpinnerBoxBuilder = List<SpinnerScope> Function(PopupValueNotifier);
+
 /// The drop dwon popout header buttons with custom popout content view
 // ignore: must_be_immutable
 class SpinnerBox extends StatefulWidget {
@@ -35,6 +37,7 @@ class SpinnerBox extends StatefulWidget {
     this.suffix,
     this.theme = defaultPinnerTheme,
   }) {
+    isRebuilder = false;
     widgets = children;
   }
 
@@ -44,11 +47,17 @@ class SpinnerBox extends StatefulWidget {
   /// 后置视图
   final Widget? suffix;
 
+  /// 是否重复构建builder
+  late final bool isRebuilder;
+
   /// 标题
   // final List<String> titles;
 
   /// 弹框内容构建
   late List<SpinnerScope> widgets;
+
+  /// 弹框内容构建
+  late SpinnerBoxBuilder widgetsBuilder;
 
   /// 逻辑操作
   late PopupValueNotifier controller;
@@ -78,13 +87,19 @@ class SpinnerBox extends StatefulWidget {
   SpinnerBox.builder({
     super.key,
     required List<String> titles,
-    required List<SpinnerScope> Function(PopupValueNotifier) builder,
+    required SpinnerBoxBuilder builder,
     this.prefix,
     this.suffix,
     this.theme = defaultPinnerTheme,
+    bool rebuilder = false,
   }) {
+    isRebuilder = rebuilder;
     controller = PopupValueNotifier.titles(titles);
-    widgets = builder.call(controller);
+    if (rebuilder) {
+      widgetsBuilder = builder;
+    } else {
+      widgets = builder.call(controller);
+    }
   }
 
   @override
@@ -140,7 +155,9 @@ class _SpinnerBoxState extends State<SpinnerBox> {
       notifier: _notifier,
       widget: widget,
       // scope: widget.builder.call(_notifier)[selected],
-      scope: widget.widgets[selected],
+      scope: widget.isRebuilder
+          ? widget.widgetsBuilder.call(_notifier)[selected]
+          : widget.widgets[selected],
     );
 
     _router = TransPopupRouter(
