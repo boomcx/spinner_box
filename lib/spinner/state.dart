@@ -58,10 +58,12 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
   }
 
   /// 外部设置某一个高亮（优先级最高）
-  void setHighlight(int index, bool state) {
+  /// `index` 高亮下标，默认为当前点击的下标
+  void setHighlight(bool state, [int? index]) {
+    int cur = index ?? value.selected;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var data = Map.of(value.highlightSpec);
-      data['high_$index'] = state;
+      data['high_$cur'] = state;
       value.highlightSpec = data;
       notifyListeners();
     });

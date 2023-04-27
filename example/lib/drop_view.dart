@@ -19,7 +19,7 @@ class _DropViewPageState extends State<DropViewPage> {
   @override
   void initState() {
     super.initState();
-    _controller.setHighlight(1, true);
+    _controller.setHighlight(true, 1);
   }
 
   @override
