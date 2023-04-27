@@ -69,6 +69,11 @@ class EntityNotifier {
   cleanExtra() {
     entity = entity.copyWith(extraData: null);
   }
+
+  /// 保存的额外输入内容
+  saveExtra(dynamic data) {
+    entity = entity.copyWith(extraData: data);
+  }
 }
 
 class OptionsNotifier<T> extends ValueNotifier {

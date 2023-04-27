@@ -161,7 +161,10 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       // r如果有拼接组件，则先从自定义组件中寻找是否选定结果
       if (attachment.isNotEmpty) {
         for (var element in attachment) {
-          if (element.groupKey == key && element.extraData != null) {
+          if (element.groupKey == key && element.extraData != null) { 
+            // 缓存至元数据
+            group.saveExtra(element.extraData);
+            // 筛选结果
             final res = element.gerResult();
             resGroup = res.item1;
             if (res.item2.isNotEmpty) {
