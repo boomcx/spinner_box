@@ -79,7 +79,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 设置自定组件的监听数据变化
   addAttachListener() {
     for (var e in attachment) {
-      e.addListener(() {
+      e.extraNotifier.addListener(() {
         reset(e.groupKey);
       });
     }

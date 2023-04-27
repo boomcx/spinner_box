@@ -6,14 +6,14 @@ part of '../spinner_filter.dart';
 /// !!! 仅支持 `SpinnerFilterEntity-items`不满足需求，追加局部视图时使用
 /// 子类更新数据时使用 `updateExtra`，而不是 `entity-setter`
 /// 设置通用方法返回筛选条件结果
-abstract class AttachmentView extends StatelessWidget with ChangeNotifier {
+abstract class AttachmentView extends StatelessWidget {
   AttachmentView({super.key, required this.data}) {
     for (var element in data) {
       if (element.key == groupKey) {
         if (_isNull(element.extraData)) {
           return;
         }
-        extraData = element.extraData;
+        extraNotifier.value = element.extraData;
         break;
       }
     }
@@ -27,7 +27,9 @@ abstract class AttachmentView extends StatelessWidget with ChangeNotifier {
   set groupKey(String data) {}
 
   /// 自定义视图的输入值
-  dynamic extraData;
+  var extraNotifier = ValueNotifier<dynamic>(null);
+
+  dynamic get extraData => extraNotifier.value;
 
   // /// 仅需要`key`和`extraData`
   // abstract SpinnerFilterEntity _entity;
@@ -40,15 +42,15 @@ abstract class AttachmentView extends StatelessWidget with ChangeNotifier {
   /// 更新数据
   updateExtra(dynamic data) {
     // if (data != entity.extraData) {
-    extraData = data;
+    extraNotifier.value = data;
     // 通知监听，清除已选择项
-    notifyListeners();
+    // notifyListeners();
     // }
   }
 
   /// 清空当前选择数据
   void reset() {
-    extraData = null;
+    extraData.value = null;
     // entity = entity.copyWith(extraData: null);
   }
 
