@@ -65,8 +65,8 @@ class _DropViewPageState extends State<DropViewPage> {
                     //       color: Colors.red,
                     //       child: const Text('attachment2'),
                     //     )),
-                    MyWidget2(),
-                    MyWidget1(_textEditing),
+                    MyWidget2(data: []),
+                    MyWidget1(_textEditing, data: []),
                   ],
                   onReseted: () {},
                   onItemIntercept: (p0, p1) {
@@ -120,7 +120,7 @@ class _DropViewPageState extends State<DropViewPage> {
 
 /// 仅需要`key`和`extraData`
 class MyWidget1 extends AttachmentView {
-  MyWidget1(this.textEditing, {super.key});
+  MyWidget1(this.textEditing, {super.key, required super.data});
   final TextEditingController textEditing;
 
   @override
@@ -148,7 +148,7 @@ class MyWidget1 extends AttachmentView {
 }
 
 class MyWidget2 extends AttachmentView {
-  MyWidget2({super.key});
+  MyWidget2({super.key, required super.data});
   final textEditing = TextEditingController();
 
   @override

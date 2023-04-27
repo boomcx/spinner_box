@@ -7,7 +7,16 @@ part of '../spinner_filter.dart';
 /// 子类更新数据时使用 `updateExtra`，而不是 `entity-setter`
 /// 设置通用方法返回筛选条件结果
 abstract class AttachmentView extends StatelessWidget with ChangeNotifier {
-  AttachmentView({super.key});
+  AttachmentView({super.key, required this.data}) {
+    for (var element in data) {
+      if (element.key == groupKey) {
+        extraData = element.extraData;
+        break;
+      }
+    }
+  }
+
+  final List<SpinnerFilterEntity> data;
 
   /// 跟随筛选列表的 `key`, 匹配和筛值使用
   abstract String _groupKey;
