@@ -50,7 +50,7 @@ abstract class AttachmentView extends StatelessWidget {
 
   /// 清空当前选择数据
   void reset() {
-    extraData.value = null;
+    extraNotifier.value = null;
     // entity = entity.copyWith(extraData: null);
   }
 
