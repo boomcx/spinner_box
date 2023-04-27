@@ -160,7 +160,7 @@ class MyWidget2 extends AttachmentView {
         controller: textEditing,
         decoration: const InputDecoration(hintText: 'MyWidget2 input'),
         onChanged: (value) {
-          updateExtra(value);
+          updateExtra(value); 
         },
       ),
     );

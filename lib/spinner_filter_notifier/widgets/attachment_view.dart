@@ -4,7 +4,7 @@ part of '../spinner_filter.dart';
 
 /// !!! 不推荐使用，特殊选择框可以自定义条件筛选组件
 /// !!! 仅支持 `SpinnerFilterEntity-items`不满足需求，追加局部视图时使用
-/// 定义外部视图的结构
+/// 子类更新数据时使用 `updateExtra`，而不是 `entity-setter`
 /// 设置通用方法返回筛选条件结果
 abstract class AttachmentView extends StatelessWidget with ChangeNotifier {
   AttachmentView({super.key});
@@ -14,6 +14,7 @@ abstract class AttachmentView extends StatelessWidget with ChangeNotifier {
 
   /// 仅需要`key`和`extraData`
   SpinnerFilterEntity get entity => _entity;
+
   set entity(SpinnerFilterEntity data) {}
 
   /// 更新数据
