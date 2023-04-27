@@ -157,17 +157,21 @@ class SpinnerFilterEntity {
     String? suffixIcon,
     dynamic extraData,
     List<SpinnerFilterItem>? items,
-  }) =>
-      SpinnerFilterEntity(
-        key: key ?? this.key,
-        isRadio: isRadio ?? this.isRadio,
-        title: title ?? this.title,
-        type: type ?? this.type,
-        desc: desc ?? this.desc,
-        suffixIcon: suffixIcon ?? this.suffixIcon,
-        items: items ?? this.items,
-        extraData: extraData ?? this.extraData,
-      );
+  }) {
+    if (extraData == this.extraData) {
+      return this;
+    }
+    return SpinnerFilterEntity(
+      key: key ?? this.key,
+      isRadio: isRadio ?? this.isRadio,
+      title: title ?? this.title,
+      type: type ?? this.type,
+      desc: desc ?? this.desc,
+      suffixIcon: suffixIcon ?? this.suffixIcon,
+      items: items ?? this.items,
+      extraData: extraData ?? this.extraData,
+    );
+  }
 }
 
 class SpinnerFilterItem {

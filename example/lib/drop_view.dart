@@ -125,12 +125,12 @@ class MyWidget1 extends AttachmentView {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      color: Colors.blueAccent,
       child: TextField(
         controller: textEditing,
-        decoration: const InputDecoration(hintText: 'input hint'),
+        decoration: const InputDecoration(hintText: 'MyWidget1 input'),
         onChanged: (value) {
-          entity = entity.copyWith(extraData: value);
+          updateExtra(value);
         },
       ),
     );
@@ -155,12 +155,12 @@ class MyWidget2 extends AttachmentView {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      color: Colors.greenAccent,
       child: TextField(
         controller: textEditing,
-        decoration: const InputDecoration(hintText: 'input hint222222'),
+        decoration: const InputDecoration(hintText: 'MyWidget2 input'),
         onChanged: (value) {
-          entity = entity.copyWith(extraData: value);
+          updateExtra(value);
         },
       ),
     );

@@ -79,22 +79,23 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 设置自定组件的监听数据变化
   addAttachListener() {
     for (var e in attachment) {
-      e.isChanged.addListener(() {
+      e.addListener(() {
+        print('------------------');
         reset(e.entity.key);
       });
     }
   }
 
   /// 移除监听
-  removeAttachListener() {
-    for (var e in attachment) {
-      e.isChanged.dispose();
-    }
-  }
+  // removeAttachListener() {
+  //   // for (var e in attachment) {
+  //   //   e.isChanged.dispose();
+  //   // }
+  // }
 
   @override
   void dispose() {
-    removeAttachListener();
+    // removeAttachListener();
     super.dispose();
   }
 
