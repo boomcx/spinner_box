@@ -5,7 +5,7 @@ part of '../spinner_filter.dart';
 /// !!! 不太推荐使用，特殊内容筛选框可以自定义组件
 /// !!! 仅支持 `SpinnerFilterEntity-items`不满足需求，追加局部视图时使用
 /// 子类更新数据时使用 `updateExtra`，而不是 `entity-setter`
-/// 设置通用方法返回筛选条件结果  
+/// 设置通用方法返回筛选条件结果
 abstract class AttachmentView extends StatelessWidget {
   AttachmentView({super.key, required this.data}) {
     for (var element in data) {
@@ -27,6 +27,9 @@ abstract class AttachmentView extends StatelessWidget {
   String get groupKey => _groupKey;
   set groupKey(String data) {}
 
+  /// 通过自定义组件完成选择，显示在导航上的标题
+  final extraName = '';
+
   /// 自定义视图的输入值
   var extraNotifier = ValueNotifier<dynamic>(null);
 
@@ -46,16 +49,16 @@ abstract class AttachmentView extends StatelessWidget {
   /// 获取选中返回值
   Tuple2<Map<String, List<dynamic>>, String> gerResult() {
     final resGroup = {groupKey: []};
-    final reslutNames = [];
+    // final reslutNames = [];
 
     final isNotNull = !_isNull(extraData);
     // 检测是否有额外的输入数据
     if (isNotNull) {
       resGroup[groupKey]!.add(extraData);
-      reslutNames.add(extraData is String ? extraData : '');
+      // reslutNames.add(extraName);
     }
 
-    return Tuple2(resGroup, reslutNames.join('/'));
+    return Tuple2(resGroup, extraName);
   }
 
   @override
