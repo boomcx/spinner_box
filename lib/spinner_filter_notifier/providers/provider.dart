@@ -48,7 +48,15 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         for (var i = 0; i < changeList.length; i++) {
           tempList[i] = tempList[i].copyWith(selected: changeList[i].selected);
         }
-        return entity.copyWith(items: tempList);
+
+        SpinnerFilterEntity temp = entity.copyWith(items: tempList);
+        for (var element in attachment) {
+          if (element.groupKey == entity.key) {
+            temp = entity.copyWith(extraData: element.extraData);
+          }
+        }
+
+        return temp;
       }).toList();
 
   updateState(List<SpinnerFilterEntity> data, List<AttachmentView> attachList) {
@@ -161,7 +169,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       // 如果自定义组件没有选择，则检索筛选项是否选中
       // if (resGroup[key]?.isEmpty == true) {
       // 重置 extra data
-      group.cleanExtra();
+      // group.cleanExtra();
 
       final list = group.changeList;
       for (var item in list) {
@@ -177,7 +185,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         for (var element in attachment) {
           if (element.groupKey == key && element.extraData != null) {
             // 缓存至元数据
-            group.saveExtra(element.extraData);
+            // group.saveExtra(element.extraData);
             // 筛选结果
             final res = element.gerResult();
             resGroup = res.item1;
