@@ -52,7 +52,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         SpinnerFilterEntity temp = entity.copyWith(items: tempList);
         for (var element in attachment) {
           if (element.groupKey == entity.key) {
-            temp = entity.copyWith(extraData: element.extraData);
+            temp = temp.copyWith(extraData: element.extraData);
           }
         }
 
