@@ -20,7 +20,6 @@ class _ExplainIcon extends StatelessWidget {
         size: 15,
         color: Colors.black26,
       ),
-      // child: Assets.images.iconExplain.image(width: 15, fit: BoxFit.contain),
     );
   }
 }

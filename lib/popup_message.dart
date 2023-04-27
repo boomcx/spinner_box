@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 class _PopupConfig {
   BuildContext context;
 
-  /// 内容边框边距
-  // final double padding;
-
   final Color bgColor;
 
   /// 距离点击视图的间隔 / 上下左右的距离
@@ -16,7 +13,6 @@ class _PopupConfig {
 
   _PopupConfig({
     required this.context,
-    // this.padding = 10,
     required this.margin,
     required this.size,
     required this.bgColor,
@@ -110,14 +106,6 @@ class _PopupMessageState extends State<PopupMessage> {
     });
 
     Overlay.of(context).insert(_entry!);
-
-    // return showDialog(
-    //   context: context,
-    //   barrierColor: widget.barrierColor,
-    //   builder: (context) {
-    //     return follow;
-    //   },
-    // );
   }
 
   @override

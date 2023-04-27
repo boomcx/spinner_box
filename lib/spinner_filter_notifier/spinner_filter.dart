@@ -4,12 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
-export './providers/entity.dart';
-export './providers/provider.dart';
-
 import '../popup_message.dart';
+import 'providers/entity.dart';
+import 'providers/provider.dart';
 import 'providers/state.dart';
-import 'spinner_filter.dart';
 
 part './widgets/buttons.dart';
 part './widgets/group.dart';

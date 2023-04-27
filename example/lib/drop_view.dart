@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 
 import 'package:spinner_box/spinner_box.dart';
@@ -65,8 +63,8 @@ class _DropViewPageState extends State<DropViewPage> {
                     //       color: Colors.red,
                     //       child: const Text('attachment2'),
                     //     )),
-                    MyWidget2(data: []),
-                    MyWidget1(_textEditing, data: []),
+                    MyWidget2(data: _filterData),
+                    MyWidget1(_textEditing, data: _filterData),
                   ],
                   onReseted: () {},
                   onItemIntercept: (p0, p1) {

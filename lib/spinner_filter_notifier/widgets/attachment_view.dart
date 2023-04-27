@@ -2,7 +2,7 @@
 
 part of '../spinner_filter.dart';
 
-/// !!! 不推荐使用，特殊选择框可以自定义条件筛选组件
+/// !!! 不太推荐使用，特殊内容筛选框可以自定义组件
 /// !!! 仅支持 `SpinnerFilterEntity-items`不满足需求，追加局部视图时使用
 /// 子类更新数据时使用 `updateExtra`，而不是 `entity-setter`
 /// 设置通用方法返回筛选条件结果
@@ -19,6 +19,7 @@ abstract class AttachmentView extends StatelessWidget {
     }
   }
 
+  /// 筛选配置参数
   final List<SpinnerFilterEntity> data;
 
   /// 跟随筛选列表的 `key`, 匹配和筛值使用
@@ -29,33 +30,18 @@ abstract class AttachmentView extends StatelessWidget {
   /// 自定义视图的输入值
   var extraNotifier = ValueNotifier<dynamic>(null);
 
+  /// 输入值
   dynamic get extraData => extraNotifier.value;
-
-  // /// 仅需要`key`和`extraData`
-  // abstract SpinnerFilterEntity _entity;
-
-  // /// 仅需要`key`和`extraData`
-  // SpinnerFilterEntity get entity => _entity;
-
-  // set entity(SpinnerFilterEntity data) {}
 
   /// 更新数据
   updateExtra(dynamic data) {
-    // if (data != entity.extraData) {
     extraNotifier.value = data;
-    // 通知监听，清除已选择项
-    // notifyListeners();
-    // }
   }
 
   /// 清空当前选择数据
   void reset() {
     extraNotifier.value = null;
-    // entity = entity.copyWith(extraData: null);
   }
-
-  @override
-  Widget build(BuildContext context);
 
   /// 获取选中返回值
   Tuple2<Map<String, List<dynamic>>, String> gerResult() {
@@ -69,16 +55,11 @@ abstract class AttachmentView extends StatelessWidget {
       reslutNames.add(extraData is String ? extraData : '');
     }
 
-    // final list = entity.items;
-    // for (var item in list) {
-    //   if (item.selected) {
-    //     resGroup[key]!.add(item.value);
-    //     reslutNames.add(item.name);
-    //   }
-    // }
-
     return Tuple2(resGroup, reslutNames.join('/'));
   }
+
+  @override
+  Widget build(BuildContext context);
 }
 
 bool _isNull(dynamic data) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../spinner_filter.dart';
-import 'state.dart';
 import 'package:tuple/tuple.dart';
 
-// part 'provider.g.dart';
+import '../spinner_filter.dart';
+import 'entity.dart';
+import 'state.dart';
 
 const double kBotBtnHeight = 56.0;
 
@@ -70,7 +70,6 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   ) {
     final singleCondition = data.length == 1;
     final singleSelect = data.first.isRadio == true;
-    // final notExtra = items.first['extra'] == null;
     return SpinnerFilterState(
       singleConditionAndSingleSelect: singleCondition && singleSelect,
       items: data.map((e) => EntityNotifier(e)).toList(),
@@ -166,27 +165,10 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       final key = group.entity.key;
       var resGroup = {key: []};
 
-      // 如果自定义组件没有选择，则检索筛选项是否选中
-      // if (resGroup[key]?.isEmpty == true) {
-      // 重置 extra data
-      // group.cleanExtra();
-
-      final list = group.changeList;
-      for (var item in list) {
-        if (item.selected) {
-          resGroup[key]!.add(item.data.value);
-          reslutNames.add(item.data.name);
-        }
-      }
-      // }
-
-      // r如果有拼接组件，则先从自定义组件中寻找是否选定结果
-      if (attachment.isNotEmpty && resGroup[key]?.isEmpty == true) {
+      // 如果有拼接组件，则先从自定义组件中寻找是否选定结果
+      if (attachment.isNotEmpty) {
         for (var element in attachment) {
           if (element.groupKey == key && element.extraData != null) {
-            // 缓存至元数据
-            // group.saveExtra(element.extraData);
-            // 筛选结果
             final res = element.gerResult();
             resGroup = res.item1;
             if (res.item2.isNotEmpty) {
@@ -196,6 +178,18 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
           }
         }
       }
+
+      // 如果自定义组件没有选择，则检索筛选项是否选中
+      if (resGroup[key]?.isEmpty == true) {
+        final list = group.changeList;
+        for (var item in list) {
+          if (item.selected) {
+            resGroup[key]!.add(item.data.value);
+            reslutNames.add(item.data.name);
+          }
+        }
+      }
+
       reslut.addAll(resGroup);
     }
 

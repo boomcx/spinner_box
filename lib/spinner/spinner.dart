@@ -1,6 +1,3 @@
-export './state.dart';
-export './theme.dart';
-
 import 'package:flutter/material.dart';
 import './state.dart';
 import 'route/trans_dialog.dart';
