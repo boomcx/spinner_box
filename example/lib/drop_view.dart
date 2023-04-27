@@ -143,9 +143,7 @@ class MyWidget1 extends AttachmentView {
   }
 
   @override
-  SpinnerFilterEntity get entity {
-    return SpinnerFilterEntity(key: 'group2', extraData: textEditing.text);
-  }
+  String get groupKey => 'group2';
 }
 
 class MyWidget2 extends AttachmentView {
@@ -160,7 +158,7 @@ class MyWidget2 extends AttachmentView {
         controller: textEditing,
         decoration: const InputDecoration(hintText: 'MyWidget2 input'),
         onChanged: (value) {
-          updateExtra(value); 
+          updateExtra(value);
         },
       ),
     );
@@ -173,9 +171,7 @@ class MyWidget2 extends AttachmentView {
   }
 
   @override
-  SpinnerFilterEntity get entity {
-    return SpinnerFilterEntity(key: 'group1', extraData: textEditing.text);
-  }
+  String get groupKey => 'group1';
 }
 
 class _GroupView extends StatelessWidget {

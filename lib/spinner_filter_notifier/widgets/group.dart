@@ -118,7 +118,7 @@ class _GroupBtnsCnt extends StatelessWidget {
       }),
       ...List.generate(notifier.attachment.length, (index) {
         final attach = notifier.attachment[index];
-        if (attach.entity.key == tuple.item1.entity.key) {
+        if (attach.groupKey == tuple.item1.entity.key) {
           return attach;
         }
         return const SizedBox();
