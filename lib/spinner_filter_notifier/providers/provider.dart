@@ -158,10 +158,24 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       final key = group.entity.key;
       var resGroup = {key: []};
 
+      // 如果自定义组件没有选择，则检索筛选项是否选中
+      // if (resGroup[key]?.isEmpty == true) {
+      // 重置 extra data
+      group.cleanExtra();
+
+      final list = group.changeList;
+      for (var item in list) {
+        if (item.selected) {
+          resGroup[key]!.add(item.data.value);
+          reslutNames.add(item.data.name);
+        }
+      }
+      // }
+
       // r如果有拼接组件，则先从自定义组件中寻找是否选定结果
-      if (attachment.isNotEmpty) {
+      if (attachment.isNotEmpty && resGroup[key]?.isEmpty == true) {
         for (var element in attachment) {
-          if (element.groupKey == key && element.extraData != null) { 
+          if (element.groupKey == key && element.extraData != null) {
             // 缓存至元数据
             group.saveExtra(element.extraData);
             // 筛选结果
@@ -171,19 +185,6 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
               reslutNames.add(res.item2);
             }
             break;
-          }
-        }
-      }
-      // 如果自定义组件没有选择，则检索筛选项是否选中
-      if (resGroup[key]?.isEmpty == true) {
-        // 重置 extra data
-        group.cleanExtra();
-
-        final list = group.changeList;
-        for (var item in list) {
-          if (item.selected) {
-            resGroup[key]!.add(item.data.value);
-            reslutNames.add(item.data.name);
           }
         }
       }
