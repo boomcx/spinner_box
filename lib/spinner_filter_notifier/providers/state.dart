@@ -60,10 +60,15 @@ class EntityNotifier {
       return option;
     }).toList();
   }
-  final SpinnerFilterEntity entity;
+  SpinnerFilterEntity entity;
 
   /// 可监听选中变化的数据
   late List<OptionsNotifier<SpinnerFilterItem>> changeList;
+
+  /// 清空保存的额外输入内容
+  cleanExtra() {
+    entity = entity.copyWith(extraData: null);
+  }
 }
 
 class OptionsNotifier<T> extends ValueNotifier {

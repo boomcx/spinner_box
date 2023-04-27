@@ -173,6 +173,9 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       }
       // 如果自定义组件没有选择，则检索筛选项是否选中
       if (resGroup[key]?.isEmpty == true) {
+        // 重置 extra data
+        group.cleanExtra();
+
         final list = group.changeList;
         for (var item in list) {
           if (item.selected) {
