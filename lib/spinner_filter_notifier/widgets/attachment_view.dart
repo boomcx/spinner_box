@@ -10,6 +10,9 @@ abstract class AttachmentView extends StatelessWidget with ChangeNotifier {
   AttachmentView({super.key, required this.data}) {
     for (var element in data) {
       if (element.key == groupKey) {
+        if (_isNull(element.extraData)) {
+          return;
+        }
         extraData = element.extraData;
         break;
       }
