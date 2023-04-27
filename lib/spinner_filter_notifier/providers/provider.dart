@@ -176,12 +176,12 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         final list = group.changeList;
         for (var item in list) {
           if (item.selected) {
-            resGroup[key]!.add(item.value);
+            resGroup[key]!.add(item.data.value);
             reslutNames.add(item.data.name);
           }
         }
-        reslut.addAll(resGroup);
       }
+      reslut.addAll(resGroup);
     }
 
     return Tuple2(reslut, reslutNames.join('/'));

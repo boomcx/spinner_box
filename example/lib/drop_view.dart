@@ -78,6 +78,7 @@ class _DropViewPageState extends State<DropViewPage> {
                     return false;
                   },
                   onCompleted: (result, name, data) {
+                    print(result);
                     _controller.updateName(name);
 
                     // 建议局部刷新/状态管理
