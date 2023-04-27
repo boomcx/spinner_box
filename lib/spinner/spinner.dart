@@ -41,30 +41,6 @@ class SpinnerBox extends StatefulWidget {
     widgets = children;
   }
 
-  /// 前置视图
-  final Widget? prefix;
-
-  /// 后置视图
-  final Widget? suffix;
-
-  /// 是否重复构建builder
-  late final bool isRebuilder;
-
-  /// 标题
-  // final List<String> titles;
-
-  /// 弹框内容构建
-  late List<SpinnerScope> widgets;
-
-  /// 弹框内容构建
-  late SpinnerBoxBuilder widgetsBuilder;
-
-  /// 逻辑操作
-  late PopupValueNotifier controller;
-
-  /// 视图配置
-  final SpinnerBoxTheme theme;
-
   /// How to use
   ///
   /// ```
@@ -88,10 +64,10 @@ class SpinnerBox extends StatefulWidget {
     super.key,
     required List<String> titles,
     required SpinnerBoxBuilder builder,
+    bool rebuilder = false,
     this.prefix,
     this.suffix,
     this.theme = defaultPinnerTheme,
-    bool rebuilder = false,
   }) {
     isRebuilder = rebuilder;
     controller = PopupValueNotifier.titles(titles);
@@ -101,6 +77,30 @@ class SpinnerBox extends StatefulWidget {
       widgets = builder.call(controller);
     }
   }
+
+  /// 前置视图
+  final Widget? prefix;
+
+  /// 后置视图
+  final Widget? suffix;
+
+  /// 是否重复构建builder
+  late final bool isRebuilder;
+
+  /// 标题
+  // final List<String> titles;
+
+  /// 弹框内容构建
+  late List<SpinnerScope> widgets;
+
+  /// 弹框内容构建
+  late SpinnerBoxBuilder widgetsBuilder;
+
+  /// 逻辑操作
+  late PopupValueNotifier controller;
+
+  /// 视图配置
+  final SpinnerBoxTheme theme;
 
   @override
   State<SpinnerBox> createState() => _SpinnerBoxState();

@@ -2,8 +2,8 @@
 
 part of '../spinner_filter.dart';
 
-/// !!! 不太推荐使用，特殊内容筛选框可以自定义组件
-/// !!! 仅支持 `SpinnerFilterEntity-items`不满足需求，追加局部视图时使用
+/// !!! 特殊内容筛选框可以自定义组件
+/// !!! 仅支持 `SpinnerFilterEntity-items`满足按钮需求时，追加局部视图时使用
 /// 子类更新数据时使用 `updateExtra`，而不是 `entity-setter`
 /// 设置通用方法返回筛选条件结果
 abstract class AttachmentView extends StatelessWidget {

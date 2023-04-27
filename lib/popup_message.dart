@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class _PopupConfig {
   BuildContext context;
+
+  /// 内容边框边距
+  // final double padding;
 
   final Color bgColor;
 
@@ -11,11 +16,15 @@ class _PopupConfig {
   /// 三角的大小
   final Size size;
 
+  final double radius;
+
   _PopupConfig({
     required this.context,
-    required this.margin,
-    required this.size,
-    required this.bgColor,
+    // this.padding = 10,
+    this.margin = const EdgeInsets.all(5),
+    this.size = const Size(7, 7),
+    this.bgColor = Colors.white,
+    this.radius = 4,
   });
 }
 
@@ -26,10 +35,12 @@ class PopupMessage extends StatefulWidget {
     required this.content,
     this.padding = const EdgeInsets.all(10),
     this.margin = const EdgeInsets.all(5),
-    this.size = const Size(7, 7),
     this.bgColor = Colors.white,
+    this.size = const Size(7, 7),
     this.maxWidth = 200,
+    this.radius = 4,
     this.barrierColor = const Color(0x05000000),
+    this.onPreShow,
   });
 
   final Widget child;
@@ -38,8 +49,10 @@ class PopupMessage extends StatefulWidget {
   final EdgeInsets padding;
   final EdgeInsets margin;
   final Size size;
+  final double radius;
   final Color barrierColor;
   final Color bgColor;
+  final FutureOr<bool> Function()? onPreShow;
 
   @override
   State<PopupMessage> createState() => _PopupMessageState();
@@ -58,6 +71,7 @@ class _PopupMessageState extends State<PopupMessage> {
       margin: widget.margin,
       size: widget.size,
       bgColor: widget.bgColor,
+      radius: widget.radius,
     );
 
     super.initState();
@@ -106,12 +120,32 @@ class _PopupMessageState extends State<PopupMessage> {
     });
 
     Overlay.of(context).insert(_entry!);
+
+    // return showDialog(
+    //   context: context,
+    //   barrierColor: widget.barrierColor,
+    //   builder: (context) {
+    //     return follow;
+    //   },
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _showText,
+      behavior: HitTestBehavior.translucent,
+      onTap: () async {
+        if (widget.onPreShow == null) {
+          _showText();
+          return;
+        }
+        final state = await widget.onPreShow?.call();
+        if (state == true) {
+          Future.delayed(Duration.zero, () {
+            _showText();
+          });
+        }
+      },
       child: widget.child,
     );
   }
@@ -183,7 +217,7 @@ class _PopupMsgPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
-    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(4));
+    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(config.radius));
 
     final paint = Paint()
       ..strokeWidth = 2
@@ -221,6 +255,7 @@ class _PopupMsgPainter extends CustomPainter {
           5,
           false);
     }
+
     canvas.drawPath(path, paint);
   }
 

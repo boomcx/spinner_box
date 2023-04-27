@@ -13,7 +13,7 @@ class _ExplainIcon extends StatelessWidget {
       bgColor: Colors.black54,
       content: Text(
         desc,
-        style: const TextStyle(color: Colors.white, height: 1.5, fontSize: 13),
+        style: const TextStyle(color: Colors.white, height: 1, fontSize: 13),
       ),
       child: const Icon(
         Icons.help_outline_outlined,

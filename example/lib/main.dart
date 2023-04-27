@@ -1,6 +1,13 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:spinner_box_example/drop_view.dart';
+import 'package:spinner_box_example/pages/custom.dart';
+import 'package:spinner_box_example/pages/muti.dart';
+
+import 'pages/normal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +29,67 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: DropViewPage(),
+      home: _SpinnerTest(),
+    );
+  }
+}
+
+class _SpinnerTest extends StatelessWidget {
+  const _SpinnerTest({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('筛选弹框')),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                const SinglePage().push(context);
+              },
+              child: const _Title('单选条件'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                const MutiPage().push(context);
+              },
+              child: const _Title('多选条件'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                const CustomPage().push(context);
+              },
+              child: const _Title('自定义视图'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+extension PagePush on Widget {
+  FutureOr push(BuildContext context) {
+    return Navigator.of(context).push(CupertinoPageRoute(
+      builder: (context) => this,
+    ));
+  }
+}
+
+class _Title extends StatelessWidget {
+  const _Title(this.title);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: const TextStyle(color: Colors.white, fontSize: 14),
     );
   }
 }

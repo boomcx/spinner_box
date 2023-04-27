@@ -31,7 +31,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     return instance;
   }
 
-  /// 件传递
+  /// 事件传递
   final VoidCallback? onReseted;
 
   /// 事件传递
@@ -40,7 +40,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 外部传入自定义视图
   List<AttachmentView> attachment = [];
 
-  /// 需要返回至外部得数据，与传入数据一致，同步状态筛选状态
+  /// 需要返回至外部得数据，与传入数据一致，同步筛选状态
   List<SpinnerFilterEntity> get outside => value.items.map((e) {
         final entity = e.entity;
         final changeList = e.changeList;
@@ -59,6 +59,8 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         return temp;
       }).toList();
 
+  /// `didUpdateWidget` 时触发
+  /// 更新当前state，用于异步显示筛选条件
   updateState(List<SpinnerFilterEntity> data, List<AttachmentView> attachList) {
     value = _getState(data);
     updateAttach(attachList);
@@ -77,7 +79,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     );
   }
 
-  /// 外部视图排序
+  /// 接收外部自定义粘连视图，并设置监听
   updateAttach(List<AttachmentView> attachList) {
     attachment = List.of(attachList);
     addAttachListener();
@@ -148,7 +150,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         // 修改按钮选中状态
         var items = tempGroup.changeList;
         for (var k = 0; k < items.length; k++) {
-          items[k].selected = false;
+          items[k].selected = items[k].data.isMutex;
         }
       }
     }
@@ -247,12 +249,4 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       completed();
     }
   }
-}
-
-extension MFMapExt on Map {
-  /// 将数组类型的value 修改为字符串类型
-  Map<String, String> get listValue2Str => map(
-        (key, value) =>
-            MapEntry(key, value is List ? value.join(',') : '$value'),
-      );
 }
