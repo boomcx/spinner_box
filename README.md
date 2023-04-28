@@ -7,7 +7,9 @@
 ##### TODO LIST
 - 扩展自定义主题配置，包括不限于按钮、勾选；
 
-# Editor.md
+##### 图例
+
+<img src="https://github.com/boomcx/spinner_box/blob/main/assets/builder.gif" width="200px">
 
 ![](https://github.com/boomcx/spinner_box/blob/main/assets/builder.gif)
 >图1：多种构建方式
