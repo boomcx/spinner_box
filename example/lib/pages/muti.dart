@@ -23,14 +23,10 @@ class _MutiPageState extends State<MutiPage> {
   ];
 
   var _condition3 = [
+    years(key: 'year3', isRadio: true, count: 3),
     text(key: 'text1', type: MoreContentType.groupBtn, count: 15),
     text(
         key: 'text2', type: MoreContentType.groupBtn, isRadio: false, count: 8),
-    text(
-        key: 'text3',
-        type: MoreContentType.groupBtn,
-        isRadio: false,
-        count: 20),
   ];
 
   Map<String, List<dynamic>> _result = {};
@@ -41,9 +37,8 @@ class _MutiPageState extends State<MutiPage> {
       appBar: AppBar(title: const Text('多选操作')),
       body: Column(
         children: [
-          SpinnerBox.builder(
+          SpinnerBox.rebuilder(
             titles: const ['多选条件', '多选条件', '混合条件+拦截'],
-            rebuilder: true,
             builder: (notifier) {
               return [
                 SpinnerFilter(
@@ -88,8 +83,10 @@ class _MutiPageState extends State<MutiPage> {
               ];
             },
           ),
-          const SizedBox(height: 30),
-          Text('筛选结果: $_result'),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Text('筛选结果: $_result'),
+          ),
         ],
       ),
     );

@@ -89,7 +89,9 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   addAttachListener() {
     for (var e in attachment) {
       e.extraNotifier.addListener(() {
-        reset(e.groupKey);
+        if (e.extraData != null) {
+          reset(e.groupKey);
+        }
       });
     }
   }
@@ -171,7 +173,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       if (attachment.isNotEmpty) {
         for (var element in attachment) {
           if (element.groupKey == key && element.extraData != null) {
-            final res = element.gerResult();
+            final res = element.getResult();
             resGroup = res.item1;
             if (res.item2.isNotEmpty) {
               reslutNames.add(res.item2);

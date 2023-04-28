@@ -35,6 +35,7 @@ class _DropViewPageState extends State<DropViewPage> {
             const _Title(name: 'children构建'),
             SpinnerBox(
               controller: _controller,
+              theme: defaultPinnerTheme.copyWith(outsideFocus: true),
               children: [
                 SpinnerFilter(
                   data: [
@@ -93,7 +94,7 @@ class _DropViewPageState extends State<DropViewPage> {
             const _GroupView('builder构建'),
             const _GroupView(
               '并排其他组件',
-              suffix: Text('尾部视图'),
+              suffix: Text('后置视图'),
               prefix: Text('前置视图'),
             ),
             _GroupView(
@@ -234,7 +235,7 @@ class _FilterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SpinnerBox.builder(
+    return SpinnerBox.rebuilder(
       prefix: prefix,
       suffix: suffix,
       titles: const ['单列表', '状态保留'],

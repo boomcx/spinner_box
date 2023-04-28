@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_box.dart';
@@ -30,9 +32,8 @@ class _CustomPageState extends State<CustomPage> {
       appBar: AppBar(title: const Text('多选操作')),
       body: Column(
         children: [
-          SpinnerBox.builder(
+          SpinnerBox.rebuilder(
             titles: const ['自定义弹窗', '自定义弹窗', '拼接自定义'],
-            rebuilder: true,
             builder: (notifier) {
               return [
                 Material(
@@ -60,14 +61,13 @@ class _CustomPageState extends State<CustomPage> {
                 SpinnerFilter(
                   data: _condition3,
                   attachment: [
-                    _InputAttach(
-                      data: _condition3,
-                    ),
+                    _InputAttach(data: _condition3),
+                    _PickerAttach(data: _condition3)
                   ],
                   onItemIntercept: (p0, p1) {
                     if (p0.key == 'text2' && p1 == 2) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('欸~ 就是选不了~')),
+                        const SnackBar(content: Text('欸~ 拦截了就是选不了~')),
                       );
                       return true;
                     }
@@ -84,14 +84,17 @@ class _CustomPageState extends State<CustomPage> {
               ];
             },
           ),
-          const SizedBox(height: 30),
-          Text('筛选结果: $_result'),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Text('筛选结果: $_result'),
+          ),
         ],
       ),
     );
   }
 }
 
+/// 通过自有数据刷新控件
 class _InputAttach extends AttachmentView {
   _InputAttach({required super.data});
 
@@ -99,6 +102,9 @@ class _InputAttach extends AttachmentView {
 
   @override
   String get groupKey => 'text1';
+
+  @override
+  String get extraName => '输入标题';
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +125,42 @@ class _InputAttach extends AttachmentView {
   @override
   void reset() {
     super.reset();
-
     textEditing.clear();
+  }
+}
+
+/// 通过 `ValueListenableBuilder` 监听 `extraNotifier` 刷新视图
+class _PickerAttach extends AttachmentView {
+  _PickerAttach({required super.data});
+
+  @override
+  String get groupKey => 'text2';
+
+  @override
+  String get extraName => '时间选择';
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 38,
+      color: Colors.black12,
+      child: ValueListenableBuilder(
+        valueListenable: extraNotifier,
+        builder: (context, value, child) {
+          return ElevatedButton(
+            child: Text(value ?? '点击选择'),
+            onPressed: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: DateTime(2023),
+                firstDate: DateTime(2023),
+                lastDate: DateTime(2333),
+              );
+              updateExtra(date.toString());
+            },
+          );
+        },
+      ),
+    );
   }
 }

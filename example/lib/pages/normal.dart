@@ -26,9 +26,8 @@ class _SinglePageState extends State<SinglePage> {
       appBar: AppBar(title: const Text('单选操作')),
       body: Column(
         children: [
-          SpinnerBox.builder(
+          SpinnerBox.rebuilder(
             titles: const ['单选条件', '单选条件'],
-            rebuilder: true,
             builder: (notifier) {
               return [
                 SpinnerFilter(
@@ -54,8 +53,10 @@ class _SinglePageState extends State<SinglePage> {
               ];
             },
           ),
-          const SizedBox(height: 30),
-          Text('筛选结果: $_result'),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Text('筛选结果: $_result'),
+          ),
         ],
       ),
     );

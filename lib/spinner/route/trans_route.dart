@@ -13,8 +13,8 @@ abstract class TransModalRoute<T> extends TransitionRoute<T>
     this.filter,
   });
 
-  /// 目标当前的context，用于计算遮罩层`_modalBarrier`向下偏移的位置
-  BuildContext? get targetCtx;
+  /// 用于计算遮罩层`_modalBarrier`向下偏移的位置
+  double? get offsetY;
 
   /// The filter to add to the barrier.
   ///
@@ -757,15 +757,10 @@ abstract class TransModalRoute<T> extends TransitionRoute<T>
       );
     }
 
-    double top = 0;
-    if (targetCtx != null) {
-      final render = targetCtx!.findRenderObject() as RenderBox;
-      final position = render.localToGlobal(Offset.zero);
-      top = position.dy + render.size.height;
-    }
+    
 
     return Padding(
-      padding: EdgeInsets.only(top: top),
+      padding: EdgeInsets.only(top: offsetY ?? 0),
       child: barrier,
     );
   }

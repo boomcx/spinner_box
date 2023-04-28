@@ -30,10 +30,10 @@ abstract class AttachmentView extends StatelessWidget {
   /// 通过自定义组件完成选择，显示在导航上的标题
   final extraName = '';
 
-  /// 自定义视图的输入值
+  /// 自定义组件输入值监听
   var extraNotifier = ValueNotifier<dynamic>(null);
 
-  /// 输入值
+  /// 获取当前输入值
   dynamic get extraData => extraNotifier.value;
 
   /// 更新数据
@@ -47,7 +47,7 @@ abstract class AttachmentView extends StatelessWidget {
   }
 
   /// 获取选中返回值
-  Tuple2<Map<String, List<dynamic>>, String> gerResult() {
+  Tuple2<Map<String, List<dynamic>>, String> getResult() {
     final resGroup = {groupKey: []};
     // final reslutNames = [];
 

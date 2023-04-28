@@ -3,7 +3,7 @@ import './state.dart';
 import 'route/trans_dialog.dart';
 import 'theme.dart';
 
-typedef SpinnerBoxBuilder = List<SpinnerScope> Function(PopupValueNotifier);
+typedef SpinnerBoxBuilder = List<SpinnerPopScope> Function(PopupValueNotifier);
 
 /// The drop dwon popout header buttons with custom popout content view
 // ignore: must_be_immutable
@@ -32,7 +32,7 @@ class SpinnerBox extends StatefulWidget {
     super.key,
     required this.controller,
     // required this.titles,
-    required List<SpinnerScope> children,
+    required List<SpinnerPopScope> children,
     this.prefix,
     this.suffix,
     this.theme = defaultPinnerTheme,
@@ -64,18 +64,27 @@ class SpinnerBox extends StatefulWidget {
     super.key,
     required List<String> titles,
     required SpinnerBoxBuilder builder,
-    bool rebuilder = false,
     this.prefix,
     this.suffix,
     this.theme = defaultPinnerTheme,
   }) {
-    isRebuilder = rebuilder;
+    isRebuilder = false;
     controller = PopupValueNotifier.titles(titles);
-    if (rebuilder) {
-      widgetsBuilder = builder;
-    } else {
-      widgets = builder.call(controller);
-    }
+    widgets = builder.call(controller);
+  }
+
+  /// Repeated call builder
+  SpinnerBox.rebuilder({
+    super.key,
+    required List<String> titles,
+    required SpinnerBoxBuilder builder,
+    this.prefix,
+    this.suffix,
+    this.theme = defaultPinnerTheme,
+  }) {
+    isRebuilder = true;
+    controller = PopupValueNotifier.titles(titles);
+    widgetsBuilder = builder;
   }
 
   /// 前置视图
@@ -91,7 +100,7 @@ class SpinnerBox extends StatefulWidget {
   // final List<String> titles;
 
   /// 弹框内容构建
-  late List<SpinnerScope> widgets;
+  late List<SpinnerPopScope> widgets;
 
   /// 弹框内容构建
   late SpinnerBoxBuilder widgetsBuilder;
@@ -161,7 +170,7 @@ class _SpinnerBoxState extends State<SpinnerBox> {
     );
 
     _router = TransPopupRouter(
-      targetCtx: _notifier.targetKey.currentContext,
+      offsetY: _notifier.spinnerRect().bottom,
       barrierColor: Colors.black12,
       pageBuilder: (context, animation, secondaryAnimation) => content,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -210,20 +219,25 @@ class _CompositedFollower extends StatelessWidget {
     required this.scope,
   })  : _notifier = notifier,
         super(key: key) {
-    final render =
-        _notifier.targetKey.currentContext!.findRenderObject() as RenderBox;
-    final position = render.localToGlobal(Offset.zero);
-    _contentHeight = MediaQuery.of(ctx).size.height -
-        position.dy -
-        MediaQuery.of(ctx).padding.bottom -
-        widget.theme.totalHeight;
+    // final render =
+    //     _notifier.targetKey.currentContext!.findRenderObject() as RenderBox;
+    // final position = render.localToGlobal(Offset.zero);
+
+    _spinnerRect = _notifier.spinnerRect();
+
+    _maxHeight = MediaQuery.of(ctx).size.height -
+        _spinnerRect.bottom -
+        MediaQuery.of(ctx).padding.bottom;
   }
 
   final BuildContext ctx;
   final SpinnerBox widget;
   final PopupValueNotifier _notifier;
-  late final double _contentHeight;
-  final SpinnerScope scope;
+  final SpinnerPopScope scope;
+  late final double _maxHeight;
+  late final Rect _spinnerRect;
+
+  final FocusScopeNode _node = FocusScopeNode();
 
   /// 显示内容
   Future show(router) {
@@ -241,12 +255,24 @@ class _CompositedFollower extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double offset = 0;
+    double width = double.infinity;
+    if (scope.width == AutoLength) {
+      width = _spinnerRect.width;
+    } else if (scope.width == double.infinity) {
+      offset = -_spinnerRect.left;
+    } else {
+      offset = scope.offsetX;
+      width = scope.width;
+    }
+
     return CompositedTransformFollower(
       link: _notifier.link,
       showWhenUnlinked: false,
-      offset: Offset(0, widget.theme.totalHeight),
+      offset: Offset(offset, widget.theme.totalHeight),
       child: FocusScope(
         autofocus: true,
+        node: _node,
         onFocusChange: (value) {
           if (!value && widget.theme.outsideFocus) {
             _notifier.closed();
@@ -255,19 +281,27 @@ class _CompositedFollower extends StatelessWidget {
         child: Stack(
           children: [
             Container(),
-            Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+            GestureDetector(
+              onTap: () {
+                _hideKeyboard(context);
+                _node.requestFocus();
+              },
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(8)),
+                ),
+                constraints: BoxConstraints(
+                  maxHeight: _maxHeight * scope.scale,
+                  maxWidth: width,
+                ),
+                child: scope.child,
               ),
-              constraints: BoxConstraints(
-                maxHeight: _contentHeight * scope.scale,
-              ),
-              child: scope.child,
             )
           ],
-        ).hideKeyboard(context),
+        ),
       ),
     );
   }
@@ -420,13 +454,16 @@ extension HideKeyboardX on Widget {
   Widget hideKeyboard(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus &&
-            currentFocus.focusedChild != null) {
-          FocusManager.instance.primaryFocus!.unfocus();
-        }
+        _hideKeyboard(context);
       },
       child: this,
     );
+  }
+}
+
+_hideKeyboard(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+  if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+    FocusManager.instance.primaryFocus!.unfocus();
   }
 }

@@ -12,7 +12,7 @@ Widget _defaultTransitionsBuilder(
 class TransPopupRouter extends TransModalRoute {
   TransPopupRouter({
     super.settings,
-    this.targetCtx,
+    this.offsetY,
     required this.pageBuilder,
     this.barrierColor,
     this.barrierDismissible = true,
@@ -59,8 +59,9 @@ class TransPopupRouter extends TransModalRoute {
   @override
   final bool maintainState;
 
+
   @override
-  BuildContext? targetCtx;
+  double? offsetY;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,

@@ -33,14 +33,24 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
   final link = LayerLink();
   final GlobalKey targetKey = GlobalKey();
 
-  FocusScopeNode targetNode = FocusScopeNode();
-  FocusScopeNode followerNode = FocusScopeNode();
-
   List<String> get items => value.items;
   List<String> get orginItems => value.orginItems;
 
   /// 保存每个选项卡对应的视图是否打开
   final List<bool> status;
+
+  /// 获取当前筛选框头部的坐标信息
+  Rect spinnerRect() {
+    final render = targetKey.currentContext!.findRenderObject() as RenderBox;
+    final topLeft = render.localToGlobal(Offset.zero);
+    return Rect.fromPoints(
+      topLeft,
+      Offset(
+        topLeft.dx + render.size.width,
+        topLeft.dy + render.size.height,
+      ),
+    );
+  }
 
   /// 关闭弹窗
   void closed() {
@@ -61,21 +71,26 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
   /// 用户标题不修改，但允许高亮的情况
   /// `index` 高亮下标，默认为当前点击的下标
   void setHighlight(bool state, [int? index]) {
-    int cur = index ?? value.selected;
+    int current = index ?? value.selected;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var data = Map.of(value.highlightSpec);
-      data['high_$cur'] = state;
+      data['high_$current'] = state;
       value.highlightSpec = data;
       notifyListeners();
     });
   }
 
   /// 更新选项卡标题名称
-  void updateName(String name, {bool needClose = true}) {
+  void updateName(String name, {bool needClose = true, int? index}) {
+    int current = index ?? value.selected;
+
+    if (current < 0) {
+      return;
+    }
     if (name.isEmpty || name == '不限' || name == '全部') {
-      value.items[value.selected] = value.orginItems[value.selected];
-    } else if (value.orginItems.isNotEmpty && value.selected > -1) {
-      value.items[value.selected] = name;
+      value.items[current] = value.orginItems[current];
+    } else if (value.orginItems.isNotEmpty && current > -1) {
+      value.items[current] = name;
     }
     if (needClose) {
       closed();

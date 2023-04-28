@@ -1,9 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SpinnerScope {
+/// 重定义为0的宽度，方便阅读
+// ignore: constant_identifier_names
+const double AutoLength = 0;
+
+class SpinnerPopScope {
   /// 控制可显示内容高度比例，1.0完全占满
   final double scale;
+
+  /// 指定弹框内容的宽度，默认屏幕宽度
+  /// `0/AutoLength` 跟随顶部导航一致
+  /// `double.infinity` 屏幕宽度
+  /// `0 < width < screen.width` 给定固定宽度
+  final double width;
+
+  /// 弹框视图偏移量，默认不偏移
+  /// 弹框视图与导航按钮两者`position.x`的偏移量
+  final double offsetX;
 
   /// 弹框视图
   final Widget child;
@@ -11,24 +25,26 @@ class SpinnerScope {
   /// 视图是否包含焦点获取组件
   final bool isMaybeFocus;
 
-  SpinnerScope({
-    this.scale = 0.7,
+  SpinnerPopScope({
     required this.child,
+    this.scale = 0.7,
+    this.width = AutoLength,
+    this.offsetX = 0,
     this.isMaybeFocus = true,
   });
 }
 
-extension SpinnerBoxExt on Widget {
+extension SpinnerPopScopeExt on Widget {
   /// 快速构建 `PopupBtns` builder 数组集
-  SpinnerScope height([double scale = 0.7]) {
-    return SpinnerScope(child: this, scale: scale);
+  SpinnerPopScope height([double scale = 0.7]) {
+    return SpinnerPopScope(child: this, scale: scale);
   }
 
   /// 显示占据部分高度
-  SpinnerScope get heightPart => SpinnerScope(child: this, scale: 0.7);
+  SpinnerPopScope get heightPart => SpinnerPopScope(child: this, scale: 0.7);
 
   /// 显示占满全部空间
-  SpinnerScope get heightFull => SpinnerScope(child: this, scale: 1);
+  SpinnerPopScope get heightFull => SpinnerPopScope(child: this, scale: 1);
 }
 
 class SpinnerBoxTheme {
