@@ -1,15 +1,19 @@
-# spinner_box
+### Spinner_box
 
-A Flutter drop dwon view.
+- 快速构建列表或按钮集形式的条件筛选项；
+- 支持按钮集后追加额外的组件（输入框，选择器）；
+- 支持弹框内容自定义；
 
-## Getting Started
+##### TODO LIST
+- 扩展自定义主题配置，包括不限于按钮、勾选；
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+# Editor.md
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+![](https://github.com/boomcx/spinner_box/blob/main/assets/builder.gif)
+>图1：多种构建方式
+![](https://github.com/boomcx/spinner_box/blob/main/assets/single_select.gif)
+>图1：单选模式
+![](https://github.com/boomcx/spinner_box/blob/main/assets/muti_select.gif)
+>图1：多选模式
+![](https://github.com/boomcx/spinner_box/blob/main/assets/custom_select.gif)
+>图1：自定义模式 
