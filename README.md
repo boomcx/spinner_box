@@ -54,7 +54,7 @@ or
 ```
 
 
-### 设置弹框的宽度 ./init.dart
+### 设置弹框的宽度 
 
 ```dart
   SpinnerBox.builder(
