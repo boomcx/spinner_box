@@ -13,7 +13,7 @@
 
 |   |  |
 | ------------- | ------------- |
-|  <img src="https://github.com/boomcx/spinner_box/blob/main/assets/builder.gif" width="230px">  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/custom.gif" width="230px"> |
+|  <img src="https://github.com/boomcx/spinner_box/blob/main/assets/builder.gif" width="230px">  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/custom_select.gif" width="230px"> |
 |  <img src="https://github.com/boomcx/spinner_box/blob/main/assets/single_select.gif" width="230px">  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/muti_select.gif" width="230px"> | 
 
  
