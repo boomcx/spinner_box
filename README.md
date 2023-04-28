@@ -3,7 +3,7 @@
 
 
 - 快速构建列表或按钮集形式的条件筛选项；
-- 支持按钮集后追加额外的组件（输入框，选择器）；
+- 支持按钮集后追加额外的组件（输入框，选择器等）；
 - 支持弹框内容自定义；
 
 ##### 待办
@@ -20,10 +20,9 @@
 ## 如何使用
 在插件引用文件`pubspec.yaml`中添加 `spinner_box: any`
 
-### 案例
-下面是一些小示例，向您展示如何使用该API。
+### 更多使用细节请查看 ./example
 
-### 视图
+### 简单使用
 
 ```dart
   SpinnerBox.rebuilder(
@@ -53,3 +52,34 @@
 or
   notifier.setHighlight(true)
 ```
+
+
+### 设置弹框的宽度 ./init.dart
+
+```dart
+  SpinnerBox.builder(
+              titles: const ['Builder', 'width-full'],
+              builder: (notifier) {
+                return [
+                  SpinnerPopScope(
+                    width: 150,  < ------- 固定宽度
+                    offsetX: 30,  < ------- 偏移量
+                    child: ValueListenableBuilder(
+                        valueListenable: _condition2,
+                        builder: (context, value, child) {
+                             ...
+                        }),
+                  ),
+                  SpinnerPopScope(
+                    width: double.infinity,  < ------- 屏幕宽度
+                    child: ValueListenableBuilder(
+                        valueListenable: _condition2,
+                        builder: (context, value, child) {
+                          ...
+                        }),
+                  )
+                ];
+              },
+            )
+```
+
