@@ -1,4 +1,6 @@
-### Spinner_box
+## Spinner_box
+[![pub package](https://img.shields.io/pub/v/spinner_box.svg)](https://pub.dev/packages/spinner_box)
+
 
 - 快速构建列表或按钮集形式的条件筛选项；
 - 支持按钮集后追加额外的组件（输入框，选择器）；
