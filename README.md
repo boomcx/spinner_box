@@ -21,6 +21,6 @@
 
 >图1：多选模式
 
-![](https://github.com/boomcx/spinner_box/blob/main/assets/custom_select.gif =230x410)
+<img src="https://github.com/boomcx/spinner_box/blob/main/assets/custom.gif" alt="custom" style="zoom:50%;" />
 
 >图1：自定义模式 
