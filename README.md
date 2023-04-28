@@ -12,9 +12,7 @@
 
 | 描述  | 图片 |
 | ------------- | ------------- |
-| 多种构建方式  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/builder.gif" width="230px"> |
-| 单选模式  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/single_select.gif" width="230px"> |
-| 多选模式 | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/muti_select.gif" width="230px">  |
-| 自定义模式  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/custom.gif" width="230px">  |
+|  <img src="https://github.com/boomcx/spinner_box/blob/main/assets/builder.gif" width="230px">  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/custom.gif" width="230px"> |
+|  <img src="https://github.com/boomcx/spinner_box/blob/main/assets/single_select.gif" width="230px">  | <img src="https://github.com/boomcx/spinner_box/blob/main/assets/muti_select.gif" width="230px"> | 
 
  
