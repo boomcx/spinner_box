@@ -13,20 +13,13 @@ class _CheckListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget icon = isSelect
-        ? const Icon(Icons.check, size: 18, color: Colors.red)
-        : const SizedBox();
-    // isSelect ? Assets.images.icSelectS.image(width: 16) : const SizedBox();
+    Widget icon = isSelect ? _Assets.name('single_select') : const SizedBox();
     if (isMuti) {
       icon = isSelect
-          ? const Icon(Icons.check_box, size: 18, color: Colors.red)
-          : const Icon(Icons.check_box_outline_blank,
-              size: 18, color: Colors.black26);
-      // ? Assets.images.checkboxS.image(width: 16)
-      // : Assets.images.checkboxD.image(width: 16);
+          ? _Assets.name('muti_select')
+          : _Assets.name('muti_unselect');
     }
     return Container(
-      // padding: const EdgeInsets.symmetric(horizontal: 12),
       color: Colors.white,
       height: 30,
       child: Row(
@@ -49,6 +42,17 @@ class _CheckListItem extends StatelessWidget {
           const SizedBox(width: 6),
         ],
       ),
+    );
+  }
+}
+
+class _Assets {
+  static Widget name(String name, {double width = 16}) {
+    return Image.asset(
+      'assets/images/$name.png',
+      width: width,
+      fit: BoxFit.contain,
+      package: 'spinner_box',
     );
   }
 }

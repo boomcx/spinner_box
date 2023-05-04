@@ -757,8 +757,6 @@ abstract class TransModalRoute<T> extends TransitionRoute<T>
       );
     }
 
-    
-
     return Padding(
       padding: EdgeInsets.only(top: offsetY ?? 0),
       child: barrier,

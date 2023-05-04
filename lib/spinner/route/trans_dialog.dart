@@ -59,7 +59,6 @@ class TransPopupRouter extends TransModalRoute {
   @override
   final bool maintainState;
 
-
   @override
   double? offsetY;
 
@@ -106,4 +105,3 @@ class TransPopupRouter extends TransModalRoute {
 //     },
 //   ));
 // }
- 

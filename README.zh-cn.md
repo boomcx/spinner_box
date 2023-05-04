@@ -1,35 +1,38 @@
-The main purpose of writing is to produce components that are easy to use and have a low amount of code. Different from other filter components (' Stack 'Overlay'), this project uses the route jump 'Navigator.push', which can be used anywhere in the component tree, regardless of how the filter popover works.
 
-'Stack' : The highest level tree of the page needs to be wrapped to realize the display of pop-up content. Normally speaking, the amount of code writing is relatively large, and the configuration is also more;
+编写目的主要是想产出使用简单，代码量较低的组件。区别其他筛选组件（`Stack` `Overlay`），本项目采用路由跳转`Navigator.push`，可以在任意组件树位置使用，而不必关心筛选弹窗是如何工作的。
 
-'Overlay' : This component view has a high level, which is a good choice for the top layer content display (Toast), but because of the high level, if you want to continue to display other selected input content after the pop-up box is displayed, it will block the display of input action page (such as keyboard, or other 'Navigator.push').
+`Stack`: 需要页面最高层级树通过包裹来实现弹窗内容的显示，正常来讲代码编写量比较大，配置也较多；
 
+`Overlay`: 该组件视图层级高，用来做顶层的内容显示（Toast）是非常棒的选择，但由于层级太高在弹出框显示后，如果想继续显示其他选中输入型内容会遮挡输入操作页的显示（例如键盘、或者其他`Navigator.push`）。
+
+代码还有优化的地方，欢迎指出。
+
+##### Spinner Box
 [![pub package](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/19a06904e09646a79f388932c22d7aa0~tplv-k3u1fbpfcp-zoom-1.image)](https://pub.dev/packages/spinner_box) 
 
-# Spinner Box
+[Git地址](https://github.com/boomcx/spinner_box)
 
-## Features
-- Quickly builds conditional filters in the form of lists or button sets;
-- Support additional components (input boxes, selectors, etc.) after button sets;
-- Supports the customization of the content of the pop-up;
+- 快速构建列表或按钮集形式的条件筛选项；
+- 支持按钮集后追加额外的组件（输入框，选择器等）；
+- 支持弹框内容自定义；
 
-## To do
-- Extend the custom theme configuration, including but not limited to buttons, check;
-- Optimize the use of some types;
+##### 待办
+- 扩展自定义主题配置，包括不限于按钮、勾选；
+- 优化部分类型使用；
 
-## images
+##### 图例
 
 |   |  |
 | ------------- | ------------- |
 |  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ec9815f3261041488a556f65f3b06308~tplv-k3u1fbpfcp-watermark.image?" width="230px">  | <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cbfaa7bf262947ecaa3276c906a9d514~tplv-k3u1fbpfcp-watermark.image?" width="230px"> |
 |  <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a3233a2b7d504feca89536d20d5c8e76~tplv-k3u1fbpfcp-watermark.image?" width="230px">  | <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b823adbfb4c248f989fc3673846b0cf0~tplv-k3u1fbpfcp-watermark.image" width="230px"> | 
  
-## Installation
-See the [installation instructions on pub](https://pub.dev/packages/spinner_box/install).
+## 如何使用
+在插件引用文件`pubspec.yaml`中添加 `spinner_box: any`
 
-## More details are available ./example
+### 更多使用细节请查看 ./example
 
-### Simple use
+### 简单使用
 
 ```dart
   SpinnerBox.rebuilder(
@@ -52,7 +55,7 @@ See the [installation instructions on pub](https://pub.dev/packages/spinner_box/
           ),
 ```
 
-### Update the title or highlighting of the selected item
+### 更新选中项的标题/设置高亮
 
 ```dart
   notifier.updateName(name);
@@ -61,7 +64,7 @@ or
 ```
 
 
-### Sets the width of the pop-up 
+### 设置弹框的宽度 
 
 ```dart
   SpinnerBox.builder(
@@ -69,8 +72,8 @@ or
               builder: (notifier) {
                 return [
                   SpinnerPopScope(
-                    width: 150,  < ------- fixed width
-                    offsetX: 30,  < ------- offset
+                    width: 150,  < ------- 固定宽度
+                    offsetX: 30,  < ------- 偏移量
                     child: ValueListenableBuilder(
                         valueListenable: _condition2,
                         builder: (context, value, child) {
@@ -78,7 +81,7 @@ or
                         }),
                   ),
                   SpinnerPopScope(
-                    width: double.infinity,  < ------- screen width
+                    width: double.infinity,  < ------- 屏幕宽度
                     child: ValueListenableBuilder(
                         valueListenable: _condition2,
                         builder: (context, value, child) {
@@ -94,8 +97,8 @@ or
 ```dart
  SpinnerFilter(
                   data: _condition3,
-                  onItemIntercept: (group, index) {   < ----- click event interception
-                    if (group.key == 'text2' && index == 2) {
+                  onItemIntercept: (p0, p1) {   < ----- 按钮拦截
+                    if (p0.key == 'text2' && p1 == 2) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('欸~ 就是选不了~')),
                       );
@@ -109,11 +112,11 @@ or
                 ).heightPart,
 ```
 
-### Custom splicing options
+### 自定义的拼接选项
 ```dart
   SpinnerFilter(
                   data: _condition3,
-                  attachment: [   < ----- custom components
+                  attachment: [   < ----- 通过自定义组件传递
                     _InputAttach(data: _condition3),
                     _PickerAttach(data: _condition3)
                   ],
@@ -129,7 +132,7 @@ class _InputAttach extends AttachmentView {
   final textEditing = TextEditingController();
   
   @override
-  String get groupKey => 'text1'; < --- association option grouping
+  String get groupKey => 'text1'; < --- 关联选项分组
   @override
   String get extraName => '输入标题';
   
