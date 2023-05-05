@@ -6,6 +6,7 @@ import 'package:spinner_box_example/drop_view.dart';
 
 import 'package:spinner_box_example/pages/custom.dart';
 import 'package:spinner_box_example/pages/init.dart';
+import 'package:spinner_box_example/pages/fence.dart';
 import 'package:spinner_box_example/pages/muti.dart';
 import 'package:spinner_box_example/pages/rebuilder.dart';
 
@@ -112,6 +113,12 @@ class _Use extends StatelessWidget {
             const CustomPage().push(context);
           },
           child: const _Title('自定义视图'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            const FencePage().push(context);
+          },
+          child: const _Title('栅栏样式'),
         ),
         ElevatedButton(
           onPressed: () {

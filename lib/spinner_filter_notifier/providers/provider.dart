@@ -16,7 +16,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
 
   /// 构造方法
   factory SpinnerFilterNotifier.init(
-    List<SpinnerFilterEntity> data,
+    List<SpinnerEntity> data,
     List<AttachmentView> attachList,
     VoidCallback? onReseted,
     SpinnerItemIntercept? onItemIntercept,
@@ -41,15 +41,15 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   List<AttachmentView> attachment = [];
 
   /// 需要返回至外部得数据，与传入数据一致，同步筛选状态
-  List<SpinnerFilterEntity> get outside => value.items.map((e) {
+  List<SpinnerEntity> get outside => value.items.map((e) {
         final entity = e.entity;
-        final changeList = e.changeList;
+        final changeList = e.notifierList;
         var tempList = List.of(entity.items);
         for (var i = 0; i < changeList.length; i++) {
           tempList[i] = tempList[i].copyWith(selected: changeList[i].selected);
         }
 
-        SpinnerFilterEntity temp = entity.copyWith(items: tempList);
+        SpinnerEntity temp = entity.copyWith(items: tempList);
         for (var element in attachment) {
           if (element.groupKey == entity.key) {
             temp = temp.copyWith(extraData: element.extraData);
@@ -61,14 +61,14 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
 
   /// `didUpdateWidget` 时触发
   /// 更新当前state，用于异步显示筛选条件
-  updateState(List<SpinnerFilterEntity> data, List<AttachmentView> attachList) {
+  updateState(List<SpinnerEntity> data, List<AttachmentView> attachList) {
     value = _getState(data);
     updateAttach(attachList);
     notifyListeners();
   }
 
   static SpinnerFilterState _getState(
-    List<SpinnerFilterEntity> data,
+    List<SpinnerEntity> data,
   ) {
     final singleCondition = data.length == 1;
     final singleSelect = data.first.isRadio == true;
@@ -142,7 +142,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       if (key != null) {
         if (tempGroup.entity.key == key) {
           // 修改按钮选中状态
-          var items = tempGroup.changeList;
+          var items = tempGroup.notifierList;
           for (var k = 0; k < items.length; k++) {
             items[k].selected = false;
           }
@@ -150,7 +150,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         }
       } else {
         // 修改按钮选中状态
-        var items = tempGroup.changeList;
+        var items = tempGroup.notifierList;
         for (var k = 0; k < items.length; k++) {
           items[k].selected = items[k].data.isMutex;
         }
@@ -185,7 +185,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
 
       // 如果自定义组件没有选择，则检索筛选项是否选中
       if (resGroup[key]?.isEmpty == true) {
-        final list = group.changeList;
+        final list = group.notifierList;
         for (var item in list) {
           if (item.selected) {
             resGroup[key]!.add(item.data.value);
@@ -224,7 +224,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       // 当前操做的数据组
       if (i == tuple.item2) {
         // 修改按钮选中状态
-        var items = tempGroup.changeList;
+        var items = tempGroup.notifierList;
         for (var k = 0; k < items.length; k++) {
           // 单选
           if (single) {

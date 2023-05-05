@@ -20,7 +20,7 @@ abstract class AttachmentView extends StatelessWidget {
   }
 
   /// 筛选配置参数
-  final List<SpinnerFilterEntity> data;
+  final List<SpinnerEntity> data;
 
   /// 跟随筛选列表的 `key`, 匹配和筛值使用
   abstract String _groupKey;

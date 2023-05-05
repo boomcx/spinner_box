@@ -17,6 +17,7 @@ class _GroupContent extends StatelessWidget {
               const _CheckListCnt(),
             if (group.entity.type == MoreContentType.groupBtn)
               const _GroupBtnsCnt(),
+            if (group.entity.type == MoreContentType.fence) const _FenceCnt(),
           ],
         ));
   }
@@ -64,9 +65,8 @@ class _CheckListCnt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
-
     final tuple = _FilterGroupScope.of(context);
-    final items = tuple.item1.changeList;
+    final items = tuple.item1.notifierList;
 
     return ListView.builder(
       padding: EdgeInsets.zero,
@@ -100,7 +100,7 @@ class _GroupBtnsCnt extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final tuple = _FilterGroupScope.of(context);
-    final items = tuple.item1.changeList;
+    final items = tuple.item1.notifierList;
 
     return Wrap(spacing: 10, runSpacing: 10, children: [
       ...List.generate(items.length, (index) {

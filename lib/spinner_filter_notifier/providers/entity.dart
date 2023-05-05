@@ -1,13 +1,16 @@
 /// 内容显示类型
 enum MoreContentType {
-  /// 按钮形式
+  /// 按钮样式
   groupBtn,
 
-  /// 列表形式
+  /// 列表样式
   checkList,
+
+  /// 栅栏样式
+  fence
 }
 
-class SpinnerFilterEntity {
+class SpinnerEntity {
   /// 服务器字段
   final String key;
 
@@ -30,9 +33,9 @@ class SpinnerFilterEntity {
   final String suffixIcon;
 
   /// 选项集
-  final List<SpinnerFilterItem> items;
+  final List<SpinnerItem> items;
 
-  const SpinnerFilterEntity({
+  const SpinnerEntity({
     required this.key,
     this.isRadio = true,
     this.title = '',
@@ -43,8 +46,8 @@ class SpinnerFilterEntity {
     this.extraData,
   });
 
-  factory SpinnerFilterEntity.fromJson(Map<String, dynamic> json) {
-    var entity = SpinnerFilterEntity(key: '${json["key"] ?? 'keyName'}');
+  factory SpinnerEntity.fromJson(Map<String, dynamic> json) {
+    var entity = SpinnerEntity(key: '${json["key"] ?? 'keyName'}');
     // if (json["key"] is String) {
     //   key = json["key"];
     // }
@@ -71,14 +74,14 @@ class SpinnerFilterEntity {
           items: json["items"] == null
               ? []
               : (json["items"] as List)
-                  .map((e) => SpinnerFilterItem.fromJson(e))
+                  .map((e) => SpinnerItem.fromJson(e))
                   .toList());
     }
     return entity;
   }
 
-  static List<SpinnerFilterEntity> fromList(List<Map<String, dynamic>> list) {
-    return list.map((map) => SpinnerFilterEntity.fromJson(map)).toList();
+  static List<SpinnerEntity> fromList(List<Map<String, dynamic>> list) {
+    return list.map((map) => SpinnerEntity.fromJson(map)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -93,7 +96,7 @@ class SpinnerFilterEntity {
     return data;
   }
 
-  SpinnerFilterEntity copyWith({
+  SpinnerEntity copyWith({
     String? key,
     bool? isRadio,
     String? title,
@@ -101,9 +104,9 @@ class SpinnerFilterEntity {
     String? desc,
     String? suffixIcon,
     dynamic extraData,
-    List<SpinnerFilterItem>? items,
+    List<SpinnerItem>? items,
   }) =>
-      SpinnerFilterEntity(
+      SpinnerEntity(
         key: key ?? this.key,
         isRadio: isRadio ?? this.isRadio,
         title: title ?? this.title,
@@ -115,7 +118,9 @@ class SpinnerFilterEntity {
       );
 }
 
-class SpinnerFilterItem {
+
+
+class SpinnerItem {
   /// 显示名称
   final String name;
 
@@ -128,18 +133,22 @@ class SpinnerFilterItem {
   /// 是否选互斥（选中时清空当前其他选中项，一般用于 `全部` `不限` 等合并条件项）
   final bool isMutex;
 
-  const SpinnerFilterItem({
-    required this.name,
+  /// 下级选项
+  final List<SpinnerItem> items;
+
+  const SpinnerItem({
+    this.name = '-',
     this.value,
     this.selected = false,
     this.isMutex = false,
+    this.items = const [],
   });
 
-  factory SpinnerFilterItem.fromJson(Map<String, dynamic> json) {
-    var entity = SpinnerFilterItem(name: '${json["name"] ?? 'name'}');
-    // if (json["name"] is String) {
-    //   entity.name = json["name"];
-    // }
+  factory SpinnerItem.fromJson(Map<String, dynamic> json) {
+    var entity = const SpinnerItem();
+    if (json["name"] is String) {
+      entity = entity.copyWith(name: json["name"]);
+    }
     entity = entity.copyWith(value: json["value"]);
     if (json["selected"] is bool) {
       entity = entity.copyWith(selected: json["selected"]);
@@ -147,11 +156,15 @@ class SpinnerFilterItem {
     if (json["isMutex"] is bool) {
       entity = entity.copyWith(isMutex: json["isMutex"]);
     }
+    if (json["items"] is List) {
+      entity = entity.copyWith(items: SpinnerItem.fromList(json["items"]));
+    }
+
     return entity;
   }
 
-  static List<SpinnerFilterItem> fromList(List<Map<String, dynamic>> list) {
-    return list.map((map) => SpinnerFilterItem.fromJson(map)).toList();
+  static List<SpinnerItem> fromList(List<Map<String, dynamic>> list) {
+    return list.map((map) => SpinnerItem.fromJson(map)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -163,16 +176,18 @@ class SpinnerFilterItem {
     return data;
   }
 
-  SpinnerFilterItem copyWith({
+  SpinnerItem copyWith({
     String? name,
     dynamic value,
     bool? selected,
     bool? isMutex,
+    List<SpinnerItem>? items,
   }) =>
-      SpinnerFilterItem(
+      SpinnerItem(
         name: name ?? this.name,
         value: value ?? this.value,
         selected: selected ?? this.selected,
         isMutex: isMutex ?? this.isMutex,
+        items: items ?? this.items,
       );
 }

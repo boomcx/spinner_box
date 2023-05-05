@@ -39,15 +39,15 @@ class _DropViewPageState extends State<DropViewPage> {
               children: [
                 SpinnerFilter(
                   data: [
-                    SpinnerFilterEntity(
+                    SpinnerEntity(
                         key: 'year',
                         type: MoreContentType.checkList,
                         items: [
-                          const SpinnerFilterItem(name: '不限', value: ''),
+                          const SpinnerItem(name: '不限', value: ''),
                           ...List.generate(5, (index) {
                             final year =
                                 (DateTime.now().year - index).toString();
-                            return SpinnerFilterItem(name: year, value: year);
+                            return SpinnerItem(name: year, value: year);
                           }),
                         ])
                   ],
@@ -243,16 +243,13 @@ class _FilterView extends StatelessWidget {
       builder: (p0) => [
         SpinnerFilter(
           data: [
-            SpinnerFilterEntity(
-                key: 'year',
-                type: MoreContentType.checkList,
-                items: [
-                  const SpinnerFilterItem(name: '不限', value: ''),
-                  ...List.generate(5, (index) {
-                    final year = (DateTime.now().year - index).toString();
-                    return SpinnerFilterItem(name: year, value: year);
-                  }),
-                ])
+            SpinnerEntity(key: 'year', type: MoreContentType.checkList, items: [
+              const SpinnerItem(name: '不限', value: ''),
+              ...List.generate(5, (index) {
+                final year = (DateTime.now().year - index).toString();
+                return SpinnerItem(name: year, value: year);
+              }),
+            ])
           ],
           onCompleted: (result, name, data) {
             p0.updateName(name);
@@ -270,24 +267,24 @@ class _FilterView extends StatelessWidget {
 }
 
 var def = [
-  SpinnerFilterEntity(
+  SpinnerEntity(
       key: 'group1',
       title: '分组1-多选',
       isRadio: false,
       suffixIcon: 'assets/icon.png',
       items: [
-        const SpinnerFilterItem(name: '不限', value: '', isMutex: true),
+        const SpinnerItem(name: '不限', value: '', isMutex: true),
         ...List.generate(10, (index) {
-          return SpinnerFilterItem(name: '分组1-$index', value: index);
+          return SpinnerItem(name: '分组1-$index', value: index);
         }),
       ]),
-  SpinnerFilterEntity(key: 'group2', title: '分组2-单选', items: [
-    const SpinnerFilterItem(name: '不限', value: ''),
+  SpinnerEntity(key: 'group2', title: '分组2-单选', items: [
+    const SpinnerItem(name: '不限', value: ''),
     ...List.generate(10, (index) {
-      return SpinnerFilterItem(name: '分组2-$index', value: index);
+      return SpinnerItem(name: '分组2-$index', value: index);
     }),
   ]),
-  SpinnerFilterEntity(
+  SpinnerEntity(
       desc: '9999999999999999999999999999999999999999999999',
       key: 'group3',
       title: '分组3-多选',
@@ -295,16 +292,16 @@ var def = [
       type: MoreContentType.checkList,
       items: [
         ...List.generate(3, (index) {
-          return SpinnerFilterItem(name: '分组3-$index', value: index);
+          return SpinnerItem(name: '分组3-$index', value: index);
         }),
       ]),
-  SpinnerFilterEntity(
+  SpinnerEntity(
       key: 'group4',
       title: '分组4-单选',
       type: MoreContentType.checkList,
       items: [
         ...List.generate(3, (index) {
-          return SpinnerFilterItem(name: '分组4-$index', value: index);
+          return SpinnerItem(name: '分组4-$index', value: index);
         }),
       ]),
 ];

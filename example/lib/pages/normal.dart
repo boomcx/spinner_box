@@ -34,9 +34,9 @@ class _SinglePageState extends State<SinglePage> {
                   data: _condition1,
                   onCompleted: (result, name, data) {
                     notifier.updateName(name);
+                    _condition1 = data;
                     setState(() {
                       _result = result;
-                      _condition1 = data;
                     });
                   },
                 ).heightPart,
@@ -44,8 +44,8 @@ class _SinglePageState extends State<SinglePage> {
                   data: _condition2,
                   onCompleted: (result, name, data) {
                     notifier.updateName(name);
+                    _condition2 = data;
                     setState(() {
-                      _condition2 = data;
                       _result = result;
                     });
                   },

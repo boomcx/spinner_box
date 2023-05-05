@@ -32,16 +32,16 @@ class SpinnerFilterState {
 
 class EntityNotifier {
   EntityNotifier(this.entity) {
-    changeList = entity.items.map((e) {
+    notifierList = entity.items.map((e) {
       final option = OptionsNotifier(e);
       option.selected = e.selected;
       return option;
     }).toList();
   }
-  final SpinnerFilterEntity entity;
+  final SpinnerEntity entity;
 
   /// 可监听选中变化的数据
-  late List<OptionsNotifier<SpinnerFilterItem>> changeList;
+  late List<OptionsNotifier<SpinnerItem>> notifierList;
 }
 
 class OptionsNotifier<T> extends ValueNotifier {

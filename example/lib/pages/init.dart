@@ -11,9 +11,9 @@ class InitPage extends StatefulWidget {
 }
 
 class _InitPageState extends State<InitPage> {
-  var _condition1 = [
+  final _condition1 = ValueNotifier([
     text(key: 'text1', type: MoreContentType.groupBtn, count: 15),
-  ];
+  ]);
   final _condition2 = ValueNotifier([
     text(key: 'text1', type: MoreContentType.groupBtn, count: 9),
   ]);
@@ -36,15 +36,19 @@ class _InitPageState extends State<InitPage> {
 '''),
             const SizedBox(height: 10),
             SpinnerBox(controller: _controler, children: [
-              SpinnerFilter(
-                data: _condition1,
-                onCompleted: (result, name, data) {
-                  _controler.updateName(name);
-                  setState(() {
-                    _condition1 = data;
-                  });
-                },
-              ).heightPart,
+              ValueListenableBuilder(
+                  valueListenable: _condition1,
+                  builder: (context, value, child) {
+                    return SpinnerFilter(
+                      data: _condition1.value,
+                      onCompleted: (result, name, data) {
+                        _controler.updateName(name);
+                        _condition1.value = data;
+                        // 如果调用刷新，其他`builder`下拉框会失效
+                        // setState(() {});
+                      },
+                    );
+                  }).heightPart,
             ]),
             const SizedBox(height: 10),
             const Text('''

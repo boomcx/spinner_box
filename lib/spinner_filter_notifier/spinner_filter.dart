@@ -11,19 +11,19 @@ import 'providers/state.dart';
 
 part './widgets/buttons.dart';
 part './widgets/group.dart';
+part './widgets/fence.dart';
 part './widgets/check_list_item.dart';
 part './widgets/explain_icon.dart';
 part './widgets/attachment_view.dart';
 
 /// 点击拦截的回调
-typedef SpinnerItemIntercept = FutureOr<bool> Function(
-    SpinnerFilterEntity, int);
+typedef SpinnerItemIntercept = FutureOr<bool> Function(SpinnerEntity, int);
 
 /// 完成筛选的回调
 typedef SpinnerFilterResponse = Function(
   Map<String, List> result,
   String name,
-  List<SpinnerFilterEntity> data,
+  List<SpinnerEntity> data,
 );
 
 class SpinnerFilter extends StatefulWidget {
@@ -37,7 +37,7 @@ class SpinnerFilter extends StatefulWidget {
   });
 
   /// 渲染数据
-  final List<SpinnerFilterEntity> data;
+  final List<SpinnerEntity> data;
 
   /// 重置回调
   final VoidCallback? onReseted;
