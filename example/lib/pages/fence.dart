@@ -11,7 +11,7 @@ class FencePage extends StatefulWidget {
 
 class _FencePageState extends State<FencePage> {
   final _condition1 = ValueNotifier([
-    fence(key: 'fence1'),
+    fence(key: 'fence1', isRadio: false),
   ]);
 
   final _result = ValueNotifier<Map<String, List<dynamic>>>({});
@@ -30,7 +30,8 @@ class _FencePageState extends State<FencePage> {
                   valueListenable: _condition1,
                   builder: (context, value, child) {
                     return SpinnerFilter(
-                      data: _condition1.value,
+                      data: value,
+                      scrollable: false,
                       onCompleted: (result, name, data) {
                         notifier.updateName(name);
                         _result.value = result;
@@ -41,6 +42,14 @@ class _FencePageState extends State<FencePage> {
                 ).heightPart,
               ];
             },
+          ),
+          ElevatedButton(
+            onPressed: () {
+              print(_condition1.value.first.items.tier);
+
+              print(_condition1.value.first.toJson());
+            },
+            child: const Text('sss'),
           ),
           Padding(
             padding: const EdgeInsets.all(30.0),
@@ -54,5 +63,27 @@ class _FencePageState extends State<FencePage> {
         ],
       ),
     );
+  }
+}
+
+extension _DataTierX on List<SpinnerItem> {
+  int get tier {
+    int count = 0;
+    runLoop(List<SpinnerItem> list, int floor) {
+      for (var e in list) {
+        if (floor > count) {
+          count = floor;
+        }
+        if (e.items.isNotEmpty) {
+          runLoop(e.items, floor + 1);
+        } else {
+          continue;
+        }
+      }
+    }
+
+    runLoop(this, 1);
+
+    return count;
   }
 }

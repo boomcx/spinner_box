@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// 内容显示类型
 enum MoreContentType {
   /// 按钮样式
@@ -42,8 +44,8 @@ class SpinnerEntity {
     this.type = MoreContentType.groupBtn,
     this.desc = '',
     this.suffixIcon = '',
-    this.items = const [],
     this.extraData,
+    this.items = const [],
   });
 
   factory SpinnerEntity.fromJson(Map<String, dynamic> json) {
@@ -118,17 +120,14 @@ class SpinnerEntity {
       );
 }
 
-
-
-class SpinnerItem {
+/// 继承 `ChangeNotifier` `ValueListenable`
+/// 写入自变量 `selected`，方便监听点击选中状态
+class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
   /// 显示名称
   final String name;
 
-  /// 是否选中
-  final dynamic value;
-
   /// 选中项的数据值 (原样输入输出)
-  final bool selected;
+  final dynamic result;
 
   /// 是否选互斥（选中时清空当前其他选中项，一般用于 `全部` `不限` 等合并条件项）
   final bool isMutex;
@@ -136,20 +135,42 @@ class SpinnerItem {
   /// 下级选项
   final List<SpinnerItem> items;
 
-  const SpinnerItem({
+  /// 高亮（栅栏选中时，需要切换数据）
+  final bool isHighlight;
+
+  /// 兼容以前的选中状态
+  bool get selected => _value;
+  set selected(bool newValue) {
+    value = newValue;
+  }
+
+  @override
+  @Deprecated('value is replaced with selected')
+  bool get value => _value;
+  late bool _value;
+  set value(bool newValue) {
+    if (_value == newValue) {
+      return;
+    }
+    _value = newValue;
+    notifyListeners();
+  }
+
+  SpinnerItem({
     this.name = '-',
-    this.value,
-    this.selected = false,
+    this.result,
     this.isMutex = false,
+    this.isHighlight = false,
     this.items = const [],
-  });
+    bool selected = false,
+  }) : _value = selected;
 
   factory SpinnerItem.fromJson(Map<String, dynamic> json) {
-    var entity = const SpinnerItem();
+    var entity = SpinnerItem();
     if (json["name"] is String) {
       entity = entity.copyWith(name: json["name"]);
     }
-    entity = entity.copyWith(value: json["value"]);
+    entity = entity.copyWith(result: json["result"]);
     if (json["selected"] is bool) {
       entity = entity.copyWith(selected: json["selected"]);
     }
@@ -170,24 +191,53 @@ class SpinnerItem {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["name"] = name;
-    data["value"] = value;
+    data["result"] = result;
     data["selected"] = selected;
     data["isMutex"] = isMutex;
+    data["items"] = items.map((e) => e.toJson()).toList();
     return data;
   }
 
   SpinnerItem copyWith({
     String? name,
-    dynamic value,
+    dynamic result,
     bool? selected,
     bool? isMutex,
     List<SpinnerItem>? items,
   }) =>
       SpinnerItem(
         name: name ?? this.name,
-        value: value ?? this.value,
+        result: result ?? this.result,
         selected: selected ?? this.selected,
         isMutex: isMutex ?? this.isMutex,
         items: items ?? this.items,
       );
 }
+
+// class EntityNotifier {
+//   EntityNotifier(this.entity) {
+//     notifierList = entity.items.map((e) {
+//       final option = OptionsNotifier(e);
+//       option.selected = e.selected;
+//       return option;
+//     }).toList();
+//   }
+//   final SpinnerEntity entity;
+
+//   /// 可监听选中变化的数据
+//   late List<OptionsNotifier<SpinnerItem>> notifierList;
+// }
+
+// class OptionsNotifier<T> extends ValueNotifier {
+//   OptionsNotifier(this.entity) : super(entity);
+//   final T entity;
+
+//   bool _selected = false;
+//   bool get selected => _selected;
+//   set selected(bool value) {
+//     if (_selected != value) {
+//       _selected = value;
+//       notifyListeners();
+//     }
+//   }
+// }

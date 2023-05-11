@@ -13,11 +13,9 @@ class _GroupContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const _GroupHeader(),
-            if (group.entity.type == MoreContentType.checkList)
-              const _CheckListCnt(),
-            if (group.entity.type == MoreContentType.groupBtn)
-              const _GroupBtnsCnt(),
-            if (group.entity.type == MoreContentType.fence) const _FenceCnt(),
+            if (group.type == MoreContentType.checkList) const _CheckListCnt(),
+            if (group.type == MoreContentType.groupBtn) const _GroupBtnsCnt(),
+            if (group.type == MoreContentType.fence) const _FenceCnt(),
           ],
         ));
   }
@@ -30,7 +28,7 @@ class _GroupHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final group = _FilterGroupScope.of(context).item1;
 
-    if (group.entity.title.isEmpty) return const SizedBox();
+    if (group.title.isEmpty) return const SizedBox();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -38,14 +36,13 @@ class _GroupHeader extends StatelessWidget {
         spacing: 8,
         children: [
           Text(
-            group.entity.title,
+            group.title,
             style: const TextStyle(color: Colors.black54, fontSize: 12),
           ),
-          if (group.entity.desc.isNotEmpty)
-            _ExplainIcon(desc: group.entity.desc),
-          if (group.entity.suffixIcon.isNotEmpty)
+          if (group.desc.isNotEmpty) _ExplainIcon(desc: group.desc),
+          if (group.suffixIcon.isNotEmpty)
             Image.asset(
-              group.entity.suffixIcon,
+              group.suffixIcon,
               height: 15,
               fit: BoxFit.fitHeight,
             ),
@@ -66,7 +63,7 @@ class _CheckListCnt extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final tuple = _FilterGroupScope.of(context);
-    final items = tuple.item1.notifierList;
+    final items = tuple.item1.items;
 
     return ListView.builder(
       padding: EdgeInsets.zero,
@@ -79,12 +76,12 @@ class _CheckListCnt extends StatelessWidget {
           valueListenable: item,
           builder: (context, value, child) => TapScope(
             onPressed: () {
-              notifier.itemOnClick(tuple, index);
+              notifier.itemOnSelected(tuple, index);
             },
             child: _CheckListItem(
-              name: item.data.name,
+              name: item.name,
               isSelect: item.selected,
-              isMuti: !tuple.item1.entity.isRadio,
+              isMuti: !tuple.item1.isRadio,
             ),
           ),
         );
@@ -100,7 +97,7 @@ class _GroupBtnsCnt extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final tuple = _FilterGroupScope.of(context);
-    final items = tuple.item1.notifierList;
+    final items = tuple.item1.items;
 
     return Wrap(spacing: 10, runSpacing: 10, children: [
       ...List.generate(items.length, (index) {
@@ -108,17 +105,17 @@ class _GroupBtnsCnt extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: item,
           builder: (context, value, child) => _Button(
-            item.data.name,
+            item.name,
             item.selected,
             onPressed: () {
-              notifier.itemOnClick(tuple, index);
+              notifier.itemOnSelected(tuple, index);
             },
           ),
         );
       }),
       ...List.generate(notifier.attachment.length, (index) {
         final attach = notifier.attachment[index];
-        if (attach.groupKey == tuple.item1.entity.key) {
+        if (attach.groupKey == tuple.item1.key) {
           return attach;
         }
         return const SizedBox();

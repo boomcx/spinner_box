@@ -40,24 +40,8 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 外部传入自定义视图
   List<AttachmentView> attachment = [];
 
-  /// 需要返回至外部得数据，与传入数据一致，同步筛选状态
-  List<SpinnerEntity> get outside => value.items.map((e) {
-        final entity = e.entity;
-        final changeList = e.notifierList;
-        var tempList = List.of(entity.items);
-        for (var i = 0; i < changeList.length; i++) {
-          tempList[i] = tempList[i].copyWith(selected: changeList[i].selected);
-        }
-
-        SpinnerEntity temp = entity.copyWith(items: tempList);
-        for (var element in attachment) {
-          if (element.groupKey == entity.key) {
-            temp = temp.copyWith(extraData: element.extraData);
-          }
-        }
-
-        return temp;
-      }).toList();
+  /// 需要返回至外部得数据，同步原数据筛选状态
+  List<SpinnerEntity> get outside => value.items;
 
   /// `didUpdateWidget` 时触发
   /// 更新当前state，用于异步显示筛选条件
@@ -67,14 +51,15 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     notifyListeners();
   }
 
-  static SpinnerFilterState _getState(
-    List<SpinnerEntity> data,
-  ) {
+  /// 构建状态类型
+  static SpinnerFilterState _getState(List<SpinnerEntity> data) {
     final singleCondition = data.length == 1;
     final singleSelect = data.first.isRadio == true;
     return SpinnerFilterState(
       singleConditionAndSingleSelect: singleCondition && singleSelect,
-      items: data.map((e) => EntityNotifier(e)).toList(),
+      // items: data.map((e) => EntityNotifier(e)).toList(),
+      //  解决 `List.of(data)` - `ChangeNotifier` 无法重建的问题
+      items: SpinnerEntity.fromList(data.map((e) => e.toJson()).toList()),
       isInit: true,
     );
   }
@@ -140,9 +125,9 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     for (var i = 0; i < groups.length; i++) {
       var tempGroup = groups[i];
       if (key != null) {
-        if (tempGroup.entity.key == key) {
+        if (tempGroup.key == key) {
           // 修改按钮选中状态
-          var items = tempGroup.notifierList;
+          var items = tempGroup.items;
           for (var k = 0; k < items.length; k++) {
             items[k].selected = false;
           }
@@ -150,9 +135,9 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         }
       } else {
         // 修改按钮选中状态
-        var items = tempGroup.notifierList;
+        var items = tempGroup.items;
         for (var k = 0; k < items.length; k++) {
-          items[k].selected = items[k].data.isMutex;
+          items[k].selected = items[k].isMutex;
         }
       }
     }
@@ -166,7 +151,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     final reslutNames = [];
 
     for (var group in items) {
-      final key = group.entity.key;
+      final key = group.key;
       var resGroup = {key: []};
 
       // 如果有拼接组件，则先从自定义组件中寻找是否选定结果
@@ -185,11 +170,11 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
 
       // 如果自定义组件没有选择，则检索筛选项是否选中
       if (resGroup[key]?.isEmpty == true) {
-        final list = group.notifierList;
+        final list = group.items;
         for (var item in list) {
           if (item.selected) {
-            resGroup[key]!.add(item.data.value);
-            reslutNames.add(item.data.name);
+            resGroup[key]!.add(item.result);
+            reslutNames.add(item.name);
           }
         }
       }
@@ -203,20 +188,19 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 点击按钮选项
   /// `tuple` 包含当前点击的分组数据 和 分组下标
   /// `index` 按钮下标
-  void itemOnClick(Tuple2<EntityNotifier, int> tuple, int index) async {
+  void itemOnSelected(Tuple2<SpinnerEntity, int> tuple, int index) async {
     if (onItemIntercept != null) {
-      final isIntercept =
-          await onItemIntercept!.call(tuple.item1.entity, index);
+      final isIntercept = await onItemIntercept!.call(tuple.item1, index);
       if (isIntercept == true) {
         return;
       }
     }
 
     // 重置额外输入（可添加互斥，额外输入与筛选按钮可合并返回）
-    resetAttachment(tuple.item1.entity.key);
+    resetAttachment(tuple.item1.key);
 
     final group = tuple.item1;
-    final single = group.entity.isRadio;
+    final single = group.isRadio;
 
     var groups = value.items;
     for (var i = 0; i < groups.length; i++) {
@@ -224,16 +208,16 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       // 当前操做的数据组
       if (i == tuple.item2) {
         // 修改按钮选中状态
-        var items = tempGroup.notifierList;
+        var items = tempGroup.items;
         for (var k = 0; k < items.length; k++) {
           // 单选
           if (single) {
             items[k].selected = false;
           } else {
-            if (items[index].data.isMutex) {
+            if (items[index].isMutex) {
               items[k].selected = false;
             } else {
-              if (items[k].data.isMutex) {
+              if (items[k].isMutex) {
                 items[k].selected = false;
               }
             }
@@ -251,4 +235,6 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       completed();
     }
   }
+
+  
 }

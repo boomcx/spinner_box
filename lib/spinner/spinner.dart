@@ -3,7 +3,8 @@ import './state.dart';
 import 'route/trans_dialog.dart';
 import 'theme.dart';
 
-typedef SpinnerBoxBuilder = List<SpinnerPopScope> Function(PopupValueNotifier);
+typedef SpinnerBoxBuilder = List<SpinnerPopScope> Function(
+    PopupValueNotifier spinner);
 
 /// The drop dwon popout header buttons with custom popout content view
 // ignore: must_be_immutable
@@ -121,8 +122,6 @@ class _SpinnerBoxState extends State<SpinnerBox> {
   /// 当前的显示的页面路由（指定关闭当前弹框，解决焦点失活跳转页面异常）
   TransPopupRouter? _router;
 
-  // final Map<String, Popupscope> childReposity = {};
-
   @override
   void initState() {
     _notifier = widget.controller;
@@ -154,19 +153,20 @@ class _SpinnerBoxState extends State<SpinnerBox> {
   _showWidget() {
     final selected = _notifier.value.selected;
 
-    // if (childReposity[selected.toString()] == null) {
-    //   final scope = widget.builder.call(_notifier)[selected];
-    //   childReposity[selected.toString()] = scope;
-    // }
+    final children = widget.isRebuilder
+        ? widget.widgetsBuilder.call(_notifier)
+        : widget.widgets;
+
+    if (children.length - 1 < selected) {
+      return;
+    }
 
     final content = _CompositedFollower(
       ctx: context,
       notifier: _notifier,
       widget: widget,
       // scope: widget.builder.call(_notifier)[selected],
-      scope: widget.isRebuilder
-          ? widget.widgetsBuilder.call(_notifier)[selected]
-          : widget.widgets[selected],
+      scope: children[selected],
     );
 
     _router = TransPopupRouter(

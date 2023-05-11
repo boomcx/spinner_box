@@ -7,7 +7,6 @@ import 'package:tuple/tuple.dart';
 import '../popup_message.dart';
 import 'providers/entity.dart';
 import 'providers/provider.dart';
-import 'providers/state.dart';
 
 part './widgets/buttons.dart';
 part './widgets/group.dart';
@@ -34,6 +33,7 @@ class SpinnerFilter extends StatefulWidget {
     this.onReseted,
     this.onItemIntercept,
     this.attachment = const [],
+    this.scrollable = true,
   });
 
   /// 渲染数据
@@ -57,6 +57,9 @@ class SpinnerFilter extends StatefulWidget {
   /// `int` 期望跟随`Grop`的位置 由`data`排序 默认0开始
   /// `Widget` 组件
   final List<AttachmentView> attachment;
+
+  /// 视图滚动状态
+  final bool scrollable;
 
   @override
   State<SpinnerFilter> createState() => _SpinnerFilterState();
@@ -125,11 +128,17 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
               margin: const EdgeInsets.only(bottom: 12),
               child: Stack(
                 // mainAxisSize: MainAxisSize.min,
-                children: const [
-                  SingleChildScrollView(
-                    child: _MoreFilterContent(),
-                  ),
-                  Positioned(
+                children: [
+                  widget.scrollable
+                      ? const SingleChildScrollView(
+                          child: _MoreFilterContent(),
+                        )
+                      : const _MoreFilterContent(),
+                  // SingleChildScrollView(
+                  //   physics: widget.physic,
+                  //   child: const _MoreFilterContent(),
+                  // ),
+                  const Positioned(
                     right: 0,
                     left: 0,
                     bottom: 0,
@@ -250,10 +259,10 @@ class _FilterGroupScope extends InheritedWidget {
     required super.child,
   });
 
-  final Tuple2<EntityNotifier, int> data;
+  final Tuple2<SpinnerEntity, int> data;
 
   // 子树中的widget获取共享数据
-  static Tuple2<EntityNotifier, int> of(BuildContext context) {
+  static Tuple2<SpinnerEntity, int> of(BuildContext context) {
     final scope =
         context.dependOnInheritedWidgetOfExactType<_FilterGroupScope>();
     return scope!.data;
