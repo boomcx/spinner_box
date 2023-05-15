@@ -60,7 +60,6 @@ SpinnerEntity fence({
       key: key,
       title: '条件标题',
       isRadio: isRadio,
-      type: MoreContentType.fence,
       desc: '描述文本描述文本描述文本描述文本描述文本描述文本描述文本描述文本',
       items: [
         SpinnerItem(name: '全部', result: '', selected: true, isMutex: true),
@@ -77,7 +76,16 @@ SpinnerEntity fence({
               final space = Random().nextInt(3) + 2;
               final posi = max(Random().nextInt(text.length) - space, 0);
               final name = text.substring(posi, posi + space);
-              return SpinnerItem(name: name, result: name);
+              return SpinnerItem(name: name, result: name, items: [
+                ...List.generate(count + space, (index) {
+                  const text =
+                      '庆历四年春滕子京谪守巴陵郡越明年政通人和百废具兴乃重修岳阳楼增其旧制刻唐贤今人诗赋于其上属予作文以记之';
+                  final space = Random().nextInt(3) + 2;
+                  final posi = max(Random().nextInt(text.length) - space, 0);
+                  final name = text.substring(posi, posi + space);
+                  return SpinnerItem(name: name, result: name);
+                }),
+              ]);
             }),
           ]);
         }),

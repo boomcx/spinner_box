@@ -4,20 +4,20 @@ class _CheckListItem extends StatelessWidget {
   const _CheckListItem({
     required this.name,
     required this.isSelect,
-    this.isMuti = false,
+    this.isMulti = false,
   });
 
   final String name;
   final bool isSelect;
-  final bool isMuti;
+  final bool isMulti;
 
   @override
   Widget build(BuildContext context) {
-    Widget icon = isSelect ? _Assets.name('single_select') : const SizedBox();
-    if (isMuti) {
+    Widget icon = isSelect ? Assets.name('single_select') : const SizedBox();
+    if (isMulti) {
       icon = isSelect
-          ? _Assets.name('muti_select')
-          : _Assets.name('muti_unselect');
+          ? Assets.name('muti_select')
+          : Assets.name('muti_unselect');
     }
     return Container(
       color: Colors.white,
@@ -42,17 +42,6 @@ class _CheckListItem extends StatelessWidget {
           const SizedBox(width: 6),
         ],
       ),
-    );
-  }
-}
-
-class _Assets {
-  static Widget name(String name, {double width = 16}) {
-    return Image.asset(
-      'assets/images/$name.png',
-      width: width,
-      fit: BoxFit.contain,
-      package: 'spinner_box',
     );
   }
 }

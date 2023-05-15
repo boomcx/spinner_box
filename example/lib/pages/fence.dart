@@ -10,9 +10,9 @@ class FencePage extends StatefulWidget {
 }
 
 class _FencePageState extends State<FencePage> {
-  final _condition1 = ValueNotifier([
-    fence(key: 'fence1', isRadio: false),
-  ]);
+  final _condition1 = ValueNotifier(
+    fence(key: 'fence1', isRadio: true, count: 10),
+  );
 
   final _result = ValueNotifier<Map<String, List<dynamic>>>({});
 
@@ -29,13 +29,12 @@ class _FencePageState extends State<FencePage> {
                 ValueListenableBuilder(
                   valueListenable: _condition1,
                   builder: (context, value, child) {
-                    return SpinnerFilter(
+                    return SpinnerFence(
                       data: value,
-                      scrollable: false,
                       onCompleted: (result, name, data) {
                         notifier.updateName(name);
                         _result.value = result;
-                        _condition1.value = data;
+                        _condition1.value = data.first;
                       },
                     );
                   },
@@ -45,9 +44,7 @@ class _FencePageState extends State<FencePage> {
           ),
           ElevatedButton(
             onPressed: () {
-              print(_condition1.value.first.items.tier);
-
-              print(_condition1.value.first.toJson());
+              print(_condition1.value.toJson());
             },
             child: const Text('sss'),
           ),

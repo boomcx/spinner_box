@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_box.dart';
 import 'package:spinner_box_example/data.dart';
 
-class MutiPage extends StatefulWidget {
-  const MutiPage({super.key});
+class MultiPage extends StatefulWidget {
+  const MultiPage({super.key});
 
   @override
-  State<MutiPage> createState() => _MutiPageState();
+  State<MultiPage> createState() => _MultiPageState();
 }
 
-class _MutiPageState extends State<MutiPage> {
+class _MultiPageState extends State<MultiPage> {
   var _condition1 = [
     years(key: 'year1', isRadio: false),
   ];

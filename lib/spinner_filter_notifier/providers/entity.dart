@@ -1,4 +1,18 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
+
+const double kBotBtnHeight = 56.0;
+
+/// 点击拦截的回调
+typedef SpinnerItemIntercept = FutureOr<bool> Function(SpinnerEntity, int);
+
+/// 完成筛选的回调
+typedef SpinnerBoxResponse = Function(
+  Map<String, List> result,
+  String name,
+  List<SpinnerEntity> data,
+);
 
 /// 内容显示类型
 enum MoreContentType {
@@ -7,9 +21,6 @@ enum MoreContentType {
 
   /// 列表样式
   checkList,
-
-  /// 栅栏样式
-  fence
 }
 
 class SpinnerEntity {
@@ -120,9 +131,43 @@ class SpinnerEntity {
       );
 }
 
+class ItemStatus {
+  bool selected;
+  bool highlighted;
+  ItemStatus({
+    this.selected = false,
+    this.highlighted = false,
+  });
+
+  ItemStatus copyWith({
+    bool? selected,
+    bool? highlighted,
+  }) {
+    return ItemStatus(
+      selected: selected ?? this.selected,
+      highlighted: highlighted ?? this.highlighted,
+    );
+  }
+
+  @override
+  String toString() =>
+      'ItemStatus(selected: $selected, isHighlight: $highlighted)';
+
+  @override
+  bool operator ==(covariant ItemStatus other) {
+    if (identical(this, other)) return true;
+
+    return other.selected == selected && other.highlighted == highlighted;
+  }
+
+  @override
+  int get hashCode => selected.hashCode ^ highlighted.hashCode;
+}
+
 /// 继承 `ChangeNotifier` `ValueListenable`
 /// 写入自变量 `selected`，方便监听点击选中状态
-class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
+class SpinnerItem extends ChangeNotifier
+    implements ValueListenable<ItemStatus> {
   /// 显示名称
   final String name;
 
@@ -135,20 +180,47 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
   /// 下级选项
   final List<SpinnerItem> items;
 
-  /// 高亮（栅栏选中时，需要切换数据）
-  final bool isHighlight;
+  /// 数据类型与实际类型不匹配时，将实际数据放入`extea`中
+  /// 可以保证选中时输出实际类容的集合
+  final dynamic extra;
 
-  /// 兼容以前的选中状态
-  bool get selected => _value;
-  set selected(bool newValue) {
-    value = newValue;
+  /// 高亮（栅栏选中时，需要切换数据）
+  bool get highlighted => _value.highlighted;
+  set highlighted(bool newValue) {
+    value = value.copyWith(highlighted: newValue);
   }
 
+  /// 选中状态
+  bool get selected => _value.selected;
+  set selected(bool newValue) {
+    value = value.copyWith(selected: newValue);
+  }
+
+  /// 带有子集选项时，判断当前选项的子选项是否全部选中
+  bool get isSelectedAll {
+    /// 设置子集选中
+    bool chidrenSelected(List<SpinnerItem> list) {
+      for (var element in list) {
+        if (!element.selected) {
+          return false;
+        } else if (element.items.isNotEmpty) {
+          if (!chidrenSelected(element.items)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    return chidrenSelected(items);
+  }
+
+  /// 不对外使用
+  /// 外部使用 `selected` `isHighlight` 替代
   @override
-  @Deprecated('value is replaced with selected')
-  bool get value => _value;
-  late bool _value;
-  set value(bool newValue) {
+  ItemStatus get value => _value;
+  late ItemStatus _value;
+  set value(ItemStatus newValue) {
     if (_value == newValue) {
       return;
     }
@@ -160,10 +232,14 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
     this.name = '-',
     this.result,
     this.isMutex = false,
-    this.isHighlight = false,
     this.items = const [],
+    this.extra,
     bool selected = false,
-  }) : _value = selected;
+    bool highlighted = false,
+  }) : _value = ItemStatus(
+          selected: selected,
+          highlighted: highlighted,
+        );
 
   factory SpinnerItem.fromJson(Map<String, dynamic> json) {
     var entity = SpinnerItem();
@@ -171,8 +247,12 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
       entity = entity.copyWith(name: json["name"]);
     }
     entity = entity.copyWith(result: json["result"]);
+    entity = entity.copyWith(extra: json["extra"]);
     if (json["selected"] is bool) {
       entity = entity.copyWith(selected: json["selected"]);
+    }
+    if (json["highlighted"] is bool) {
+      entity = entity.copyWith(highlighted: json["highlighted"]);
     }
     if (json["isMutex"] is bool) {
       entity = entity.copyWith(isMutex: json["isMutex"]);
@@ -193,6 +273,7 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
     data["name"] = name;
     data["result"] = result;
     data["selected"] = selected;
+    data["highlighted"] = highlighted;
     data["isMutex"] = isMutex;
     data["items"] = items.map((e) => e.toJson()).toList();
     return data;
@@ -202,17 +283,54 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
     String? name,
     dynamic result,
     bool? selected,
+    bool? highlighted,
     bool? isMutex,
+    dynamic extra,
     List<SpinnerItem>? items,
   }) =>
       SpinnerItem(
         name: name ?? this.name,
         result: result ?? this.result,
         selected: selected ?? this.selected,
+        highlighted: highlighted ?? this.highlighted,
         isMutex: isMutex ?? this.isMutex,
+        extra: extra ?? this.extra,
         items: items ?? this.items,
       );
 }
+
+extension ListFormatX on List<SpinnerItem> {
+  /// 获取层级
+  int get tier {
+    // int count = 0;
+    // runLoop(List<SpinnerItem> list, int floor) {
+    //   for (var e in list) {
+    //     if (floor > count) {
+    //       count = floor;
+    //     }
+    //     if (e.items.isNotEmpty) {
+    //       runLoop(e.items, floor + 1);
+    //     } else {
+    //       continue;
+    //     }
+    //   }
+    // }
+
+    int getLevel(List<SpinnerItem> items) {
+      if (items.isEmpty) return 0;
+      int maxLevel = 0;
+      for (var item in items) {
+        int level = getLevel(item.items) + 1; // 递归查询子项
+        maxLevel = max(maxLevel, level);
+      }
+      return maxLevel;
+    }
+
+    // runLoop(this, 1);
+    return getLevel(this);
+  }
+}
+
 
 // class EntityNotifier {
 //   EntityNotifier(this.entity) {

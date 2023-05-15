@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
 
-import '../popup_message.dart';
 import 'providers/entity.dart';
-import 'providers/provider.dart';
+import 'providers/provider_fence.dart';
 import 'widgets/asset.dart';
 import 'widgets/buttons.dart';
 
-part './widgets/inherited.dart';
-part './widgets/group.dart';
-part './widgets/check_list_item.dart';
-part './widgets/explain_icon.dart';
-part './widgets/attachment_view.dart';
+part './widgets/fence.dart';
 
-class SpinnerFilter extends StatefulWidget {
-  const SpinnerFilter({
+class SpinnerFence extends StatefulWidget {
+  const SpinnerFence({
     super.key,
     required this.data,
     required this.onCompleted,
     this.onReseted,
     this.onItemIntercept,
-    this.attachment = const [],
   });
 
   /// 渲染数据
-  final List<SpinnerEntity> data;
+  final SpinnerEntity data;
 
   /// 重置回调
   final VoidCallback? onReseted;
@@ -40,25 +33,19 @@ class SpinnerFilter extends StatefulWidget {
   /// `data` 更新重置的原始数据（同步选中状态）
   final SpinnerBoxResponse onCompleted;
 
-  /// 外部出入的自定义组件
-  /// `int` 期望跟随`Grop`的位置 由`data`排序 默认0开始
-  /// `Widget` 组件
-  final List<AttachmentView> attachment;
-
   @override
-  State<SpinnerFilter> createState() => _SpinnerFilterState();
+  State<SpinnerFence> createState() => _SpinnerFenceState();
 }
 
-class _SpinnerFilterState extends State<SpinnerFilter> {
-  late SpinnerFilterNotifier notifier;
+class _SpinnerFenceState extends State<SpinnerFence> {
+  late SpinnerFenceNotifier notifier;
 
   @override
   void initState() {
     super.initState();
 
-    notifier = SpinnerFilterNotifier.init(
+    notifier = SpinnerFenceNotifier.init(
       widget.data,
-      widget.attachment,
       widget.onReseted,
       widget.onItemIntercept,
     );
@@ -68,7 +55,7 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
         final result = notifier.getResult();
         final data = notifier.outside;
         // 筛选出全部选中的结果
-        widget.onCompleted(result.item1, result.item2, data);
+        widget.onCompleted(result.item1, result.item2, [data]);
       }
     });
   }
@@ -80,10 +67,10 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
   }
 
   @override
-  void didUpdateWidget(covariant SpinnerFilter oldWidget) {
+  void didUpdateWidget(covariant SpinnerFence oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.data != widget.data) {
-      notifier.updateState(widget.data, widget.attachment);
+      notifier.updateState(widget.data);
     }
   }
 
@@ -92,7 +79,7 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
     return ValueListenableBuilder(
       valueListenable: notifier,
       builder: (context, value, child) {
-        if (value.items.isEmpty) {
+        if (value.data.items.isEmpty) {
           return Container(
             alignment: Alignment.center,
             width: double.infinity,
@@ -104,16 +91,16 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
           );
         }
 
-        return _FilterNotiferScope(
+        return _FenceNotiferScope(
           notifier: notifier,
           child: Material(
-            color: Colors.white,
+            color: const Color(0xfff5f5f5),
             child: Container(
-              margin: const EdgeInsets.only(bottom: 12),
+              // margin: const EdgeInsets.only(bottom: 12),
               child: Stack(
                 // mainAxisSize: MainAxisSize.min,
                 children: const [
-                  _SpinnerContent(),
+                  _SpinnerFence(),
                   Positioned(
                     right: 0,
                     left: 0,
@@ -130,76 +117,20 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
   }
 }
 
-/// 区分内容显示
-/// `type.fence`和其他显示内容布局有所有差异
-// class _ContentView extends StatelessWidget {
-//   const _ContentView();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final notifier = _FilterNotiferScope.of(context);
-//     final items = notifier.value.items;
-
-//     if (items.length == 1 && items.first.type == MoreContentType.fence) {
-//       return const _SpinnerFence();
-//     }
-//     return const _SpinnerContent();
-//   }
-// }
-
 /// 栅栏显示
-// class _SpinnerFence extends StatelessWidget {
-//   const _SpinnerFence();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final notifier = _FilterNotiferScope.of(context);
-//     final items = notifier.value.items;
-//     final single = notifier.value.singleConditionAndSingleSelect;
-
-//     return Padding(
-//       padding: EdgeInsets.only(
-//         bottom: single ? 0 : kBotBtnHeight + 10,
-//       ),
-//       child: _FilterGroupScope(
-//         data: Tuple2(items.first, 0),
-//         child: const _FenceCnt(),
-//       ),
-//     );
-//   }
-// }
-
-class _SpinnerContent extends StatelessWidget {
-  const _SpinnerContent();
+class _SpinnerFence extends StatelessWidget {
+  const _SpinnerFence();
 
   @override
   Widget build(BuildContext context) {
-    final notifier = _FilterNotiferScope.of(context);
-    final items = notifier.value.items;
+    final notifier = _FenceNotiferScope.of(context);
     final single = notifier.value.singleConditionAndSingleSelect;
 
-    return ListView.separated(
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
+    return Padding(
       padding: EdgeInsets.only(
-        left: 12,
-        right: 12,
-        top: 12,
         bottom: single ? 0 : kBotBtnHeight + 10,
       ),
-      itemBuilder: (context, index) {
-        return _FilterGroupScope(
-          data: Tuple2(items[index], index),
-          child: const _GroupContent(),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          child: Divider(height: 1, color: Color(0xffEEEEEE)),
-        );
-      },
-      itemCount: items.length,
+      child: const _FenceCnt(),
     );
   }
 }
@@ -209,7 +140,7 @@ class _BotButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = _FilterNotiferScope.of(context);
+    final notifier = _FenceNotiferScope.of(context);
     final single = notifier.value.singleConditionAndSingleSelect;
 
     if (single) {
@@ -232,7 +163,6 @@ class _BotButtons extends StatelessWidget {
             name: '重置',
             onPressed: () {
               notifier.reset();
-              notifier.resetAttachment();
             },
           ),
           PopBotButton(
@@ -241,5 +171,28 @@ class _BotButtons extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _FenceNotiferScope extends InheritedWidget {
+  const _FenceNotiferScope({
+    required this.notifier,
+    required super.child,
+  });
+
+  final SpinnerFenceNotifier notifier;
+
+  // 子树中的widget获取共享数据
+  static SpinnerFenceNotifier of(BuildContext context) {
+    final scope =
+        context.dependOnInheritedWidgetOfExactType<_FenceNotiferScope>();
+    return scope!.notifier;
+  }
+
+  @override
+  bool updateShouldNotify(covariant _FenceNotiferScope oldWidget) {
+    //如果返回true，则子树中依赖(build函数中有调用)本widget
+    //的子widget的`state.didChangeDependencies`会被调用
+    return false;
   }
 }

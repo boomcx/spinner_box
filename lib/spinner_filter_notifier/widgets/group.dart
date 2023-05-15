@@ -15,7 +15,7 @@ class _GroupContent extends StatelessWidget {
             const _GroupHeader(),
             if (group.type == MoreContentType.checkList) const _CheckListCnt(),
             if (group.type == MoreContentType.groupBtn) const _GroupBtnsCnt(),
-            if (group.type == MoreContentType.fence) const _FenceCnt(),
+            // if (group.type == MoreContentType.fence) const _FenceCnt(),
           ],
         ));
   }
@@ -67,7 +67,7 @@ class _CheckListCnt extends StatelessWidget {
 
     return ListView.builder(
       padding: EdgeInsets.zero,
-      physics: const ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: items.length,
       itemBuilder: (context, index) {
@@ -81,7 +81,7 @@ class _CheckListCnt extends StatelessWidget {
             child: _CheckListItem(
               name: item.name,
               isSelect: item.selected,
-              isMuti: !tuple.item1.isRadio,
+              isMulti: !tuple.item1.isRadio,
             ),
           ),
         );
@@ -104,7 +104,7 @@ class _GroupBtnsCnt extends StatelessWidget {
         final item = items[index];
         return ValueListenableBuilder(
           valueListenable: item,
-          builder: (context, value, child) => _Button(
+          builder: (context, value, child) => Button(
             item.name,
             item.selected,
             onPressed: () {

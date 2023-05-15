@@ -1,7 +1,9 @@
-part of '../spinner_filter.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-class _PopBotButton extends StatelessWidget {
-  const _PopBotButton({
+class PopBotButton extends StatelessWidget {
+  const PopBotButton({
+    super.key,
     this.name = '确定',
     this.onPressed,
     this.isReset = false,
@@ -37,10 +39,11 @@ class _PopBotButton extends StatelessWidget {
   }
 }
 
-class _Button extends StatelessWidget {
-  const _Button(
+class Button extends StatelessWidget {
+  const Button(
     this.name,
     this.isSelected, {
+    super.key,
     this.onPressed,
   });
 

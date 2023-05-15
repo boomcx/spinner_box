@@ -27,3 +27,31 @@ class SpinnerFilterState {
         isInit: isInit ?? this.isInit,
       );
 }
+
+class SpinnerFenceState {
+  final bool singleConditionAndSingleSelect;
+  final bool isCompleted;
+  final List<int> idxList;
+  final SpinnerEntity data;
+
+  const SpinnerFenceState({
+    this.singleConditionAndSingleSelect = false,
+    this.isCompleted = false,
+    this.data = const SpinnerEntity(key: '-'),
+    this.idxList = const [],
+  });
+
+  SpinnerFenceState copyWith({
+    bool? singleConditionAndSingleSelect,
+    bool? isCompleted,
+    List<int>? idxList,
+    SpinnerEntity? data,
+  }) =>
+      SpinnerFenceState(
+        singleConditionAndSingleSelect: singleConditionAndSingleSelect ??
+            this.singleConditionAndSingleSelect,
+        isCompleted: isCompleted ?? this.isCompleted,
+        data: data ?? this.data,
+        idxList: idxList ?? this.idxList,
+      );
+}

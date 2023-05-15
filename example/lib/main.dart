@@ -104,7 +104,7 @@ class _Use extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            const MutiPage().push(context);
+            const MultiPage().push(context);
           },
           child: const _Title('多选条件'),
         ),

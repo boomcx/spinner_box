@@ -1,73 +1,91 @@
-part of '../spinner_filter.dart';
+part of '../spinner_fence.dart';
 
-class _FenceCnt extends StatelessWidget {
+class _FenceCnt extends StatefulWidget {
   const _FenceCnt();
 
   @override
+  State<_FenceCnt> createState() => _FenceCntState();
+}
+
+class _FenceCntState extends State<_FenceCnt> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final notifier = _FilterNotiferScope.of(context);
-    final tuple = _FilterGroupScope.of(context);
-    final items = tuple.item1.items;
-    final fenceList = items.fenceList;
+    final notifier = _FenceNotiferScope.of(context);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...List.generate(fenceList.length, (index) {
-          final data = fenceList[index];
-
-          return Expanded(
-            flex: 1,
-            child: _FenceList(
-              data: data,
-              tuple: tuple,
-              notifier: notifier,
-            ),
+    return ValueListenableBuilder(
+      valueListenable: notifier,
+      builder: (context, value, child) {
+        if (value.idxList.isEmpty) {
+          return const SizedBox(
+            width: double.infinity,
           );
-        })
-      ],
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ...List.generate(value.idxList.length, (index) {
+              final List<SpinnerItem> data = notifier.getColumn(index);
+
+              return Expanded(
+                flex: 1,
+                child: _FenceList(
+                  column: index,
+                  data: data,
+                  notifier: notifier,
+                ),
+              );
+            }),
+          ],
+        );
+      },
     );
   }
 }
 
 class _FenceList extends StatelessWidget {
   const _FenceList({
+    required this.column,
     required this.data,
-    required this.tuple,
     required this.notifier,
   });
 
+  final int column;
   final List<SpinnerItem> data;
-  final Tuple2<SpinnerEntity, int> tuple;
-  final SpinnerFilterNotifier notifier;
+  final SpinnerFenceNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          final item = data[index];
-          return ValueListenableBuilder(
-            valueListenable: item,
-            builder: (context, value, child) => TapScope(
+    return Container(
+      color: column == 0 ? const Color(0xfff5f5f5) : Colors.white,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            final item = data[index];
+            return TapScope(
               onPressed: () {
-                // notifier.itemOnClick(tuple, index);
+                notifier.itemOnHightlighted(index, column);
               },
               child: _FenceListItem(
-                name: item.name,
-                isSelect: item.selected,
-                isMuti: !tuple.item1.isRadio,
+                item: item,
+                isMulti: !notifier.value.data.isRadio,
+                column: column,
                 onSelected: () {
-                  notifier.itemOnSelected(tuple, index);
+                  notifier.itemOnSelected(index, column);
                 },
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -75,39 +93,51 @@ class _FenceList extends StatelessWidget {
 
 class _FenceListItem extends StatelessWidget {
   const _FenceListItem({
-    required this.name,
-    required this.isSelect,
-    this.isMuti = false,
+    required this.item,
+    this.column = 0,
+    this.isMulti = false,
     this.onSelected,
   });
 
-  final String name;
-  final bool isSelect;
-  final bool isMuti;
+  final SpinnerItem item;
+  final bool isMulti;
+  final int column;
   final VoidCallback? onSelected;
 
   @override
   Widget build(BuildContext context) {
-    Widget icon = isSelect ? _Assets.name('single_select') : const SizedBox();
-    if (isMuti) {
-      icon = isSelect
-          ? _Assets.name('muti_select')
-          : _Assets.name('muti_unselect');
+    Widget icon =
+        item.selected ? Assets.name('single_select') : const SizedBox();
+    if (isMulti) {
+      if (item.selected) {
+        icon = item.isSelectedAll
+            ? Assets.name('muti_select')
+            : Assets.name('muti_select_not_all');
+      } else {
+        icon = Assets.name('muti_unselect');
+      }
     }
+
+    var color = Colors.transparent;
+    if (item.highlighted) {
+      color = column == 0 ? Colors.white : const Color(0xfff5f5f5);
+    }
+
     return Container(
-      color: Colors.white,
-      height: 30,
+      color: color,
+      height: 42,
+      padding: const EdgeInsets.only(left: 12),
       child: Row(
         children: [
           Expanded(
             child: Text(
-              name,
+              item.name,
               style: TextStyle(
-                color: isSelect
+                color: item.selected
                     ? const Color(0xffE72410)
                     : const Color(0xff20263A),
                 fontSize: 14,
-                fontWeight: isSelect ? FontWeight.w600 : FontWeight.normal,
+                fontWeight: item.selected ? FontWeight.w600 : FontWeight.normal,
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
@@ -117,59 +147,12 @@ class _FenceListItem extends StatelessWidget {
           GestureDetector(
             onTap: onSelected,
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(13.0),
               child: icon,
             ),
           ),
-          const SizedBox(width: 6),
         ],
       ),
     );
-  }
-}
-
-extension _DataTierX on List<SpinnerItem> {
-  /// 获取层级
-  int get tier {
-    int count = 0;
-    runLoop(List<SpinnerItem> list, int floor) {
-      for (var e in list) {
-        if (floor > count) {
-          count = floor;
-        }
-        if (e.items.isNotEmpty) {
-          runLoop(e.items, floor + 1);
-        } else {
-          continue;
-        }
-      }
-    }
-
-    runLoop(this, 1);
-    return count;
-  }
-
-  List<List<SpinnerItem>> get fenceList {
-    final result = <List<SpinnerItem>>[];
-    result.add(this);
-
-    runLoop(List<SpinnerItem> list) {
-      for (var e in list) {
-        if (e.selected) {
-          result.add(e.items);
-          runLoop(e.items);
-        }
-      }
-    }
-
-    runLoop(this);
-
-    if (result.length < tier) {
-      result.addAll(
-        List.generate(tier - result.length, (_) => <SpinnerItem>[]),
-      );
-    }
-
-    return result;
   }
 }

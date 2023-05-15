@@ -5,8 +5,6 @@ import '../spinner_filter.dart';
 import 'entity.dart';
 import 'state.dart';
 
-const double kBotBtnHeight = 56.0;
-
 class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   SpinnerFilterNotifier(
     SpinnerFilterState state,
@@ -235,6 +233,4 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       completed();
     }
   }
-
-  
 }
