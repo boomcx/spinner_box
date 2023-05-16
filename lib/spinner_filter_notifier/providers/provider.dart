@@ -1,9 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 import '../spinner_filter.dart';
 import 'entity.dart';
 import 'state.dart';
+
+/// 点击拦截的回调
+typedef SpinnerFilterIntercept = FutureOr<bool> Function(SpinnerEntity, int);
+
+/// 完成筛选的回调
+typedef SpinnerFilterResponse = Function(
+  Map<String, List> result,
+  String name,
+  List<SpinnerEntity> data,
+);
 
 class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   SpinnerFilterNotifier(
@@ -17,7 +29,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     List<SpinnerEntity> data,
     List<AttachmentView> attachList,
     VoidCallback? onReseted,
-    SpinnerItemIntercept? onItemIntercept,
+    SpinnerFilterIntercept? onItemIntercept,
   ) {
     if (data.isEmpty) {
       return SpinnerFilterNotifier(
@@ -33,7 +45,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   final VoidCallback? onReseted;
 
   /// 事件传递
-  final SpinnerItemIntercept? onItemIntercept;
+  final SpinnerFilterIntercept? onItemIntercept;
 
   /// 外部传入自定义视图
   List<AttachmentView> attachment = [];

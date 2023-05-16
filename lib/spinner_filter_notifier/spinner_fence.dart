@@ -25,13 +25,13 @@ class SpinnerFence extends StatefulWidget {
   /// 选中项目的时候，拦截处理（用于交互前的特殊判断）
   /// 返回值 `true`，表示拦截选中事件
   /// `false` 则可以选中
-  final SpinnerItemIntercept? onItemIntercept;
+  final SpinnerFenceIntercept? onItemIntercept;
 
   /// 选择完成回调
   /// `result` 返回结果 key.values
   /// `name` 选中标题拼接
   /// `data` 更新重置的原始数据（同步选中状态）
-  final SpinnerBoxResponse onCompleted;
+  final SpinnerFenceResponse onCompleted;
 
   @override
   State<SpinnerFence> createState() => _SpinnerFenceState();
@@ -55,7 +55,7 @@ class _SpinnerFenceState extends State<SpinnerFence> {
         final result = notifier.getResult();
         final data = notifier.outside;
         // 筛选出全部选中的结果
-        widget.onCompleted(result.item1, result.item2, [data]);
+        widget.onCompleted(result.item1, result.item2, data);
       }
     });
   }
@@ -95,20 +95,16 @@ class _SpinnerFenceState extends State<SpinnerFence> {
           notifier: notifier,
           child: Material(
             color: const Color(0xfff5f5f5),
-            child: Container(
-              // margin: const EdgeInsets.only(bottom: 12),
-              child: Stack(
-                // mainAxisSize: MainAxisSize.min,
-                children: const [
-                  _SpinnerFence(),
-                  Positioned(
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                    child: _BotButtons(),
-                  )
-                ],
-              ),
+            child: Stack(
+              children: const [
+                _SpinnerFence(),
+                Positioned(
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  child: _BotButtons(),
+                )
+              ],
             ),
           ),
         );
@@ -147,8 +143,8 @@ class _BotButtons extends StatelessWidget {
       return const SizedBox();
     }
     return Container(
-      height: kBotBtnHeight,
-      padding: const EdgeInsets.only(top: kBotBtnHeight - 40),
+      height: kBotBtnHeight + 12,
+      padding: const EdgeInsets.only(top: kBotBtnHeight - 40, bottom: 12),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(

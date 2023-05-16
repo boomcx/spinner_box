@@ -11,10 +11,10 @@ class FencePage extends StatefulWidget {
 
 class _FencePageState extends State<FencePage> {
   final _condition1 = ValueNotifier(
-    fence(key: 'fence1', isRadio: true, count: 10),
+    fence(key: 'fence1', isRadio: false, count: 10),
   );
 
-  final _result = ValueNotifier<Map<String, List<dynamic>>>({});
+  final _result = ValueNotifier<List<dynamic>>([]);
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +31,10 @@ class _FencePageState extends State<FencePage> {
                   builder: (context, value, child) {
                     return SpinnerFence(
                       data: value,
-                      onCompleted: (result, name, data) {
-                        notifier.updateName(name);
-                        _result.value = result;
-                        _condition1.value = data.first;
+                      onCompleted: (results, names, data) {
+                        notifier.updateName(names.join('/'));
+                        _result.value = results.map((e) => e.result).toList();
+                        _condition1.value = data;
                       },
                     );
                   },

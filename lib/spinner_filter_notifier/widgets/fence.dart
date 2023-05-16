@@ -77,8 +77,9 @@ class _FenceList extends StatelessWidget {
               },
               child: _FenceListItem(
                 item: item,
-                isMulti: !notifier.value.data.isRadio,
+                notifier: notifier,
                 column: column,
+                index: index,
                 onSelected: () {
                   notifier.itemOnSelected(index, column);
                 },
@@ -94,21 +95,23 @@ class _FenceList extends StatelessWidget {
 class _FenceListItem extends StatelessWidget {
   const _FenceListItem({
     required this.item,
+    required this.notifier,
     this.column = 0,
-    this.isMulti = false,
+    this.index = 0,
     this.onSelected,
   });
 
   final SpinnerItem item;
-  final bool isMulti;
   final int column;
+  final int index;
+  final SpinnerFenceNotifier notifier;
   final VoidCallback? onSelected;
 
   @override
   Widget build(BuildContext context) {
     Widget icon =
         item.selected ? Assets.name('single_select') : const SizedBox();
-    if (isMulti) {
+    if (!notifier.value.data.isRadio) {
       if (item.selected) {
         icon = item.isSelectedAll
             ? Assets.name('muti_select')
@@ -119,8 +122,9 @@ class _FenceListItem extends StatelessWidget {
     }
 
     var color = Colors.transparent;
-    if (item.highlighted) {
-      color = column == 0 ? Colors.white : const Color(0xfff5f5f5);
+    if (index == notifier.value.idxList[column] &&
+        column < notifier.value.idxList.length - 1) {
+      color = column == 0 ? Colors.white : const Color(0xfff7f7f7);
     }
 
     return Container(

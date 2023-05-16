@@ -32,13 +32,13 @@ class SpinnerFilter extends StatefulWidget {
   /// 选中项目的时候，拦截处理（用于交互前的特殊判断）
   /// 返回值 `true`，表示拦截选中事件
   /// `false` 则可以选中
-  final SpinnerItemIntercept? onItemIntercept;
+  final SpinnerFilterIntercept? onItemIntercept;
 
   /// 选择完成回调
   /// `result` 返回结果 key.values
   /// `name` 选中标题拼接
   /// `data` 更新重置的原始数据（同步选中状态）
-  final SpinnerBoxResponse onCompleted;
+  final SpinnerFilterResponse onCompleted;
 
   /// 外部出入的自定义组件
   /// `int` 期望跟随`Grop`的位置 由`data`排序 默认0开始

@@ -92,6 +92,7 @@ class TapScope extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
+      pressedOpacity: 0.85,
       padding: EdgeInsets.zero,
       borderRadius: BorderRadius.circular(0),
       minSize: 10,
