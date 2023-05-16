@@ -67,23 +67,23 @@ SpinnerEntity fence({
           const text = '庆历四年春滕子京谪守巴陵郡越明年政通人和百废具兴乃重修岳阳楼增其旧制刻唐贤今人诗赋于其上属予作文以记之';
           final space = Random().nextInt(3) + 2;
           final posi = max(Random().nextInt(text.length) - space, 0);
-          final name = text.substring(posi, posi + space);
+          final name1 = text.substring(posi, posi + space);
 
-          return SpinnerItem(name: '${name}1', result: name, items: [
+          return SpinnerItem(name: name1, result: name1, items: [
             ...List.generate(count + space, (index) {
               const text =
                   '庆历四年春滕子京谪守巴陵郡越明年政通人和百废具兴乃重修岳阳楼增其旧制刻唐贤今人诗赋于其上属予作文以记之';
               final space = Random().nextInt(3) + 2;
               final posi = max(Random().nextInt(text.length) - space, 0);
-              final name = text.substring(posi, posi + space);
-              return SpinnerItem(name: '${name}2', result: name, items: [
+              final name2 = text.substring(posi, posi + space);
+              return SpinnerItem(name: name2, result: name2, items: [
                 ...List.generate(count + space, (index) {
                   const text =
                       '庆历四年春滕子京谪守巴陵郡越明年政通人和百废具兴乃重修岳阳楼增其旧制刻唐贤今人诗赋于其上属予作文以记之';
                   final space = Random().nextInt(3) + 2;
                   final posi = max(Random().nextInt(text.length) - space, 0);
-                  final name = text.substring(posi, posi + space);
-                  return SpinnerItem(name: '${name}3', result: name);
+                  final name3 = text.substring(posi, posi + space);
+                  return SpinnerItem(name: name3, result: name3);
                 }),
               ]);
             }),

@@ -11,9 +11,11 @@ class FencePage extends StatefulWidget {
 
 class _FencePageState extends State<FencePage> {
   final _condition1 = ValueNotifier(
-    fence(key: 'fence1', isRadio: false, count: 10),
+    fence(key: '', isRadio: false, count: 10),
   );
-
+  final _condition2 = ValueNotifier(
+    fence(key: '', isRadio: true, count: 10),
+  );
   final _result = ValueNotifier<List<dynamic>>([]);
 
   @override
@@ -39,14 +41,21 @@ class _FencePageState extends State<FencePage> {
                     );
                   },
                 ).heightPart,
+                ValueListenableBuilder(
+                  valueListenable: _condition2,
+                  builder: (context, value, child) {
+                    return SpinnerFence(
+                      data: value,
+                      onCompleted: (results, names, data) {
+                        notifier.updateName(names.join('/'));
+                        _result.value = results.map((e) => e.result).toList();
+                        _condition2.value = data;
+                      },
+                    );
+                  },
+                ).heightPart,
               ];
             },
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print(_condition1.value.toJson());
-            },
-            child: const Text('sss'),
           ),
           Padding(
             padding: const EdgeInsets.all(30.0),
@@ -60,27 +69,5 @@ class _FencePageState extends State<FencePage> {
         ],
       ),
     );
-  }
-}
-
-extension _DataTierX on List<SpinnerItem> {
-  int get tier {
-    int count = 0;
-    runLoop(List<SpinnerItem> list, int floor) {
-      for (var e in list) {
-        if (floor > count) {
-          count = floor;
-        }
-        if (e.items.isNotEmpty) {
-          runLoop(e.items, floor + 1);
-        } else {
-          continue;
-        }
-      }
-    }
-
-    runLoop(this, 1);
-
-    return count;
   }
 }
