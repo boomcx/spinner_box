@@ -45,11 +45,11 @@ class _SpinnerTest extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('筛选弹框')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: const Padding(
+        padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text('使用', style: TextStyle(fontSize: 16)),
             _Use(),
             SizedBox(height: 30),
