@@ -47,7 +47,7 @@ extension SpinnerPopScopeExt on Widget {
   SpinnerPopScope get heightFull => SpinnerPopScope(child: this, scale: 1);
 }
 
-class SpinnerBoxTheme {
+class SpinnerHeaderTheme {
   /// 高度
   final double height;
 
@@ -75,7 +75,7 @@ class SpinnerBoxTheme {
   /// 页面其他部位是佛含有焦点获取的组件（如视图顶部搜索输入框）
   final bool outsideFocus;
 
-  const SpinnerBoxTheme({
+  const SpinnerHeaderTheme({
     this.height = kMinInteractiveDimensionCupertino,
     this.style = const TextStyle(
       color: Color(0xff20263A),
@@ -93,7 +93,7 @@ class SpinnerBoxTheme {
     this.outsideFocus = false,
   });
 
-  SpinnerBoxTheme copyWith({
+  SpinnerHeaderTheme copyWith({
     double? height,
     TextStyle? style,
     TextStyle? selectedStyle,
@@ -104,7 +104,7 @@ class SpinnerBoxTheme {
     EdgeInsets? padding,
     bool? outsideFocus,
   }) {
-    return SpinnerBoxTheme(
+    return SpinnerHeaderTheme(
       height: height ?? this.height,
       style: style ?? this.style,
       selectedStyle: selectedStyle ?? this.selectedStyle,
@@ -118,9 +118,9 @@ class SpinnerBoxTheme {
   }
 }
 
-extension SpinnerThemeExt on SpinnerBoxTheme {
+extension SpinnerThemeExt on SpinnerHeaderTheme {
   double get totalHeight => height + padding.top + padding.bottom;
 }
 
 /// 默认配置
-const SpinnerBoxTheme defaultPinnerTheme = SpinnerBoxTheme();
+const SpinnerHeaderTheme defaultPinnerTheme = SpinnerHeaderTheme();

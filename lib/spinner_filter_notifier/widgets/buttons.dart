@@ -16,7 +16,7 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = BoxTheme.of(context).wrap;
+    final theme = SpinnerBoxTheme.of(context).wrap;
 
     return TapScope(
       onPressed: onPressed,

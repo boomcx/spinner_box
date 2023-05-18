@@ -13,7 +13,7 @@ class _CheckListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = BoxTheme.of(context).column;
+    final theme = SpinnerBoxTheme.of(context).column;
 
     Widget icon = isSelect
         ? (theme.icon1 ?? Assets.name('single_select'))

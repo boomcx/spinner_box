@@ -9,7 +9,7 @@ class _ExplainIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = BoxTheme.of(context).header;
+    final theme = SpinnerBoxTheme.of(context).header;
     return PopupMessage(
       bgColor: Colors.black54,
       content: Text(desc, style: theme.descStyle),

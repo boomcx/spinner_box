@@ -48,7 +48,7 @@ class SpinnerFilter extends StatefulWidget {
   final List<AttachmentView> attachment;
 
   /// 显示配置
-  final BoxThemeData? theme;
+  final SpinnerBoxThemeData? theme;
 
   @override
   State<SpinnerFilter> createState() => _SpinnerFilterState();
@@ -114,8 +114,8 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
           );
         }
 
-        return BoxTheme(
-          theme: widget.theme ?? const BoxThemeData(),
+        return SpinnerBoxTheme(
+          theme: widget.theme ?? const SpinnerBoxThemeData(),
           child: _ContentView(notifier: notifier),
         );
       },
@@ -132,7 +132,7 @@ class _ContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = BoxTheme.of(context);
+    final theme = SpinnerBoxTheme.of(context);
 
     return _FilterNotiferScope(
       notifier: notifier,
@@ -199,7 +199,7 @@ class _BotButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final single = notifier.value.singleConditionAndSingleSelect;
-    final theme = BoxTheme.of(context).buttons;
+    final theme = SpinnerBoxTheme.of(context).buttons;
 
     if (single) return const SizedBox();
 

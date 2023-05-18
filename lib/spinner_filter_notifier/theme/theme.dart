@@ -1,63 +1,60 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class BoxTheme extends InheritedWidget {
-  const BoxTheme({
+class SpinnerBoxTheme extends InheritedWidget {
+  const SpinnerBoxTheme({
     super.key,
     required this.theme,
     required super.child,
   });
 
-  final BoxThemeData theme;
+  final SpinnerBoxThemeData theme;
 
   // 子树中的widget获取共享数据
-  static BoxThemeData of(BuildContext context) {
-    final scope = context.dependOnInheritedWidgetOfExactType<BoxTheme>();
+  static SpinnerBoxThemeData of(BuildContext context) {
+    final scope = context.dependOnInheritedWidgetOfExactType<SpinnerBoxTheme>();
     return scope!.theme;
   }
 
   @override
-  bool updateShouldNotify(covariant BoxTheme oldWidget) {
+  bool updateShouldNotify(covariant SpinnerBoxTheme oldWidget) {
     TextTheme;
     return oldWidget.theme != theme;
   }
 }
 
 /// 主题配置
-class BoxThemeData {
+class SpinnerBoxThemeData {
   /// 弹窗背景颜色
   final Color backgroundColor;
 
   /// 标题样式配置
-  final HeaderThemeData header;
+  final SHeaderThemeData header;
 
   /// `MoreContentType.wrap` 样式配置
-  final WrapThemeData wrap;
+  final SWrapThemeData wrap;
 
   /// `MoreContentType.column` 样式配置
-  final ColumnThemeData column;
+  final SColumnThemeData column;
 
   /// 栅栏样式配置
-  final FenceThemeData fence;
+  final SFenceThemeData fence;
 
   /// 底部按钮样式
-  final BoxBotBtnData buttons;
+  final SBoxBotBtnData buttons;
 
-  const BoxThemeData({
+  const SpinnerBoxThemeData({
     this.backgroundColor = Colors.white,
-    this.header = const HeaderThemeData(),
-    this.wrap = const WrapThemeData(),
-    this.column = const ColumnThemeData(),
-    this.fence = const FenceThemeData(),
-    this.buttons = const BoxBotBtnData(),
+    this.header = const SHeaderThemeData(),
+    this.wrap = const SWrapThemeData(),
+    this.column = const SColumnThemeData(),
+    this.fence = const SFenceThemeData(),
+    this.buttons = const SBoxBotBtnData(),
   });
 }
 
 /// 栅栏样式
-class FenceThemeData {
+class SFenceThemeData {
   /// 每一列的背景颜色
   /// 数据不足默认为`Colors.white`且最后一列没有颜色
   final List<Color> backgroundColors;
@@ -69,18 +66,18 @@ class FenceThemeData {
   /// 每行高度
   final double height;
 
-  const FenceThemeData({
+  const SFenceThemeData({
     this.backgroundColors = const [Color(0xfff5f5f5)],
     this.hightlightedColors = const [Colors.white],
     this.height = 42,
   });
 
-  FenceThemeData copyWith({
+  SFenceThemeData copyWith({
     List<Color>? backgroundColors,
     List<Color>? hightlightedColors,
     double? height,
   }) {
-    return FenceThemeData(
+    return SFenceThemeData(
       backgroundColors: backgroundColors ?? this.backgroundColors,
       hightlightedColors: hightlightedColors ?? this.hightlightedColors,
       height: height ?? this.height,
@@ -88,7 +85,7 @@ class FenceThemeData {
   }
 
   @override
-  bool operator ==(covariant FenceThemeData other) {
+  bool operator ==(covariant SFenceThemeData other) {
     if (identical(this, other)) return true;
 
     return listEquals(other.backgroundColors, backgroundColors) &&
@@ -102,7 +99,7 @@ class FenceThemeData {
 }
 
 /// 多选状态下的样式
-class BoxBotBtnData {
+class SBoxBotBtnData {
   /// 背景颜色
   final Color backgroundColor;
 
@@ -127,7 +124,7 @@ class BoxBotBtnData {
   /// 按钮装饰
   final BoxDecoration rightDecoration;
 
-  const BoxBotBtnData({
+  const SBoxBotBtnData({
     this.isRest = true,
     this.leftTxt = '重置',
     this.rightTxt = '确定',
@@ -148,7 +145,7 @@ class BoxBotBtnData {
     ),
   });
 
-  BoxBotBtnData copyWith({
+  SBoxBotBtnData copyWith({
     Color? backgroundColor,
     bool? isRest,
     String? leftTxt,
@@ -158,7 +155,7 @@ class BoxBotBtnData {
     BoxDecoration? leftDecoration,
     BoxDecoration? rightDecoration,
   }) {
-    return BoxBotBtnData(
+    return SBoxBotBtnData(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       isRest: isRest ?? this.isRest,
       leftTxt: leftTxt ?? this.leftTxt,
@@ -171,7 +168,7 @@ class BoxBotBtnData {
   }
 
   @override
-  bool operator ==(covariant BoxBotBtnData other) {
+  bool operator ==(covariant SBoxBotBtnData other) {
     if (identical(this, other)) return true;
 
     return other.backgroundColor == backgroundColor &&
@@ -198,7 +195,7 @@ class BoxBotBtnData {
 }
 
 /// `MoreContentType.column` 样式配置
-class ColumnThemeData {
+class SColumnThemeData {
   /// 文字内容字体
   final TextStyle selectedStyle;
 
@@ -226,7 +223,7 @@ class ColumnThemeData {
   /// 最大显示行数
   final int? maxLine;
 
-  const ColumnThemeData({
+  const SColumnThemeData({
     this.maxLine = 1,
     this.height = 30,
     this.icon1,
@@ -241,7 +238,7 @@ class ColumnThemeData {
   });
 
   @override
-  bool operator ==(covariant ColumnThemeData other) {
+  bool operator ==(covariant SColumnThemeData other) {
     if (identical(this, other)) return true;
 
     return other.selectedStyle == selectedStyle &&
@@ -268,7 +265,7 @@ class ColumnThemeData {
         maxLine.hashCode;
   }
 
-  ColumnThemeData copyWith({
+  SColumnThemeData copyWith({
     TextStyle? selectedStyle,
     TextStyle? unselectedStyle,
     double? height,
@@ -279,7 +276,7 @@ class ColumnThemeData {
     Widget? iconMulti3,
     int? maxLine,
   }) {
-    return ColumnThemeData(
+    return SColumnThemeData(
       selectedStyle: selectedStyle ?? this.selectedStyle,
       unselectedStyle: unselectedStyle ?? this.unselectedStyle,
       height: height ?? this.height,
@@ -294,7 +291,7 @@ class ColumnThemeData {
 }
 
 /// `MoreContentType.wrap` 样式配置
-class WrapThemeData {
+class SWrapThemeData {
   /// 排列间距
   final double runSpacing;
 
@@ -316,7 +313,7 @@ class WrapThemeData {
   /// 按钮装饰
   final BoxDecoration unselectedDecoration;
 
-  const WrapThemeData({
+  const SWrapThemeData({
     this.runSpacing = 10,
     this.spacing = 10,
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
@@ -333,7 +330,7 @@ class WrapThemeData {
   });
 
   @override
-  bool operator ==(covariant WrapThemeData other) {
+  bool operator ==(covariant SWrapThemeData other) {
     if (identical(this, other)) return true;
 
     return other.runSpacing == runSpacing &&
@@ -356,7 +353,7 @@ class WrapThemeData {
         unselectedDecoration.hashCode;
   }
 
-  WrapThemeData copyWith({
+  SWrapThemeData copyWith({
     double? runSpacing,
     double? spacing,
     EdgeInsets? itemPadding,
@@ -365,7 +362,7 @@ class WrapThemeData {
     BoxDecoration? selectedDecoration,
     BoxDecoration? unselectedDecoration,
   }) {
-    return WrapThemeData(
+    return SWrapThemeData(
       runSpacing: runSpacing ?? this.runSpacing,
       spacing: spacing ?? this.spacing,
       itemPadding: itemPadding ?? this.itemPadding,
@@ -378,7 +375,7 @@ class WrapThemeData {
 }
 
 /// 标题样式配置
-class HeaderThemeData {
+class SHeaderThemeData {
   /// 标题文字样式
   final TextStyle style;
 
@@ -391,7 +388,7 @@ class HeaderThemeData {
   /// 间隔
   final double spacing;
 
-  const HeaderThemeData({
+  const SHeaderThemeData({
     this.style = const TextStyle(color: Colors.black54, fontSize: 12),
     this.descStyle =
         const TextStyle(color: Colors.white, height: 1, fontSize: 13),
@@ -400,7 +397,7 @@ class HeaderThemeData {
   });
 
   @override
-  bool operator ==(covariant HeaderThemeData other) {
+  bool operator ==(covariant SHeaderThemeData other) {
     if (identical(this, other)) return true;
 
     return other.style == style &&
@@ -417,13 +414,13 @@ class HeaderThemeData {
         spacing.hashCode;
   }
 
-  HeaderThemeData copyWith({
+  SHeaderThemeData copyWith({
     TextStyle? style,
     TextStyle? descStyle,
     double? iconSize,
     double? spacing,
   }) {
-    return HeaderThemeData(
+    return SHeaderThemeData(
       style: style ?? this.style,
       descStyle: descStyle ?? this.descStyle,
       iconSize: iconSize ?? this.iconSize,

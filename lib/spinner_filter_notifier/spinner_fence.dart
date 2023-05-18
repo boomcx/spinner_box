@@ -36,7 +36,7 @@ class SpinnerFence extends StatefulWidget {
   final SpinnerFenceResponse onCompleted;
 
   /// 显示配置
-  final BoxThemeData? theme;
+  final SpinnerBoxThemeData? theme;
 
   @override
   State<SpinnerFence> createState() => _SpinnerFenceState();
@@ -101,8 +101,8 @@ class _SpinnerFenceState extends State<SpinnerFence> {
           );
         }
 
-        return BoxTheme(
-          theme: widget.theme ?? const BoxThemeData(),
+        return SpinnerBoxTheme(
+          theme: widget.theme ?? const SpinnerBoxThemeData(),
           child: _ContentView(notifier: notifier),
         );
       },
@@ -119,7 +119,7 @@ class _ContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = BoxTheme.of(context);
+    final theme = SpinnerBoxTheme.of(context);
 
     return _FenceNotiferScope(
       notifier: notifier,
@@ -166,7 +166,7 @@ class _BotButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FenceNotiferScope.of(context);
     final single = notifier.value.singleConditionAndSingleSelect;
-    final theme = BoxTheme.of(context).buttons;
+    final theme = SpinnerBoxTheme.of(context).buttons;
 
     if (single) {
       return const SizedBox();

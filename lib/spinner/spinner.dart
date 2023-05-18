@@ -110,7 +110,7 @@ class SpinnerBox extends StatefulWidget {
   late PopupValueNotifier controller;
 
   /// 视图配置
-  final SpinnerBoxTheme theme;
+  final SpinnerHeaderTheme theme;
 
   @override
   State<SpinnerBox> createState() => _SpinnerBoxState();
@@ -318,7 +318,7 @@ class _CompsitedTarget extends StatelessWidget {
   final SpinnerBox widget;
 
   /// 视图配置
-  final SpinnerBoxTheme config;
+  final SpinnerHeaderTheme config;
 
   @override
   Widget build(BuildContext context) {
@@ -410,7 +410,7 @@ class _Button extends StatelessWidget {
   final bool isHighlight;
 
   /// 视图配置
-  final SpinnerBoxTheme config;
+  final SpinnerHeaderTheme config;
 
   @override
   Widget build(BuildContext context) {

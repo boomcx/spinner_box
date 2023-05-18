@@ -27,7 +27,7 @@ class _GroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final group = _FilterGroupScope.of(context).item1;
-    final theme = BoxTheme.of(context).header;
+    final theme = SpinnerBoxTheme.of(context).header;
 
     if (group.title.isEmpty) return const SizedBox();
 
@@ -91,7 +91,7 @@ class _GroupBtnsCnt extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final tuple = _FilterGroupScope.of(context);
-    final theme = BoxTheme.of(context).wrap;
+    final theme = SpinnerBoxTheme.of(context).wrap;
     final items = tuple.item1.items;
 
     return Wrap(

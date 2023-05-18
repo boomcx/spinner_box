@@ -27,9 +27,9 @@ class _ThemePageState extends State<ThemePage> {
   final _controler =
       PopupValueNotifier.titles(const ['wrap', 'column', 'fence']);
 
-  final BoxThemeData themeData = BoxThemeData(
+  final SpinnerBoxThemeData themeData = SpinnerBoxThemeData(
     backgroundColor: Colors.lightBlueAccent,
-    wrap: WrapThemeData(
+    wrap: SWrapThemeData(
       spacing: 10,
       runSpacing: 20,
       selectedStyle: const TextStyle(fontSize: 17, color: Colors.red),
@@ -38,7 +38,7 @@ class _ThemePageState extends State<ThemePage> {
         borderRadius: BorderRadius.circular(100),
       ),
     ),
-    column: const ColumnThemeData(
+    column: const SColumnThemeData(
       unselectedStyle: TextStyle(color: Colors.black38, fontSize: 12),
       selectedStyle: TextStyle(color: Colors.black, fontSize: 14),
       icon1: Icon(Icons.close, size: 20, color: Colors.green),
@@ -47,7 +47,7 @@ class _ThemePageState extends State<ThemePage> {
           Icon(Icons.dark_mode_outlined, size: 20, color: Colors.black54),
       iconMulti3: Icon(Icons.sunny_snowing, size: 20, color: Colors.yellow),
     ),
-    buttons: BoxBotBtnData(
+    buttons: SBoxBotBtnData(
       isRest: false,
       backgroundColor: Colors.grey,
       leftTxt: '取消',

@@ -62,7 +62,7 @@ class _FenceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = BoxTheme.of(context).fence;
+    final theme = SpinnerBoxTheme.of(context).fence;
     final columnColor = theme.backgroundColors.length > column
         ? theme.backgroundColors[column]
         : Colors.white;
@@ -128,8 +128,8 @@ class _FenceListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = BoxTheme.of(context).column;
-    final fence = BoxTheme.of(context).fence;
+    final theme = SpinnerBoxTheme.of(context).column;
+    final fence = SpinnerBoxTheme.of(context).fence;
 
     Widget icon = item.selected
         ? (theme.icon1 ?? Assets.name('single_select'))
