@@ -138,19 +138,16 @@ class _ContentView extends StatelessWidget {
       notifier: notifier,
       child: Material(
         color: theme.backgroundColor,
-        child: Container(
-          child: Stack(
-            // mainAxisSize: MainAxisSize.min,
-            children: const [
-              _SpinnerContent(),
-              Positioned(
-                right: 0,
-                left: 0,
-                bottom: 0,
-                child: _BotButtons(),
-              )
-            ],
-          ),
+        child: Stack(
+          children: const [
+            _SpinnerContent(),
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: 0,
+              child: _BotButtons(),
+            )
+          ],
         ),
       ),
     );
