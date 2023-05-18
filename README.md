@@ -6,7 +6,7 @@ The main purpose of writing is to produce components that are easy to use and ha
 
 [![pub package](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/19a06904e09646a79f388932c22d7aa0~tplv-k3u1fbpfcp-zoom-1.image)](https://pub.dev/packages/spinner_box) 
 
-[掘金](https://juejin.cn/post/7227012644506435642)
+[juejin](https://juejin.cn/post/7227012644506435642)
 
 # Spinner Box
 
@@ -16,7 +16,7 @@ The main purpose of writing is to produce components that are easy to use and ha
 - Supports the customization of the content of the pop-up;
 
 ## To do
-- Extend the custom theme configuration, including but not limited to buttons, check;
+- ~~Extend the custom theme configuration, including but not limited to buttons, check;~~
 - Optimize the use of some types;
 
 ## images
