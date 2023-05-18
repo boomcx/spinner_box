@@ -33,8 +33,8 @@ class _FencePageState extends State<FencePage> {
                   builder: (context, value, child) {
                     return SpinnerFence(
                       data: value,
-                      onCompleted: (results, names, data) {
-                        notifier.updateName(names.join('/'));
+                      onCompleted: (results, names, data, onlyClosed) {
+                        notifier.updateName(names);
                         _result.value = results.map((e) => e.result).toList();
                         _condition1.value = data;
                       },
@@ -46,8 +46,8 @@ class _FencePageState extends State<FencePage> {
                   builder: (context, value, child) {
                     return SpinnerFence(
                       data: value,
-                      onCompleted: (results, names, data) {
-                        notifier.updateName(names.join('/'));
+                      onCompleted: (results, names, data, onlyClosed) {
+                        notifier.updateName(names);
                         _result.value = results.map((e) => e.result).toList();
                         _condition2.value = data;
                       },

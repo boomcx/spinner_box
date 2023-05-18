@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 
-const double kBotBtnHeight = 56.0;
+const double kBotBtnHeight = 56.0 + 12;
 
 /// 内容显示类型
 enum MoreContentType {
   /// 按钮样式
-  groupBtn,
+  wrap,
 
   /// 列表样式
-  checkList,
+  column,
 }
 
 class SpinnerEntity {
@@ -31,7 +31,7 @@ class SpinnerEntity {
   /// 问号描述，点击显示内容
   final String desc;
 
-  /// 标题后面的标记视图
+  /// 标题后面的额外图片（本地图片）
   final String suffixIcon;
 
   /// 选项集
@@ -41,7 +41,7 @@ class SpinnerEntity {
     required this.key,
     this.isRadio = true,
     this.title = '',
-    this.type = MoreContentType.groupBtn,
+    this.type = MoreContentType.wrap,
     this.desc = '',
     this.suffixIcon = '',
     this.extraData,
@@ -119,39 +119,6 @@ class SpinnerEntity {
         extraData: extraData,
       );
 }
-
-// class ItemStatus {
-//   bool selected;
-//   bool highlighted;
-//   ItemStatus({
-//     this.selected = false,
-//     this.highlighted = false,
-//   });
-
-//   ItemStatus copyWith({
-//     bool? selected,
-//     bool? highlighted,
-//   }) {
-//     return ItemStatus(
-//       selected: selected ?? this.selected,
-//       highlighted: highlighted ?? this.highlighted,
-//     );
-//   }
-
-//   @override
-//   String toString() =>
-//       'ItemStatus(selected: $selected, isHighlight: $highlighted)';
-
-//   @override
-//   bool operator ==(covariant ItemStatus other) {
-//     if (identical(this, other)) return true;
-
-//     return other.selected == selected && other.highlighted == highlighted;
-//   }
-
-//   @override
-//   int get hashCode => selected.hashCode ^ highlighted.hashCode;
-// }
 
 /// 继承 `ChangeNotifier` `ValueListenable`
 /// 写入自变量 `selected`，方便监听点击选中状态

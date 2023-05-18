@@ -15,7 +15,7 @@ class _SinglePageState extends State<SinglePage> {
   ];
 
   var _condition2 = [
-    years(key: 'year2', type: MoreContentType.groupBtn),
+    years(key: 'year2', type: MoreContentType.wrap),
   ];
 
   Map<String, List<dynamic>> _result = {};
@@ -32,7 +32,7 @@ class _SinglePageState extends State<SinglePage> {
               return [
                 SpinnerFilter(
                   data: _condition1,
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     notifier.updateName(name);
                     _condition1 = data;
                     setState(() {
@@ -42,7 +42,7 @@ class _SinglePageState extends State<SinglePage> {
                 ).heightPart,
                 SpinnerFilter(
                   data: _condition2,
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     notifier.updateName(name);
                     _condition2 = data;
                     setState(() {

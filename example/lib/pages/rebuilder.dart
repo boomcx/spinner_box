@@ -12,7 +12,7 @@ class RebuilderPage extends StatefulWidget {
 
 class _RebuilderPageState extends State<RebuilderPage> {
   var _condition1 = [
-    text(key: 'text1', type: MoreContentType.groupBtn, count: 15),
+    text(key: 'text1', type: MoreContentType.wrap, count: 15),
   ];
 
   @override
@@ -33,7 +33,7 @@ class _RebuilderPageState extends State<RebuilderPage> {
                 builder: (notifier) => [
                       SpinnerFilter(
                         data: _condition1,
-                        onCompleted: (result, name, data) {
+                        onCompleted: (result, name, data, onlyClosed) {
                           notifier.updateName(name);
                           _condition1 = data;
                         },

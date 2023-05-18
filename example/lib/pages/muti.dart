@@ -15,18 +15,13 @@ class _MultiPageState extends State<MultiPage> {
   ];
 
   var _condition2 = [
-    years(
-        key: 'year2',
-        type: MoreContentType.groupBtn,
-        isRadio: false,
-        count: 15),
+    years(key: 'year2', type: MoreContentType.wrap, isRadio: false, count: 15),
   ];
 
   var _condition3 = [
     years(key: 'year3', isRadio: true, count: 3),
-    text(key: 'text1', type: MoreContentType.groupBtn, count: 15),
-    text(
-        key: 'text2', type: MoreContentType.groupBtn, isRadio: false, count: 8),
+    text(key: 'text1', type: MoreContentType.wrap, count: 15),
+    text(key: 'text2', type: MoreContentType.wrap, isRadio: false, count: 8),
   ];
 
   Map<String, List<dynamic>> _result = {};
@@ -43,7 +38,7 @@ class _MultiPageState extends State<MultiPage> {
               return [
                 SpinnerFilter(
                   data: _condition1,
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     notifier.updateName(name);
                     setState(() {
                       _result = result;
@@ -53,7 +48,7 @@ class _MultiPageState extends State<MultiPage> {
                 ).heightPart,
                 SpinnerFilter(
                   data: _condition2,
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     notifier.updateName(name);
                     setState(() {
                       _condition2 = data;
@@ -72,7 +67,7 @@ class _MultiPageState extends State<MultiPage> {
                     }
                     return false;
                   },
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     notifier.updateName(name);
                     setState(() {
                       _condition3 = data;

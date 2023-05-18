@@ -13,29 +13,27 @@ class _CheckListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget icon = isSelect ? Assets.name('single_select') : const SizedBox();
+    final theme = BoxTheme.of(context).column;
+
+    Widget icon = isSelect
+        ? (theme.icon1 ?? Assets.name('single_select'))
+        : (theme.icon2 ?? const SizedBox());
     if (isMulti) {
       icon = isSelect
-          ? Assets.name('muti_select')
-          : Assets.name('muti_unselect');
+          ? (theme.iconMulti1 ?? Assets.name('muti_select'))
+          : (theme.iconMulti2 ?? Assets.name('muti_unselect'));
     }
-    return Container(
-      color: Colors.white,
-      height: 30,
+
+    return SizedBox(
+      height: theme.height,
       child: Row(
         children: [
           Expanded(
             child: Text(
               name,
-              style: TextStyle(
-                color: isSelect
-                    ? const Color(0xffE72410)
-                    : const Color(0xff20263A),
-                fontSize: 14,
-                fontWeight: isSelect ? FontWeight.w600 : FontWeight.normal,
-              ),
+              style: isSelect ? theme.selectedStyle : theme.unselectedStyle,
               overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+              maxLines: theme.maxLine,
             ),
           ),
           icon,

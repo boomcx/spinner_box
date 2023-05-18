@@ -21,10 +21,13 @@ typedef SpinnerFenceResponse = Function(
   List<SpinnerItem> results,
 
   /// 所有选中名称的集合
-  List<String> names,
+  String names,
 
   /// 当前通过选择操作的数据
   SpinnerEntity data,
+
+  /// 判断是否仅关闭弹窗
+  bool onlyClosed,
 );
 
 class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
@@ -74,14 +77,14 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
       // items: data.map((e) => EntityNotifier(e)).toList(),
       // 解决 `List.of(data)` - `ChangeNotifier` 无法重建的问题
       data: res,
-      idxList: defaultIndexList(res.items),
+      idxList: defaultIndexList(res),
     );
   }
 
   /// 获取默认选中展示
-  static List<int> defaultIndexList(List<SpinnerItem> list) {
+  static List<int> defaultIndexList(SpinnerEntity entity) {
     final idxList = <int>[];
-    final count = list.tier;
+    final count = entity.items.tier;
 
     runLoop(List<SpinnerItem> list) {
       for (var i = 0; i < list.length; i++) {
@@ -96,7 +99,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
       }
     }
 
-    runLoop(list);
+    runLoop(entity.items);
 
     final length = idxList.length;
     for (var i = 0; i < count - length; i++) {
@@ -107,8 +110,11 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 完成筛选
-  void completed() {
-    value = value.copyWith(isCompleted: true);
+  void completed([bool onlyClosed = false]) {
+    value = value.copyWith(
+      isCompleted: true,
+      onlyClosed: onlyClosed,
+    );
   }
 
   /// 重置

@@ -13,8 +13,8 @@ class _GroupContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const _GroupHeader(),
-            if (group.type == MoreContentType.checkList) const _CheckListCnt(),
-            if (group.type == MoreContentType.groupBtn) const _GroupBtnsCnt(),
+            if (group.type == MoreContentType.column) const _CheckListCnt(),
+            if (group.type == MoreContentType.wrap) const _GroupBtnsCnt(),
             // if (group.type == MoreContentType.fence) const _FenceCnt(),
           ],
         ));
@@ -27,18 +27,16 @@ class _GroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final group = _FilterGroupScope.of(context).item1;
+    final theme = BoxTheme.of(context).header;
 
     if (group.title.isEmpty) return const SizedBox();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Wrap(
-        spacing: 8,
+        spacing: theme.spacing,
         children: [
-          Text(
-            group.title,
-            style: const TextStyle(color: Colors.black54, fontSize: 12),
-          ),
+          Text(group.title, style: theme.style),
           if (group.desc.isNotEmpty) _ExplainIcon(desc: group.desc),
           if (group.suffixIcon.isNotEmpty)
             Image.asset(
@@ -46,10 +44,6 @@ class _GroupHeader extends StatelessWidget {
               height: 15,
               fit: BoxFit.fitHeight,
             ),
-          // const Icon(Icons.hotel_class_sharp,
-          //     size: 16, color: Colors.black26),
-          // Assets.images.searchIconVip
-          //     .image(width: 32, height: 16, fit: BoxFit.contain)
         ],
       ),
     );
@@ -97,29 +91,33 @@ class _GroupBtnsCnt extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final tuple = _FilterGroupScope.of(context);
+    final theme = BoxTheme.of(context).wrap;
     final items = tuple.item1.items;
 
-    return Wrap(spacing: 10, runSpacing: 10, children: [
-      ...List.generate(items.length, (index) {
-        final item = items[index];
-        return ValueListenableBuilder(
-          valueListenable: item,
-          builder: (context, value, child) => Button(
-            item.name,
-            item.selected,
-            onPressed: () {
-              notifier.itemOnSelected(tuple, index);
-            },
-          ),
-        );
-      }),
-      ...List.generate(notifier.attachment.length, (index) {
-        final attach = notifier.attachment[index];
-        if (attach.groupKey == tuple.item1.key) {
-          return attach;
-        }
-        return const SizedBox();
-      })
-    ]);
+    return Wrap(
+        spacing: theme.spacing,
+        runSpacing: theme.runSpacing,
+        children: [
+          ...List.generate(items.length, (index) {
+            final item = items[index];
+            return ValueListenableBuilder(
+              valueListenable: item,
+              builder: (context, value, child) => Button(
+                item.name,
+                item.selected,
+                onPressed: () {
+                  notifier.itemOnSelected(tuple, index);
+                },
+              ),
+            );
+          }),
+          ...List.generate(notifier.attachment.length, (index) {
+            final attach = notifier.attachment[index];
+            if (attach.groupKey == tuple.item1.key) {
+              return attach;
+            }
+            return const SizedBox();
+          })
+        ]);
   }
 }

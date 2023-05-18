@@ -9,15 +9,13 @@ class _ExplainIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = BoxTheme.of(context).header;
     return PopupMessage(
       bgColor: Colors.black54,
-      content: Text(
-        desc,
-        style: const TextStyle(color: Colors.white, height: 1, fontSize: 13),
-      ),
-      child: const Icon(
+      content: Text(desc, style: theme.descStyle),
+      child: Icon(
         Icons.help_outline_outlined,
-        size: 15,
+        size: theme.iconSize,
         color: Colors.black26,
       ),
     );

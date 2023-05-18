@@ -12,10 +12,10 @@ class InitPage extends StatefulWidget {
 
 class _InitPageState extends State<InitPage> {
   final _condition1 = ValueNotifier([
-    text(key: 'text1', type: MoreContentType.groupBtn, count: 15),
+    text(key: 'text1', type: MoreContentType.wrap, count: 15),
   ]);
   final _condition2 = ValueNotifier([
-    text(key: 'text1', type: MoreContentType.groupBtn, count: 9),
+    text(key: 'text1', type: MoreContentType.wrap, count: 9),
   ]);
 
   final _controler = PopupValueNotifier.titles(const ['Controller + children']);
@@ -41,7 +41,7 @@ class _InitPageState extends State<InitPage> {
                   builder: (context, value, child) {
                     return SpinnerFilter(
                       data: _condition1.value,
-                      onCompleted: (result, name, data) {
+                      onCompleted: (result, name, data, onlyClosed) {
                         _controler.updateName(name);
                         _condition1.value = data;
                         // 如果调用刷新，其他`builder`下拉框会失效
@@ -68,7 +68,7 @@ class _InitPageState extends State<InitPage> {
                         builder: (context, value, child) {
                           return SpinnerFilter(
                             data: value,
-                            onCompleted: (result, name, data) {
+                            onCompleted: (result, name, data, onlyClosed) {
                               notifier.updateName(name);
                               _condition2.value = data;
                             },
@@ -82,7 +82,7 @@ class _InitPageState extends State<InitPage> {
                         builder: (context, value, child) {
                           return SpinnerFilter(
                             data: value,
-                            onCompleted: (result, name, data) {
+                            onCompleted: (result, name, data, onlyClosed) {
                               notifier.updateName(name);
                               _condition2.value = data;
                             },

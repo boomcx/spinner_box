@@ -14,14 +14,9 @@ class CustomPage extends StatefulWidget {
 
 class _CustomPageState extends State<CustomPage> {
   var _condition3 = [
-    text(key: 'text1', type: MoreContentType.groupBtn, count: 15),
-    text(
-        key: 'text2', type: MoreContentType.groupBtn, isRadio: false, count: 8),
-    text(
-        key: 'text3',
-        type: MoreContentType.groupBtn,
-        isRadio: false,
-        count: 20),
+    text(key: 'text1', type: MoreContentType.wrap, count: 15),
+    text(key: 'text2', type: MoreContentType.wrap, isRadio: false, count: 8),
+    text(key: 'text3', type: MoreContentType.wrap, isRadio: false, count: 20),
   ];
 
   Map<String, List<dynamic>> _result = {};
@@ -73,7 +68,7 @@ class _CustomPageState extends State<CustomPage> {
                     }
                     return false;
                   },
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     notifier.updateName(name);
                     setState(() {
                       _condition3 = data;

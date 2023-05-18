@@ -9,6 +9,7 @@ import 'package:spinner_box_example/pages/init.dart';
 import 'package:spinner_box_example/pages/fence.dart';
 import 'package:spinner_box_example/pages/muti.dart';
 import 'package:spinner_box_example/pages/rebuilder.dart';
+import 'package:spinner_box_example/pages/theme.dart';
 
 import 'pages/normal.dart';
 
@@ -54,9 +55,32 @@ class _SpinnerTest extends StatelessWidget {
             SizedBox(height: 30),
             Text('构建', style: TextStyle(fontSize: 16)),
             _Builder(),
+            SizedBox(height: 30),
+            Text('自定义主题', style: TextStyle(fontSize: 16)),
+            _Theme(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Theme extends StatelessWidget {
+  const _Theme();
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            const ThemePage().push(context);
+          },
+          child: const _Title('Custom Theme'),
+        ),
+      ],
     );
   }
 }

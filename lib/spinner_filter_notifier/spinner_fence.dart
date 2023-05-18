@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'providers/entity.dart';
 import 'providers/provider_fence.dart';
+import 'theme/theme.dart';
 import 'widgets/asset.dart';
 import 'widgets/buttons.dart';
 
@@ -14,6 +15,7 @@ class SpinnerFence extends StatefulWidget {
     required this.onCompleted,
     this.onReseted,
     this.onItemIntercept,
+    this.theme,
   });
 
   /// 渲染数据
@@ -32,6 +34,9 @@ class SpinnerFence extends StatefulWidget {
   /// `name` 选中标题拼接
   /// `data` 更新重置的原始数据（同步选中状态）
   final SpinnerFenceResponse onCompleted;
+
+  /// 显示配置
+  final BoxThemeData? theme;
 
   @override
   State<SpinnerFence> createState() => _SpinnerFenceState();
@@ -55,7 +60,12 @@ class _SpinnerFenceState extends State<SpinnerFence> {
         final result = notifier.getResult();
         final data = notifier.outside;
         // 筛选出全部选中的结果
-        widget.onCompleted(result.item1, result.item2, data);
+        widget.onCompleted(
+          result.item1,
+          result.item2.join('/'),
+          data,
+          notifier.value.onlyClosed,
+        );
       }
     });
   }
@@ -91,24 +101,42 @@ class _SpinnerFenceState extends State<SpinnerFence> {
           );
         }
 
-        return _FenceNotiferScope(
-          notifier: notifier,
-          child: Material(
-            color: const Color(0xfff5f5f5),
-            child: Stack(
-              children: const [
-                _SpinnerFence(),
-                Positioned(
-                  right: 0,
-                  left: 0,
-                  bottom: 0,
-                  child: _BotButtons(),
-                )
-              ],
-            ),
-          ),
+        return BoxTheme(
+          theme: widget.theme ?? const BoxThemeData(),
+          child: _ContentView(notifier: notifier),
         );
       },
+    );
+  }
+}
+
+class _ContentView extends StatelessWidget {
+  const _ContentView({
+    required this.notifier,
+  });
+
+  final SpinnerFenceNotifier notifier;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = BoxTheme.of(context);
+
+    return _FenceNotiferScope(
+      notifier: notifier,
+      child: Material(
+        color: theme.backgroundColor,
+        child: Stack(
+          children: const [
+            _SpinnerFence(),
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: 0,
+              child: _BotButtons(),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -124,7 +152,7 @@ class _SpinnerFence extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-        bottom: single ? 0 : kBotBtnHeight + 10,
+        bottom: single ? 0 : kBotBtnHeight,
       ),
       child: const _FenceCnt(),
     );
@@ -138,31 +166,49 @@ class _BotButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FenceNotiferScope.of(context);
     final single = notifier.value.singleConditionAndSingleSelect;
+    final theme = BoxTheme.of(context).buttons;
 
     if (single) {
       return const SizedBox();
     }
     return Container(
-      height: kBotBtnHeight + 12,
-      padding: const EdgeInsets.only(top: kBotBtnHeight - 40, bottom: 12),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 1, color: Color(0xfff5f5f5)),
+      height: kBotBtnHeight,
+      // padding: const EdgeInsets.only(top: kBotBtnHeight - 40, bottom: 12),
+      decoration: BoxDecoration(
+        color: theme.backgroundColor,
+        border: const Border(
+          top: BorderSide(width: 1, color: Color(0xfff7f7f7)),
         ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          PopBotButton(
-            isReset: true,
-            name: '重置',
+          TapScope(
             onPressed: () {
-              notifier.reset();
+              if (theme.isRest) {
+                notifier.reset();
+              } else {
+                // 仅关闭
+                notifier.completed(true);
+              }
             },
+            child: Container(
+              alignment: Alignment.center,
+              width: 170,
+              height: 40,
+              decoration: theme.leftDecoration,
+              child: Text(theme.leftTxt, style: theme.leftStyle),
+            ),
           ),
-          PopBotButton(
+          TapScope(
             onPressed: notifier.completed,
+            child: Container(
+              alignment: Alignment.center,
+              width: 170,
+              height: 40,
+              decoration: theme.rightDecoration,
+              child: Text(theme.rightTxt, style: theme.rightStyle),
+            ),
           ),
         ],
       ),

@@ -1,6 +1,6 @@
 name: spinner_box
 description: The drop-down criteria filter box supports single selection, multiple selection, and user-defined filtering content.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/boomcx/spinner_box.git
 
 environment:

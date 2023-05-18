@@ -37,6 +37,7 @@ class _FenceCntState extends State<_FenceCnt> {
                   column: index,
                   data: data,
                   notifier: notifier,
+                  isLast: index == value.idxList.length - 1,
                 ),
               );
             }),
@@ -48,20 +49,34 @@ class _FenceCntState extends State<_FenceCnt> {
 }
 
 class _FenceList extends StatelessWidget {
-  const _FenceList({
-    required this.column,
-    required this.data,
-    required this.notifier,
-  });
+  const _FenceList(
+      {required this.column,
+      required this.data,
+      required this.notifier,
+      this.isLast = false});
 
   final int column;
+  final bool isLast;
   final List<SpinnerItem> data;
   final SpinnerFenceNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
+    final theme = BoxTheme.of(context).fence;
+    final columnColor = theme.backgroundColors.length > column
+        ? theme.backgroundColors[column]
+        : Colors.white;
+
     return Container(
-      color: column == 0 ? const Color(0xfff5f5f5) : Colors.white,
+      decoration: BoxDecoration(
+        color: columnColor,
+        border: Border(
+          right: BorderSide(
+            width: isLast ? 0 : 0.5,
+            color: const Color(0xfff5f5f5),
+          ),
+        ),
+      ),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: ListView.builder(
@@ -73,7 +88,11 @@ class _FenceList extends StatelessWidget {
             final item = data[index];
             return TapScope(
               onPressed: () {
-                notifier.itemOnHightlighted(index, column);
+                if (isLast) {
+                  notifier.itemOnSelected(index, column);
+                } else {
+                  notifier.itemOnHightlighted(index, column);
+                }
               },
               child: _FenceListItem(
                 item: item,
@@ -109,42 +128,43 @@ class _FenceListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget icon =
-        item.selected ? Assets.name('single_select') : const SizedBox();
+    final theme = BoxTheme.of(context).column;
+    final fence = BoxTheme.of(context).fence;
+
+    Widget icon = item.selected
+        ? (theme.icon1 ?? Assets.name('single_select'))
+        : (theme.icon2 ?? const SizedBox());
     if (!notifier.value.data.isRadio) {
       if (item.selected) {
         icon = item.isSelectedAll
-            ? Assets.name('muti_select')
-            : Assets.name('muti_select_not_all');
+            ? (theme.iconMulti1 ?? Assets.name('muti_select'))
+            : (theme.iconMulti3 ?? Assets.name('muti_select_not_all'));
       } else {
-        icon = Assets.name('muti_unselect');
+        icon = (theme.iconMulti2 ?? Assets.name('muti_unselect'));
       }
     }
 
     var color = Colors.transparent;
     if (index == notifier.value.idxList[column] &&
         column < notifier.value.idxList.length - 1) {
-      color = column == 0 ? Colors.white : const Color(0xfff7f7f7);
+      color = fence.hightlightedColors.length > column
+          ? fence.hightlightedColors[column]
+          : const Color(0xfff7f7f7);
     }
 
     return Container(
       color: color,
-      height: 42,
+      height: fence.height,
       padding: const EdgeInsets.only(left: 12),
       child: Row(
         children: [
           Expanded(
             child: Text(
               item.name,
-              style: TextStyle(
-                color: item.selected
-                    ? const Color(0xffE72410)
-                    : const Color(0xff20263A),
-                fontSize: 14,
-                fontWeight: item.selected ? FontWeight.w600 : FontWeight.normal,
-              ),
+              style:
+                  item.selected ? theme.selectedStyle : theme.unselectedStyle,
               overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+              maxLines: theme.maxLine,
             ),
           ),
           const SizedBox(width: 6),

@@ -41,7 +41,7 @@ class _DropViewPageState extends State<DropViewPage> {
                   data: [
                     SpinnerEntity(
                         key: 'year',
-                        type: MoreContentType.checkList,
+                        type: MoreContentType.column,
                         items: [
                           SpinnerItem(name: '不限', result: ''),
                           ...List.generate(5, (index) {
@@ -51,7 +51,7 @@ class _DropViewPageState extends State<DropViewPage> {
                           }),
                         ])
                   ],
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     _controller.updateName(name);
                   },
                 ).heightPart,
@@ -78,7 +78,7 @@ class _DropViewPageState extends State<DropViewPage> {
                     }
                     return false;
                   },
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
                     _controller.updateName(name);
 
                     // 建议局部刷新/状态管理
@@ -243,7 +243,7 @@ class _FilterView extends StatelessWidget {
       builder: (p0) => [
         SpinnerFilter(
           data: [
-            SpinnerEntity(key: 'year', type: MoreContentType.checkList, items: [
+            SpinnerEntity(key: 'year', type: MoreContentType.column, items: [
               SpinnerItem(name: '不限', result: ''),
               ...List.generate(5, (index) {
                 final year = (DateTime.now().year - index).toString();
@@ -251,13 +251,13 @@ class _FilterView extends StatelessWidget {
               }),
             ])
           ],
-          onCompleted: (result, name, data) {
+          onCompleted: (result, name, data, onlyClosed) {
             p0.updateName(name);
           },
         ).heightPart,
         SpinnerFilter(
           data: def,
-          onCompleted: (result, name, data) {
+          onCompleted: (result, name, data, onlyClosed) {
             p0.updateName(name);
           },
         ).heightPart,
@@ -289,7 +289,7 @@ var def = [
       key: 'group3',
       title: '分组3-多选',
       isRadio: false,
-      type: MoreContentType.checkList,
+      type: MoreContentType.column,
       items: [
         ...List.generate(3, (index) {
           return SpinnerItem(name: '分组3-$index', result: index);
@@ -298,7 +298,7 @@ var def = [
   SpinnerEntity(
       key: 'group4',
       title: '分组4-单选',
-      type: MoreContentType.checkList,
+      type: MoreContentType.column,
       items: [
         ...List.generate(3, (index) {
           return SpinnerItem(name: '分组4-$index', result: index);
@@ -343,7 +343,7 @@ var def = [
 //                   data: [
 //                     SpinnerFilterEntity(
 //                         key: 'year',
-//                         type: MoreContentType.checkList,
+//                         type: MoreContentType.column,
 //                         items: [
 //                           const SpinnerFilterItem(name: '不限', value: ''),
 //                           ...List.generate(5, (index) {
@@ -499,7 +499,7 @@ var def = [
 //           data: [
 //             SpinnerFilterEntity(
 //                 key: 'year',
-//                 type: MoreContentType.checkList,
+//                 type: MoreContentType.column,
 //                 items: [
 //                   const SpinnerFilterItem(name: '不限', value: ''),
 //                   ...List.generate(5, (index) {

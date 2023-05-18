@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spinner_box/spinner_filter_notifier/theme/theme.dart';
 import 'package:tuple/tuple.dart';
 
 import '../popup_message.dart';
@@ -21,6 +22,7 @@ class SpinnerFilter extends StatefulWidget {
     this.onReseted,
     this.onItemIntercept,
     this.attachment = const [],
+    this.theme,
   });
 
   /// 渲染数据
@@ -45,6 +47,9 @@ class SpinnerFilter extends StatefulWidget {
   /// `Widget` 组件
   final List<AttachmentView> attachment;
 
+  /// 显示配置
+  final BoxThemeData? theme;
+
   @override
   State<SpinnerFilter> createState() => _SpinnerFilterState();
 }
@@ -68,7 +73,12 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
         final result = notifier.getResult();
         final data = notifier.outside;
         // 筛选出全部选中的结果
-        widget.onCompleted(result.item1, result.item2, data);
+        widget.onCompleted(
+          result.item1,
+          result.item2,
+          data,
+          notifier.value.onlyClosed,
+        );
       }
     });
   }
@@ -104,70 +114,48 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
           );
         }
 
-        return _FilterNotiferScope(
-          notifier: notifier,
-          child: Material(
-            color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: Stack(
-                // mainAxisSize: MainAxisSize.min,
-                children: const [
-                  _SpinnerContent(),
-                  Positioned(
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                    child: _BotButtons(),
-                  )
-                ],
-              ),
-            ),
-          ),
+        return BoxTheme(
+          theme: widget.theme ?? const BoxThemeData(),
+          child: _ContentView(notifier: notifier),
         );
       },
     );
   }
 }
 
-/// 区分内容显示
-/// `type.fence`和其他显示内容布局有所有差异
-// class _ContentView extends StatelessWidget {
-//   const _ContentView();
+class _ContentView extends StatelessWidget {
+  const _ContentView({
+    required this.notifier,
+  });
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final notifier = _FilterNotiferScope.of(context);
-//     final items = notifier.value.items;
+  final SpinnerFilterNotifier notifier;
 
-//     if (items.length == 1 && items.first.type == MoreContentType.fence) {
-//       return const _SpinnerFence();
-//     }
-//     return const _SpinnerContent();
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    final theme = BoxTheme.of(context);
 
-/// 栅栏显示
-// class _SpinnerFence extends StatelessWidget {
-//   const _SpinnerFence();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final notifier = _FilterNotiferScope.of(context);
-//     final items = notifier.value.items;
-//     final single = notifier.value.singleConditionAndSingleSelect;
-
-//     return Padding(
-//       padding: EdgeInsets.only(
-//         bottom: single ? 0 : kBotBtnHeight + 10,
-//       ),
-//       child: _FilterGroupScope(
-//         data: Tuple2(items.first, 0),
-//         child: const _FenceCnt(),
-//       ),
-//     );
-//   }
-// }
+    return _FilterNotiferScope(
+      notifier: notifier,
+      child: Material(
+        color: theme.backgroundColor,
+        child: Container(
+          child: Stack(
+            // mainAxisSize: MainAxisSize.min,
+            children: const [
+              _SpinnerContent(),
+              Positioned(
+                right: 0,
+                left: 0,
+                bottom: 0,
+                child: _BotButtons(),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class _SpinnerContent extends StatelessWidget {
   const _SpinnerContent();
@@ -211,32 +199,49 @@ class _BotButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final single = notifier.value.singleConditionAndSingleSelect;
+    final theme = BoxTheme.of(context).buttons;
 
-    if (single) {
-      return const SizedBox();
-    }
+    if (single) return const SizedBox();
+
     return Container(
       height: kBotBtnHeight,
-      padding: const EdgeInsets.only(top: kBotBtnHeight - 40),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 1, color: Color(0xfff5f5f5)),
+      // padding: const EdgeInsets.only(top: kBotBtnHeight - 40, bottom: 12),
+      decoration: BoxDecoration(
+        color: theme.backgroundColor,
+        border: const Border(
+          top: BorderSide(width: 1, color: Color(0xfff7f7f7)),
         ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          PopBotButton(
-            isReset: true,
-            name: '重置',
+          TapScope(
             onPressed: () {
-              notifier.reset();
-              notifier.resetAttachment();
+              if (theme.isRest) {
+                notifier.reset();
+                notifier.resetAttachment();
+              } else {
+                // 仅关闭
+                notifier.completed(true);
+              }
             },
+            child: Container(
+              alignment: Alignment.center,
+              width: 170,
+              height: 40,
+              decoration: theme.leftDecoration,
+              child: Text(theme.leftTxt, style: theme.leftStyle),
+            ),
           ),
-          PopBotButton(
+          TapScope(
             onPressed: notifier.completed,
+            child: Container(
+              alignment: Alignment.center,
+              width: 170,
+              height: 40,
+              decoration: theme.rightDecoration,
+              child: Text(theme.rightTxt, style: theme.rightStyle),
+            ),
           ),
         ],
       ),

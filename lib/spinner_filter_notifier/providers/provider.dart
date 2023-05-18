@@ -12,9 +12,17 @@ typedef SpinnerFilterIntercept = FutureOr<bool> Function(SpinnerEntity, int);
 
 /// 完成筛选的回调
 typedef SpinnerFilterResponse = Function(
-  Map<String, List> result,
-  String name,
+  /// 筛选结果
+  Map<String, List> results,
+
+  /// 标记集合
+  String names,
+
+  /// 选中过后的数据
   List<SpinnerEntity> data,
+
+  /// 判断是否仅关闭弹窗
+  bool onlyClosed,
 );
 
 class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
@@ -70,7 +78,6 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       // items: data.map((e) => EntityNotifier(e)).toList(),
       //  解决 `List.of(data)` - `ChangeNotifier` 无法重建的问题
       items: SpinnerEntity.fromList(data.map((e) => e.toJson()).toList()),
-      isInit: true,
     );
   }
 
@@ -105,8 +112,11 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   }
 
   /// 完成筛选
-  void completed() {
-    value = value.copyWith(isCompleted: true);
+  void completed([bool onlyClosed = false]) {
+    value = value.copyWith(
+      isCompleted: true,
+      onlyClosed: onlyClosed,
+    );
   }
 
   /// 重置自定义外部输入
