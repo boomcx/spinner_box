@@ -20,10 +20,25 @@ The main purpose of writing is to produce components that are easy to use and ha
 - Optimize the use of some types;
 
 ## images
-|||
-| <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ec9815f3261041488a556f65f3b06308~tplv-k3u1fbpfcp-watermark.image?" width="230px"> | <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cbfaa7bf262947ecaa3276c906a9d514~tplv-k3u1fbpfcp-watermark.image?" width="230px"> |
-| <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a3233a2b7d504feca89536d20d5c8e76~tplv-k3u1fbpfcp-watermark.image?" width="230px"> | <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b823adbfb4c248f989fc3673846b0cf0~tplv-k3u1fbpfcp-watermark.image" width="230px">  |
-| <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c6ccd765eab641df80582713a4aeb3e5~tplv-k3u1fbpfcp-watermark.image?" width="230px"> | <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9c92e404c2b44d18b43d4f2eab619318~tplv-k3u1fbpfcp-watermark.image?" width="230px">|
+
+
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ec9815f3261041488a556f65f3b06308~tplv-k3u1fbpfcp-watermark.image?" width="230px">  
+<img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cbfaa7bf262947ecaa3276c906a9d514~tplv-k3u1fbpfcp-watermark.image?" width="230px"> 
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a3233a2b7d504feca89536d20d5c8e76~tplv-k3u1fbpfcp-watermark.image?" width="230px">  
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b823adbfb4c248f989fc3673846b0cf0~tplv-k3u1fbpfcp-watermark.image" width="230px"> 
+
+#### 2023-05-16 补充
+
+add fence style
+
+ <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c6ccd765eab641df80582713a4aeb3e5~tplv-k3u1fbpfcp-watermark.image?" width="230px"> 
+
+#### 2023-05-18 补充
+
+add theme config
+
+ <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9c92e404c2b44d18b43d4f2eab619318~tplv-k3u1fbpfcp-watermark.image?" width="230px">
+
  
 ## Installation
 See the [installation instructions on pub](https://pub.dev/packages/spinner_box/install).
