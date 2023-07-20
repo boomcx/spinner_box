@@ -22,14 +22,17 @@ class Button extends StatelessWidget {
       onPressed: onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-        constraints: const BoxConstraints(
-          minWidth: 48,
-        ),
+        constraints: const BoxConstraints(minWidth: 48, minHeight: 28),
         decoration:
             isSelected ? theme.selectedDecoration : theme.unselectedDecoration,
-        child: Text(
-          name,
-          style: isSelected ? theme.selectedStyle : theme.unselectedStyle,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              name,
+              style: isSelected ? theme.selectedStyle : theme.unselectedStyle,
+            ),
+          ],
         ),
       ),
     );

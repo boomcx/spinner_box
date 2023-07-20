@@ -173,7 +173,7 @@ class _BotButtons extends StatelessWidget {
     }
     return Container(
       height: kBotBtnHeight,
-      // padding: const EdgeInsets.only(top: kBotBtnHeight - 40, bottom: 12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: theme.backgroundColor,
         border: const Border(
@@ -181,33 +181,35 @@ class _BotButtons extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          TapScope(
-            onPressed: () {
-              if (theme.isRest) {
-                notifier.reset();
-              } else {
-                // 仅关闭
-                notifier.completed(true);
-              }
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: 170,
-              height: 40,
-              decoration: theme.leftDecoration,
-              child: Text(theme.leftTxt, style: theme.leftStyle),
+          Expanded(
+            child: TapScope(
+              onPressed: () {
+                if (theme.isRest) {
+                  notifier.reset();
+                } else {
+                  // 仅关闭
+                  notifier.completed(true);
+                }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                decoration: theme.leftDecoration,
+                child: Text(theme.leftTxt, style: theme.leftStyle),
+              ),
             ),
           ),
-          TapScope(
-            onPressed: notifier.completed,
-            child: Container(
-              alignment: Alignment.center,
-              width: 170,
-              height: 40,
-              decoration: theme.rightDecoration,
-              child: Text(theme.rightTxt, style: theme.rightStyle),
+          const SizedBox(width: 11),
+          Expanded(
+            child: TapScope(
+              onPressed: notifier.completed,
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                decoration: theme.rightDecoration,
+                child: Text(theme.rightTxt, style: theme.rightStyle),
+              ),
             ),
           ),
         ],

@@ -18,6 +18,7 @@ SpinnerEntity years({
           : '描述文本描述文本描述文本描述文本描述文本描述文本描述文本描述文本',
       items: [
         SpinnerItem(name: '全部', result: '', selected: true, isMutex: true),
+        SpinnerItem(name: '-', result: ''),
         ...List.generate(
             count, (index) => (DateTime.now().year - index).toString()).map(
           (e) => SpinnerItem.fromJson({'name': e, 'result': e}),

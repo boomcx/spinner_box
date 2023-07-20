@@ -7,7 +7,8 @@ class _GroupContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final group = _FilterGroupScope.of(context).item1;
 
-    return SizedBox(
+    return Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +62,7 @@ class _CheckListCnt extends StatelessWidget {
 
     return ListView.builder(
       padding: EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
       itemCount: items.length,
       itemBuilder: (context, index) {

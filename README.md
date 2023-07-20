@@ -4,9 +4,9 @@ The main purpose of writing is to produce components that are easy to use and ha
 
 'Overlay' : This component view has a high level, which is a good choice for the top layer content display (Toast), but because of the high level, if you want to continue to display other selected input content after the pop-up box is displayed, it will block the display of input action page (such as keyboard, or other 'Navigator.push').
 
-[![pub package](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/19a06904e09646a79f388932c22d7aa0~tplv-k3u1fbpfcp-zoom-1.image)](https://pub.dev/packages/spinner_box) 
+[![pub package](https://img.shields.io/pub/v/spinner_box.svg?label=spinner_box&color=blue)](https://pub.dev/packages/spinner_box) 
 
-[juejin](https://juejin.cn/post/7227012644506435642)
+[稀土掘金](https://juejin.cn/post/7227012644506435642)
 
 # Spinner Box
 

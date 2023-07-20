@@ -334,7 +334,7 @@ class _CompsitedTarget extends StatelessWidget {
           border: config.isShowBorder
               ? const Border(
                   top: BorderSide(width: 1, color: Color(0xffeeeeee)),
-                  bottom: BorderSide(width: 1, color: Color(0xffeeeeee)),
+                  // bottom: BorderSide(width: 1, color: Color(0xffeeeeee)),
                 )
               : null,
         ),

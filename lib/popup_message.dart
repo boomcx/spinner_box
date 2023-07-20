@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class _PopupConfig {
@@ -36,7 +37,7 @@ class PopupMessage extends StatefulWidget {
     this.padding = const EdgeInsets.all(10),
     this.margin = const EdgeInsets.all(5),
     this.bgColor = Colors.white,
-    this.size = const Size(7, 7),
+    this.size = const Size(6, 6),
     this.maxWidth = 200,
     this.radius = 4,
     this.barrierColor = const Color(0x05000000),
@@ -178,7 +179,7 @@ class _ChildLayoutDelegate extends SingleChildLayoutDelegate {
     // 默认显示在正下方
     Offset offset = Offset(
       0,
-      target.bottom + config.size.height + config.margin.bottom,
+      target.bottom + config.size.height + config.margin.top,
     );
 
     // 超出左边屏幕
@@ -195,10 +196,13 @@ class _ChildLayoutDelegate extends SingleChildLayoutDelegate {
     }
 
     // 底部溢出 正上方显示
-    if (target.bottom + size.height + media.padding.bottom + kToolbarHeight >
+    if (target.bottom +
+            size.height +
+            media.padding.bottom +
+            kMinInteractiveDimensionCupertino >
         sh) {
       offset = Offset(offset.dx,
-          target.top - size.height - config.margin.top - config.size.height);
+          target.top - size.height - config.margin.bottom - config.size.height);
     }
 
     return offset;
@@ -282,7 +286,10 @@ class _PopupMsgPainter extends CustomPainter {
     }
 
     // 底部溢出 正上方显示
-    if (target.bottom + size.height + media.padding.bottom + kToolbarHeight >
+    if (target.bottom +
+            size.height +
+            media.padding.bottom +
+            kMinInteractiveDimensionCupertino >
         sh) {
       offset = Offset(offset.dx, size.height);
     }

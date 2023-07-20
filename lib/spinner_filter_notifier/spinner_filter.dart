@@ -140,12 +140,23 @@ class _ContentView extends StatelessWidget {
         color: theme.backgroundColor,
         child: const Stack(
           children: [
-            _SpinnerContent(),
+            SingleChildScrollView(
+              child: _SpinnerContent(),
+            ),
             Positioned(
               right: 0,
               left: 0,
               bottom: 0,
               child: _BotButtons(),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Divider(
+                height: 1,
+                color: Color(0xffEEEEEE),
+              ),
             )
           ],
         ),
@@ -169,8 +180,8 @@ class _SpinnerContent extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 12,
         right: 12,
-        top: 12,
-        bottom: single ? 0 : kBotBtnHeight + 10,
+        top: 0,
+        bottom: single ? 0 : kBotBtnHeight,
       ),
       itemBuilder: (context, index) {
         return _FilterGroupScope(
@@ -180,7 +191,7 @@ class _SpinnerContent extends StatelessWidget {
       },
       separatorBuilder: (context, index) {
         return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16),
+          padding: EdgeInsets.symmetric(vertical: 0),
           child: Divider(height: 1, color: Color(0xffEEEEEE)),
         );
       },
@@ -202,7 +213,7 @@ class _BotButtons extends StatelessWidget {
 
     return Container(
       height: kBotBtnHeight,
-      // padding: const EdgeInsets.only(top: kBotBtnHeight - 40, bottom: 12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: theme.backgroundColor,
         border: const Border(
@@ -210,34 +221,36 @@ class _BotButtons extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          TapScope(
-            onPressed: () {
-              if (theme.isRest) {
-                notifier.reset();
-                notifier.resetAttachment();
-              } else {
-                // 仅关闭
-                notifier.completed(true);
-              }
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: 170,
-              height: 40,
-              decoration: theme.leftDecoration,
-              child: Text(theme.leftTxt, style: theme.leftStyle),
+          Expanded(
+            child: TapScope(
+              onPressed: () {
+                if (theme.isRest) {
+                  notifier.reset();
+                  notifier.resetAttachment();
+                } else {
+                  // 仅关闭
+                  notifier.completed(true);
+                }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                decoration: theme.leftDecoration,
+                child: Text(theme.leftTxt, style: theme.leftStyle),
+              ),
             ),
           ),
-          TapScope(
-            onPressed: notifier.completed,
-            child: Container(
-              alignment: Alignment.center,
-              width: 170,
-              height: 40,
-              decoration: theme.rightDecoration,
-              child: Text(theme.rightTxt, style: theme.rightStyle),
+          const SizedBox(width: 11),
+          Expanded(
+            child: TapScope(
+              onPressed: notifier.completed,
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                decoration: theme.rightDecoration,
+                child: Text(theme.rightTxt, style: theme.rightStyle),
+              ),
             ),
           ),
         ],

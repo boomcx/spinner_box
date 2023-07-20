@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 
-const double kBotBtnHeight = 56.0 + 12;
+const double kBotBtnHeight = 64;
 
 /// 内容显示类型
 enum MoreContentType {
