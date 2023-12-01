@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class _PopupConfig {
@@ -17,6 +16,7 @@ class _PopupConfig {
   /// 三角的大小
   final Size size;
 
+  /// 圆角
   final double radius;
 
   _PopupConfig({
@@ -37,22 +37,41 @@ class PopupMessage extends StatefulWidget {
     this.padding = const EdgeInsets.all(10),
     this.margin = const EdgeInsets.all(5),
     this.bgColor = Colors.white,
-    this.size = const Size(6, 6),
+    this.size = const Size(7, 7),
     this.maxWidth = 200,
     this.radius = 4,
     this.barrierColor = const Color(0x05000000),
     this.onPreShow,
   });
 
+  /// 默认显示内容
   final Widget child;
+
+  /// 弹框显示内容
   final Widget content;
+
+  /// 限制弹框最大显示宽度
   final double maxWidth;
+
+  /// 弹框內间距
   final EdgeInsets padding;
+
+  /// 弹框与`child`内容之间的距离
   final EdgeInsets margin;
+
+  /// 弹框三角大小
   final Size size;
+
+  /// 弹框圆角
   final double radius;
+
+  /// 遮罩背景色
   final Color barrierColor;
+
+  /// 弹框背景色
   final Color bgColor;
+
+  /// 设置是否需要显示弹窗内容
   final FutureOr<bool> Function()? onPreShow;
 
   @override
@@ -92,30 +111,40 @@ class _PopupMessageState extends State<PopupMessage> {
     _entry = OverlayEntry(builder: (context) {
       return Material(
         color: Colors.transparent,
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: _removeEntry,
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: CustomSingleChildLayout(
-              delegate: _ChildLayoutDelegate(
-                _config,
-                target: offset & box.size,
+        child: Stack(
+          children: [
+            /// 增加图层避免，显示内容点击时，弹窗消失
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: _removeEntry,
+              child: Container(
+                color: widget.barrierColor,
+                width: double.infinity,
+                height: double.infinity,
               ),
-              child: CustomPaint(
-                painter: _PopupMsgPainter(
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: CustomSingleChildLayout(
+                delegate: _ChildLayoutDelegate(
                   _config,
                   target: offset & box.size,
                 ),
-                child: Container(
-                  constraints: BoxConstraints(maxWidth: widget.maxWidth),
-                  // color: Colors.red,
-                  padding: widget.padding,
-                  child: widget.content,
+                child: CustomPaint(
+                  painter: _PopupMsgPainter(
+                    _config,
+                    target: offset & box.size,
+                  ),
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: widget.maxWidth),
+                    // color: Colors.red,
+                    padding: widget.padding,
+                    child: widget.content,
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       );
     });
@@ -179,7 +208,7 @@ class _ChildLayoutDelegate extends SingleChildLayoutDelegate {
     // 默认显示在正下方
     Offset offset = Offset(
       0,
-      target.bottom + config.size.height + config.margin.top,
+      target.bottom + config.size.height + config.margin.bottom,
     );
 
     // 超出左边屏幕
@@ -196,13 +225,10 @@ class _ChildLayoutDelegate extends SingleChildLayoutDelegate {
     }
 
     // 底部溢出 正上方显示
-    if (target.bottom +
-            size.height +
-            media.padding.bottom +
-            kMinInteractiveDimensionCupertino >
+    if (target.bottom + size.height + media.padding.bottom + kToolbarHeight >
         sh) {
       offset = Offset(offset.dx,
-          target.top - size.height - config.margin.bottom - config.size.height);
+          target.top - size.height - config.margin.top - config.size.height);
     }
 
     return offset;
@@ -286,10 +312,7 @@ class _PopupMsgPainter extends CustomPainter {
     }
 
     // 底部溢出 正上方显示
-    if (target.bottom +
-            size.height +
-            media.padding.bottom +
-            kMinInteractiveDimensionCupertino >
+    if (target.bottom + size.height + media.padding.bottom + kToolbarHeight >
         sh) {
       offset = Offset(offset.dx, size.height);
     }
