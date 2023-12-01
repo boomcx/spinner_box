@@ -18,7 +18,7 @@ typedef SpinnerFenceIntercept = FutureOr<bool> Function(
 /// 完成筛选的回调
 typedef SpinnerFenceResponse = Function(
   /// 所有选中的集合
-  List<SpinnerItem> results,
+  List<SpinnerItemData> results,
 
   /// 所有选中名称的集合
   String names,
@@ -86,7 +86,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
     final idxList = <int>[];
     final count = entity.items.tier;
 
-    runLoop(List<SpinnerItem> list) {
+    runLoop(List<SpinnerItemData> list) {
       for (var i = 0; i < list.length; i++) {
         final item = list[i];
         if (item.selected) {
@@ -138,14 +138,14 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 获取选择的结果
-  Tuple2<List<SpinnerItem>, List<String>> getResult() {
+  Tuple2<List<SpinnerItemData>, List<String>> getResult() {
     if (value.singleConditionAndSingleSelect) {
       final lastList = getColumn(value.idxList.length - 1);
       final item = lastList[value.idxList.last];
       return Tuple2([item], [item.name]);
     }
 
-    final resluts = <SpinnerItem>[];
+    final resluts = <SpinnerItemData>[];
     final reslutNames = <String>[];
 
     for (var element in value.data.items) {
@@ -159,7 +159,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 判断子集是否有选中
-  bool chidrenSelectedStatus(List<SpinnerItem> list) {
+  bool chidrenSelectedStatus(List<SpinnerItemData> list) {
     for (var element in list) {
       if (element.selected) {
         return true;
@@ -174,7 +174,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 设置子集选中
-  chidrenSelected(List<SpinnerItem> list, bool state) {
+  chidrenSelected(List<SpinnerItemData> list, bool state) {
     for (var element in list) {
       element.selected = state;
       // element.highlighted = false;
@@ -236,12 +236,12 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 获取对应列的数据列表
-  List<SpinnerItem> getColumn(int index) {
+  List<SpinnerItemData> getColumn(int index) {
     final fenceList = value.data.items;
     if (index == 0) {
       return fenceList;
     }
-    List<SpinnerItem> list = fenceList;
+    List<SpinnerItemData> list = fenceList;
 
     for (var i = 0; i < index; i++) {
       final idx = value.idxList[i];

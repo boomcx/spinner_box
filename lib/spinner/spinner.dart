@@ -6,10 +6,13 @@ import 'theme.dart';
 typedef SpinnerBoxBuilder = List<SpinnerPopScope> Function(
     PopupValueNotifier spinner);
 
-/// The drop dwon popout header buttons with custom popout content view
+/// 自定义下拉菜单弹框
+///
 // ignore: must_be_immutable
 class SpinnerBox extends StatefulWidget {
-  /// How to use
+  /// 普通构建方式，需要额外对数据源进行变更
+  ///
+  /// 使用示例：
   ///
   ///  ```
   ///  final controller = PopupValueNotifier.titles(const ['title1', 'tilte2']);
@@ -23,7 +26,7 @@ class SpinnerBox extends StatefulWidget {
   ///  ),
   /// ```
   ///
-  ///  methods:
+  ///  控制器方法:
   /// ```
   ///   notifier.updateName('update-title1');
   ///  'or' notifier.close();
@@ -42,7 +45,9 @@ class SpinnerBox extends StatefulWidget {
     widgets = children;
   }
 
-  /// How to use
+  /// 普通构建方式，需要额外对数据源进行变更
+  ///
+  /// 使用示例：
   ///
   /// ```
   /// SpinnerBox.builder(
@@ -55,7 +60,7 @@ class SpinnerBox extends StatefulWidget {
   ///    ],
   ///  )
   /// ```
-  ///  methods:
+  ///  控制器方法:
   /// ```
   ///   notifier.updateName('update-title1');
   ///  'or' notifier.close();
@@ -74,7 +79,9 @@ class SpinnerBox extends StatefulWidget {
     widgets = builder.call(controller);
   }
 
-  /// Repeated call builder
+  /// 每次唤起弹框，都会重新构建内部视图
+  /// 可以减少对数据源的监听修改
+  ///
   SpinnerBox.rebuilder({
     super.key,
     required List<String> titles,

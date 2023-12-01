@@ -39,9 +39,9 @@ class _GroupHeader extends StatelessWidget {
         children: [
           Text(group.title, style: theme.style),
           if (group.desc.isNotEmpty) _ExplainIcon(desc: group.desc),
-          if (group.suffixIcon.isNotEmpty)
+          if (group.titleSuffix.isNotEmpty)
             Image.asset(
-              group.suffixIcon,
+              group.titleSuffix,
               height: 15,
               fit: BoxFit.fitHeight,
             ),

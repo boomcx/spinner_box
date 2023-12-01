@@ -14,6 +14,7 @@ part './widgets/check_list_item.dart';
 part './widgets/explain_icon.dart';
 part './widgets/attachment_view.dart';
 
+/// List / Wrap 形式的显示视图
 class SpinnerFilter extends StatefulWidget {
   const SpinnerFilter({
     super.key,

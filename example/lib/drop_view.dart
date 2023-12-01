@@ -13,7 +13,7 @@ class DropViewPage extends StatefulWidget {
 
 class _DropViewPageState extends State<DropViewPage> {
   final _textEditing = TextEditingController();
-  final _controller = PopupValueNotifier.titles(const ['单列表', '传入自定义视图']);
+  final _controller = PopupValueNotifier.titles(const ['没有标记选中', '传入自定义视图']);
   var _filterData = def;
 
   @override
@@ -43,11 +43,11 @@ class _DropViewPageState extends State<DropViewPage> {
                         key: 'year',
                         type: MoreContentType.column,
                         items: [
-                          SpinnerItem(name: '不限', result: ''),
+                          SpinnerItemData(name: '不限', result: ''),
                           ...List.generate(5, (index) {
                             final year =
                                 (DateTime.now().year - index).toString();
-                            return SpinnerItem(name: year, result: year);
+                            return SpinnerItemData(name: year, result: year);
                           }),
                         ])
                   ],
@@ -238,16 +238,16 @@ class _FilterView extends StatelessWidget {
     return SpinnerBox.rebuilder(
       prefix: prefix,
       suffix: suffix,
-      titles: const ['单列表', '状态保留'],
+      titles: const ['未更新数据源1', '未更新数据源2'],
       theme: defaultPinnerTheme.copyWith(outsideFocus: true),
       builder: (p0) => [
         SpinnerFilter(
           data: [
             SpinnerEntity(key: 'year', type: MoreContentType.column, items: [
-              SpinnerItem(name: '不限', result: ''),
+              SpinnerItemData(name: '不限', result: ''),
               ...List.generate(5, (index) {
                 final year = (DateTime.now().year - index).toString();
-                return SpinnerItem(name: year, result: year);
+                return SpinnerItemData(name: year, result: year);
               }),
             ])
           ],
@@ -271,17 +271,17 @@ var def = [
       key: 'group1',
       title: '分组1-多选',
       isRadio: false,
-      suffixIcon: 'assets/icon.png',
+      titleSuffix: 'assets/icon.png',
       items: [
-        SpinnerItem(name: '不限', result: '', isMutex: true),
+        SpinnerItemData(name: '不限', result: '', isMutex: true),
         ...List.generate(10, (index) {
-          return SpinnerItem(name: '分组1-$index', result: index);
+          return SpinnerItemData(name: '分组1-$index', result: index);
         }),
       ]),
   SpinnerEntity(key: 'group2', title: '分组2-单选', items: [
-    SpinnerItem(name: '不限', result: ''),
+    SpinnerItemData(name: '不限', result: ''),
     ...List.generate(10, (index) {
-      return SpinnerItem(name: '分组2-$index', result: index);
+      return SpinnerItemData(name: '分组2-$index', result: index);
     }),
   ]),
   SpinnerEntity(
@@ -292,7 +292,7 @@ var def = [
       type: MoreContentType.column,
       items: [
         ...List.generate(3, (index) {
-          return SpinnerItem(name: '分组3-$index', result: index);
+          return SpinnerItemData(name: '分组3-$index', result: index);
         }),
       ]),
   SpinnerEntity(
@@ -301,7 +301,7 @@ var def = [
       type: MoreContentType.column,
       items: [
         ...List.generate(3, (index) {
-          return SpinnerItem(name: '分组4-$index', result: index);
+          return SpinnerItemData(name: '分组4-$index', result: index);
         }),
       ]),
 ];

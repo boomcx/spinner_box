@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// 保存当前筛选菜单的数据项，并配合`PopupValueNotifier`完成各项内容的监听
+/// 
 class PopupState {
   /// 渲染数据
   List<String> items;
@@ -21,16 +23,21 @@ class PopupState {
   });
 }
 
+/// 监听控制器，关联视图和数据，并完成自定义方法的写入
 class PopupValueNotifier extends ValueNotifier<PopupState> {
   PopupValueNotifier(PopupState state)
       : status = state.orginItems.map((e) => false).toList(),
         super(state);
 
+  /// 标题初始化
   factory PopupValueNotifier.titles(List<String> titles) => PopupValueNotifier(
         PopupState(items: List.of(titles), orginItems: List.of(titles)),
       );
 
+  /// `CompositedTransformFollower` 的 `link`
   final link = LayerLink();
+
+  /// 用于记录 `CompositedTransformFollower` 位置
   final GlobalKey targetKey = GlobalKey();
 
   List<String> get items => value.items;

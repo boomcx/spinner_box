@@ -12,6 +12,7 @@ enum MoreContentType {
   column,
 }
 
+/// 弹框显示配置
 class SpinnerEntity {
   /// 服务器字段
   final String key;
@@ -32,10 +33,10 @@ class SpinnerEntity {
   final String desc;
 
   /// 标题后面的额外图片（本地图片）
-  final String suffixIcon;
+  final String titleSuffix;
 
   /// 选项集
-  final List<SpinnerItem> items;
+  final List<SpinnerItemData> items;
 
   const SpinnerEntity({
     required this.key,
@@ -43,7 +44,7 @@ class SpinnerEntity {
     this.title = '',
     this.type = MoreContentType.wrap,
     this.desc = '',
-    this.suffixIcon = '',
+    this.titleSuffix = '',
     this.extraData,
     this.items = const [],
   });
@@ -68,15 +69,15 @@ class SpinnerEntity {
     if (json["desc"] is String) {
       entity = entity.copyWith(desc: json["desc"]);
     }
-    if (json["suffixIcon"] is String) {
-      entity = entity.copyWith(suffixIcon: json["suffixIcon"]);
+    if (json["titleSuffix"] is String) {
+      entity = entity.copyWith(titleSuffix: json["titleSuffix"]);
     }
     if (json["items"] is List) {
       entity = entity.copyWith(
           items: json["items"] == null
               ? []
               : (json["items"] as List)
-                  .map((e) => SpinnerItem.fromJson(e))
+                  .map((e) => SpinnerItemData.fromJson(e))
                   .toList());
     }
     return entity;
@@ -93,7 +94,7 @@ class SpinnerEntity {
     data["title"] = title;
     data["type"] = type;
     data["desc"] = desc;
-    data["suffixIcon"] = suffixIcon;
+    data["titleSuffix"] = titleSuffix;
     data["items"] = items.map((e) => e.toJson()).toList();
     return data;
   }
@@ -104,9 +105,9 @@ class SpinnerEntity {
     String? title,
     MoreContentType? type,
     String? desc,
-    String? suffixIcon,
+    String? titleSuffix,
     dynamic extraData,
-    List<SpinnerItem>? items,
+    List<SpinnerItemData>? items,
   }) =>
       SpinnerEntity(
         key: key ?? this.key,
@@ -114,7 +115,7 @@ class SpinnerEntity {
         title: title ?? this.title,
         type: type ?? this.type,
         desc: desc ?? this.desc,
-        suffixIcon: suffixIcon ?? this.suffixIcon,
+        titleSuffix: titleSuffix ?? this.titleSuffix,
         items: items ?? this.items,
         extraData: extraData,
       );
@@ -122,7 +123,7 @@ class SpinnerEntity {
 
 /// 继承 `ChangeNotifier` `ValueListenable`
 /// 写入自变量 `selected`，方便监听点击选中状态
-class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
+class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
   /// 显示名称
   final String name;
 
@@ -135,7 +136,7 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
   final bool isMutex;
 
   /// 下级选项
-  final List<SpinnerItem> items;
+  final List<SpinnerItemData> items;
 
   /// 高亮（栅栏选中时，需要切换数据）
   // bool get highlighted => _value.highlighted;
@@ -152,7 +153,7 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
   /// 带有子集选项时，判断当前选项的子选项是否全部选中
   bool get isSelectedAll {
     /// 设置子集选中
-    bool chidrenSelected(List<SpinnerItem> list) {
+    bool chidrenSelected(List<SpinnerItemData> list) {
       for (var element in list) {
         if (!element.selected) {
           return false;
@@ -181,7 +182,7 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
     notifyListeners();
   }
 
-  SpinnerItem({
+  SpinnerItemData({
     this.name = '-',
     this.result,
     this.isMutex = false,
@@ -189,8 +190,8 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
     bool selected = false,
   }) : _value = selected;
 
-  factory SpinnerItem.fromJson(Map<String, dynamic> json) {
-    var entity = SpinnerItem();
+  factory SpinnerItemData.fromJson(Map<String, dynamic> json) {
+    var entity = SpinnerItemData();
     if (json["name"] is String) {
       entity = entity.copyWith(name: json["name"]);
     }
@@ -205,14 +206,14 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
       entity = entity.copyWith(isMutex: json["isMutex"]);
     }
     if (json["items"] is List) {
-      entity = entity.copyWith(items: SpinnerItem.fromList(json["items"]));
+      entity = entity.copyWith(items: SpinnerItemData.fromList(json["items"]));
     }
 
     return entity;
   }
 
-  static List<SpinnerItem> fromList(List<Map<String, dynamic>> list) {
-    return list.map((map) => SpinnerItem.fromJson(map)).toList();
+  static List<SpinnerItemData> fromList(List<Map<String, dynamic>> list) {
+    return list.map((map) => SpinnerItemData.fromJson(map)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -226,15 +227,15 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
     return data;
   }
 
-  SpinnerItem copyWith({
+  SpinnerItemData copyWith({
     String? name,
     dynamic result,
     bool? selected,
     // bool? highlighted,
     bool? isMutex,
-    List<SpinnerItem>? items,
+    List<SpinnerItemData>? items,
   }) =>
-      SpinnerItem(
+      SpinnerItemData(
         name: name ?? this.name,
         result: result ?? this.result,
         selected: selected ?? this.selected,
@@ -244,7 +245,7 @@ class SpinnerItem extends ChangeNotifier implements ValueListenable<bool> {
       );
 }
 
-extension ListFormatX on List<SpinnerItem> {
+extension ListFormatX on List<SpinnerItemData> {
   /// 获取层级
   int get tier {
     // int count = 0;
@@ -261,7 +262,7 @@ extension ListFormatX on List<SpinnerItem> {
     //   }
     // }
 
-    int getLevel(List<SpinnerItem> items) {
+    int getLevel(List<SpinnerItemData> items) {
       if (items.isEmpty) return 0;
       int maxLevel = 0;
       for (var item in items) {

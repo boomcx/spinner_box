@@ -1,5 +1,6 @@
 import 'entity.dart';
 
+/// list / wrap 实际内容的配置
 class SpinnerFilterState {
   /// 是否单选
   final bool singleConditionAndSingleSelect;
@@ -35,6 +36,7 @@ class SpinnerFilterState {
       );
 }
 
+/// 栅栏筛选配置
 class SpinnerFenceState {
   final bool singleConditionAndSingleSelect;
   final bool isCompleted;

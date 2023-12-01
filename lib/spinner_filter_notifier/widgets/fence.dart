@@ -29,7 +29,7 @@ class _FenceCntState extends State<_FenceCnt> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ...List.generate(value.idxList.length, (index) {
-              final List<SpinnerItem> data = notifier.getColumn(index);
+              final List<SpinnerItemData> data = notifier.getColumn(index);
 
               return Expanded(
                 flex: 1,
@@ -57,7 +57,7 @@ class _FenceList extends StatelessWidget {
 
   final int column;
   final bool isLast;
-  final List<SpinnerItem> data;
+  final List<SpinnerItemData> data;
   final SpinnerFenceNotifier notifier;
 
   @override
@@ -120,7 +120,7 @@ class _FenceListItem extends StatelessWidget {
     this.onSelected,
   });
 
-  final SpinnerItem item;
+  final SpinnerItemData item;
   final int column;
   final int index;
   final SpinnerFenceNotifier notifier;

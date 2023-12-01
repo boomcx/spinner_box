@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 // ignore: constant_identifier_names
 const double AutoLength = 0;
 
+/// `SpinnerBox`中 `builder` 中所需要的参数，
+/// 控制单个筛选内容弹框的一些显示配置
 class SpinnerPopScope {
   /// 控制可显示内容高度比例，1.0完全占满
   final double scale;
@@ -22,7 +24,8 @@ class SpinnerPopScope {
   /// 弹框视图
   final Widget child;
 
-  /// 视图是否包含焦点获取组件
+  /// 视图是否包含焦点获取组件，解决弹框内部焦点与页面焦点冲突
+  /// 默认为 `true`
   final bool isMaybeFocus;
 
   SpinnerPopScope({
@@ -34,6 +37,7 @@ class SpinnerPopScope {
   });
 }
 
+/// 增加扩展，方式来快速构建
 extension SpinnerPopScopeExt on Widget {
   /// 快速构建 `PopupBtns` builder 数组集
   SpinnerPopScope height([double scale = 0.7]) {
@@ -47,8 +51,9 @@ extension SpinnerPopScopeExt on Widget {
   SpinnerPopScope get heightFull => SpinnerPopScope(child: this, scale: 1);
 }
 
+/// 弹框视图的基本显示配置，如果完全自定义显示内容（非`SpinnerEntity`常规配置）
 class SpinnerHeaderTheme {
-  /// 高度
+  /// 组件按钮高度
   final double height;
 
   // 边距，额外高度
@@ -66,13 +71,13 @@ class SpinnerHeaderTheme {
   /// 三角标颜色
   final Color arrowColor;
 
-  /// 标题改变后 是否标记选中状态
+  /// 标题改变后 是否标记选中状态（切换字体颜色）
   final bool selectedMark;
 
   // 是否显示边框
   final bool isShowBorder;
 
-  /// 页面其他部位是佛含有焦点获取的组件（如视图顶部搜索输入框）
+  /// 页面其他部位是否含有焦点获取的组件（例如 页面顶部搜索输入框）
   final bool outsideFocus;
 
   const SpinnerHeaderTheme({

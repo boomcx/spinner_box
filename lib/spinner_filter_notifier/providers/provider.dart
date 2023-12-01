@@ -25,6 +25,7 @@ typedef SpinnerFilterResponse = Function(
   bool onlyClosed,
 );
 
+/// 弹框数据交互状态控制
 class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   SpinnerFilterNotifier(
     SpinnerFilterState state,

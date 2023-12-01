@@ -8,6 +8,7 @@ import 'widgets/buttons.dart';
 
 part './widgets/fence.dart';
 
+/// 栅栏样式显示视图
 class SpinnerFence extends StatefulWidget {
   const SpinnerFence({
     super.key,

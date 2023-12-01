@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+/// 筛选框按钮组的样式主题构建
 class SpinnerBoxTheme extends InheritedWidget {
   const SpinnerBoxTheme({
     super.key,
@@ -24,6 +25,7 @@ class SpinnerBoxTheme extends InheritedWidget {
 }
 
 /// 主题配置
+/// 筛选框按钮组的样式主题
 class SpinnerBoxThemeData {
   /// 弹窗背景颜色
   final Color backgroundColor;
