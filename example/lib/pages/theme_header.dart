@@ -28,7 +28,7 @@ class _ThemeHeaderPageState extends State<ThemeHeaderPage> {
         children: [
           SpinnerBox.rebuilder(
             titles: [
-              SpinnerData('单选条件', icon: 'assets/icon.png'),
+              SpinnerData('单选条件单选条件单选条件单选条件单选条件单选条件', icon: 'assets/icon.png'),
               SpinnerData('单选条件'),
             ],
             theme: defaultPinnerTheme.copyWith(

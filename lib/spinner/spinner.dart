@@ -433,12 +433,14 @@ class _Button extends StatelessWidget {
         child: flag
             ? Image.asset(
                 item.iconSelected ?? item.icon!,
+                width: iconSize,
                 height: iconSize,
                 fit: BoxFit.contain,
                 // package: 'spinner_box',
               )
             : Image.asset(
                 item.icon!,
+                width: iconSize,
                 height: iconSize,
                 fit: BoxFit.contain,
                 // package: 'spinner_box',
@@ -465,7 +467,7 @@ class _Button extends StatelessWidget {
         children: [
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: maxWidth - iconSize - 20,
+              maxWidth: maxWidth - iconSize - 20 - config.iconPading.horizontal,
             ),
             child: Text(
               item.title,
