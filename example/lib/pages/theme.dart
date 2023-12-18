@@ -25,7 +25,7 @@ class _ThemePageState extends State<ThemePage> {
   ]);
 
   final _controler =
-      PopupValueNotifier.titles(const ['wrap', 'column', 'fence']);
+      PopupValueNotifier.titles(const ['wrap', 'column', 'fence'].toSpinnerData);
 
   final SpinnerBoxThemeData themeData = SpinnerBoxThemeData(
     backgroundColor: Colors.lightBlueAccent,

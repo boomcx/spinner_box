@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +57,7 @@ class SpinnerHeaderTheme {
   /// 组件按钮高度
   final double height;
 
-  // 边距，额外高度
+  // header边距，额外高度
   final EdgeInsets padding;
 
   /// 默认字体
@@ -80,6 +81,21 @@ class SpinnerHeaderTheme {
   /// 页面其他部位是否含有焦点获取的组件（例如 页面顶部搜索输入框）
   final bool outsideFocus;
 
+  /// 之前样式太过固定
+  /// 以下针对`SpinnerHeader`的`item`配置
+  /// 标题icon的大小，默认25
+  /// 如果是自定义输入图片，折限制为高度显示
+  final double iconSize;
+
+  /// icon的位置，默认居右
+  final TextDirection? textDirection;
+
+  /// 标题和icon之间的距离，默认4
+  final EdgeInsets iconPading;
+
+  /// 是否开启旋转动画
+  final bool isIconAnimate;
+
   const SpinnerHeaderTheme({
     this.height = kMinInteractiveDimensionCupertino,
     this.style = const TextStyle(
@@ -96,29 +112,41 @@ class SpinnerHeaderTheme {
     this.arrowColor = const Color(0xff9B9EAC),
     this.padding = EdgeInsets.zero,
     this.outsideFocus = false,
+    this.iconSize = 25,
+    this.iconPading = const EdgeInsets.symmetric(horizontal: 4),
+    this.textDirection,
+    this.isIconAnimate = true,
   });
 
   SpinnerHeaderTheme copyWith({
     double? height,
+    EdgeInsets? padding,
     TextStyle? style,
     TextStyle? selectedStyle,
     Color? bgColor,
     Color? arrowColor,
     bool? selectedMark,
     bool? isShowBorder,
-    EdgeInsets? padding,
     bool? outsideFocus,
+    double? iconSize,
+    TextDirection? textDirection,
+    EdgeInsets? iconPading,
+    bool? isIconAnimate,
   }) {
     return SpinnerHeaderTheme(
       height: height ?? this.height,
+      padding: padding ?? this.padding,
       style: style ?? this.style,
       selectedStyle: selectedStyle ?? this.selectedStyle,
       bgColor: bgColor ?? this.bgColor,
       arrowColor: arrowColor ?? this.arrowColor,
       selectedMark: selectedMark ?? this.selectedMark,
       isShowBorder: isShowBorder ?? this.isShowBorder,
-      padding: padding ?? this.padding,
       outsideFocus: outsideFocus ?? this.outsideFocus,
+      iconSize: iconSize ?? this.iconSize,
+      textDirection: textDirection ?? this.textDirection,
+      iconPading: iconPading ?? this.iconPading,
+      isIconAnimate: isIconAnimate ?? this.isIconAnimate,
     );
   }
 }

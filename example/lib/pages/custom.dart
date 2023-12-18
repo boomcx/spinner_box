@@ -28,7 +28,7 @@ class _CustomPageState extends State<CustomPage> {
       body: Column(
         children: [
           SpinnerBox.rebuilder(
-            titles: const ['自定义弹窗', '自定义弹窗', '拼接自定义'],
+            titles: const ['自定义弹窗', '自定义弹窗', '拼接自定义'].toSpinnerData,
             builder: (notifier) {
               return [
                 Material(

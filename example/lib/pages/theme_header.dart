@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_box.dart';
 import 'package:spinner_box_example/data.dart';
 
-class SinglePage extends StatefulWidget {
-  const SinglePage({super.key});
+class ThemeHeaderPage extends StatefulWidget {
+  const ThemeHeaderPage({super.key});
 
   @override
-  State<SinglePage> createState() => _SinglePageState();
+  State<ThemeHeaderPage> createState() => _ThemeHeaderPageState();
 }
 
-class _SinglePageState extends State<SinglePage> {
+class _ThemeHeaderPageState extends State<ThemeHeaderPage> {
   var _condition1 = [
     years(key: 'year1'),
   ];
@@ -27,7 +27,14 @@ class _SinglePageState extends State<SinglePage> {
       body: Column(
         children: [
           SpinnerBox.rebuilder(
-            titles: const ['单选条件', '单选条件'].toSpinnerData,
+            titles: [
+              SpinnerData('单选条件', icon: 'assets/icon.png'),
+              SpinnerData('单选条件'),
+            ],
+            theme: defaultPinnerTheme.copyWith(
+              textDirection: TextDirection.rtl,
+              iconSize: 50,
+            ),
             builder: (notifier) {
               return [
                 SpinnerFilter(

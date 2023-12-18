@@ -13,7 +13,8 @@ class DropViewPage extends StatefulWidget {
 
 class _DropViewPageState extends State<DropViewPage> {
   final _textEditing = TextEditingController();
-  final _controller = PopupValueNotifier.titles(const ['没有标记选中', '传入自定义视图']);
+  final _controller =
+      PopupValueNotifier.titles(const ['没有标记选中', '传入自定义视图'].toSpinnerData);
   var _filterData = def;
 
   @override
@@ -238,7 +239,7 @@ class _FilterView extends StatelessWidget {
     return SpinnerBox.rebuilder(
       prefix: prefix,
       suffix: suffix,
-      titles: const ['未更新数据源1', '未更新数据源2'],
+      titles: const ['未更新数据源1', '未更新数据源2'].toSpinnerData,
       theme: defaultPinnerTheme.copyWith(outsideFocus: true),
       builder: (p0) => [
         SpinnerFilter(

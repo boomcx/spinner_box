@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import './state.dart';
 import 'route/trans_dialog.dart';
@@ -68,7 +70,7 @@ class SpinnerBox extends StatefulWidget {
   /// ```
   SpinnerBox.builder({
     super.key,
-    required List<String> titles,
+    required List<SpinnerData> titles,
     required SpinnerBoxBuilder builder,
     this.prefix,
     this.suffix,
@@ -84,7 +86,7 @@ class SpinnerBox extends StatefulWidget {
   ///
   SpinnerBox.rebuilder({
     super.key,
-    required List<String> titles,
+    required List<SpinnerData> titles,
     required SpinnerBoxBuilder builder,
     this.prefix,
     this.suffix,
@@ -404,7 +406,7 @@ class _CompsitedTarget extends StatelessWidget {
 
 class _Button extends StatelessWidget {
   const _Button(
-    this.name,
+    this.item,
     this.isSelected,
     this.config, {
     this.maxWidth = 20,
@@ -412,7 +414,7 @@ class _Button extends StatelessWidget {
   });
 
   final double maxWidth;
-  final String name;
+  final SpinnerData item;
   final bool isSelected;
   final bool isHighlight;
 
@@ -422,33 +424,59 @@ class _Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final flag = isSelected || isHighlight;
-    const double iconSize = 25;
+    final iconSize = config.iconSize;
+
+    Widget icon;
+    if (item.icon != null) {
+      icon = AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: flag
+            ? Image.asset(
+                item.iconSelected ?? item.icon!,
+                height: iconSize,
+                fit: BoxFit.contain,
+                // package: 'spinner_box',
+              )
+            : Image.asset(
+                item.icon!,
+                height: iconSize,
+                fit: BoxFit.contain,
+                // package: 'spinner_box',
+              ),
+      );
+    } else {
+      icon = AnimatedRotation(
+        turns: isSelected ? 0 : 0.5,
+        duration: const Duration(milliseconds: 250),
+        alignment: Alignment.center,
+        child: Icon(
+          Icons.arrow_drop_up_rounded,
+          size: min(config.height, iconSize),
+          color: flag ? config.selectedStyle.color : config.arrowColor,
+        ),
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        textDirection: config.textDirection,
         children: [
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: maxWidth - iconSize - 20,
             ),
             child: Text(
-              name,
+              item.title,
               style: flag ? config.selectedStyle : config.style,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
           ),
-          const SizedBox(width: 4),
-          AnimatedRotation(
-            turns: isSelected ? 0 : 0.5,
-            duration: const Duration(milliseconds: 250),
-            child: Icon(
-              Icons.arrow_drop_up_rounded,
-              size: iconSize,
-              color: flag ? config.selectedStyle.color : config.arrowColor,
-            ),
+          Padding(
+            padding: config.iconPading,
+            child: icon,
           ),
         ],
       ),

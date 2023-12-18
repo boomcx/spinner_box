@@ -25,7 +25,7 @@ class _FencePageState extends State<FencePage> {
       body: Column(
         children: [
           SpinnerBox.builder(
-            titles: const ['栅栏选择', '单选条件'],
+            titles: const ['栅栏选择', '单选条件'].toSpinnerData,
             builder: (notifier) {
               return [
                 ValueListenableBuilder(

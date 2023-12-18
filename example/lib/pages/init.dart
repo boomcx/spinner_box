@@ -18,7 +18,7 @@ class _InitPageState extends State<InitPage> {
     text(key: 'text1', type: MoreContentType.wrap, count: 9),
   ]);
 
-  final _controler = PopupValueNotifier.titles(const ['Controller + children']);
+  final _controler = PopupValueNotifier.titles(const ['Controller + children'].toSpinnerData);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _InitPageState extends State<InitPage> {
 '''),
             const SizedBox(height: 10),
             SpinnerBox.builder(
-              titles: const ['Builder', 'width-full'],
+              titles: const ['Builder', 'width-full'].toSpinnerData,
               builder: (notifier) {
                 return [
                   SpinnerPopScope(

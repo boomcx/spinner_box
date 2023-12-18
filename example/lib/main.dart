@@ -12,6 +12,7 @@ import 'package:spinner_box_example/pages/rebuilder.dart';
 import 'package:spinner_box_example/pages/theme.dart';
 
 import 'pages/normal.dart';
+import 'pages/theme_header.dart';
 
 void main() {
   runApp(const MyApp());
@@ -79,6 +80,12 @@ class _Theme extends StatelessWidget {
             const ThemePage().push(context);
           },
           child: const _Title('Custom Theme'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            const ThemeHeaderPage().push(context);
+          },
+          child: const _Title('Custom Header Theme'),
         ),
       ],
     );

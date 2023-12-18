@@ -29,7 +29,7 @@ class _RebuilderPageState extends State<RebuilderPage> {
 '''),
             const SizedBox(height: 10),
             SpinnerBox.rebuilder(
-                titles: const ['Rebuilder'],
+                titles: const ['Rebuilder'].toSpinnerData,
                 builder: (notifier) => [
                       SpinnerFilter(
                         data: _condition1,
