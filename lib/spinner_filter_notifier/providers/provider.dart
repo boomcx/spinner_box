@@ -28,10 +28,10 @@ typedef SpinnerFilterResponse = Function(
 /// 弹框数据交互状态控制
 class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   SpinnerFilterNotifier(
-    SpinnerFilterState state,
+    super.state,
     this.onReseted,
     this.onItemIntercept,
-  ) : super(state);
+  );
 
   /// 构造方法
   factory SpinnerFilterNotifier.init(

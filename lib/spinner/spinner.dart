@@ -221,13 +221,11 @@ class _SpinnerBoxState extends State<SpinnerBox> {
 
 class _CompositedFollower extends StatelessWidget {
   _CompositedFollower({
-    Key? key,
     required this.ctx,
     required PopupValueNotifier notifier,
     required this.widget,
     required this.scope,
-  })  : _notifier = notifier,
-        super(key: key) {
+  }) : _notifier = notifier {
     // final render =
     //     _notifier.targetKey.currentContext!.findRenderObject() as RenderBox;
     // final position = render.localToGlobal(Offset.zero);

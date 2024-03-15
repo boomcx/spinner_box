@@ -26,9 +26,8 @@ class PopupState {
 
 /// 监听控制器，关联视图和数据，并完成自定义方法的写入
 class PopupValueNotifier extends ValueNotifier<PopupState> {
-  PopupValueNotifier(PopupState state)
-      : status = state.orginItems.map((e) => false).toList(),
-        super(state);
+  PopupValueNotifier(super.state)
+      : status = state.orginItems.map((e) => false).toList();
 
   /// 标题初始化
   factory PopupValueNotifier.titles(List<SpinnerData> titles) =>

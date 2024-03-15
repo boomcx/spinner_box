@@ -32,10 +32,10 @@ typedef SpinnerFenceResponse = Function(
 
 class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   SpinnerFenceNotifier(
-    SpinnerFenceState state,
+    super.state,
     this.onReseted,
     this.onItemIntercept,
-  ) : super(state);
+  );
 
   /// 构造方法
   factory SpinnerFenceNotifier.init(
