@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:spinner_box_example/drop_view.dart';
+import '/drop_view.dart';
 
-import 'package:spinner_box_example/pages/custom.dart';
-import 'package:spinner_box_example/pages/init.dart';
-import 'package:spinner_box_example/pages/fence.dart';
-import 'package:spinner_box_example/pages/muti.dart';
-import 'package:spinner_box_example/pages/rebuilder.dart';
-import 'package:spinner_box_example/pages/theme.dart';
+import '/pages/custom.dart';
+import '/pages/init.dart';
+import '/pages/fence.dart';
+import '/pages/muti.dart';
+import '/pages/rebuilder.dart';
+import '/pages/theme.dart';
 
 import 'pages/normal.dart';
 import 'pages/theme_header.dart';
@@ -179,7 +179,7 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: const TextStyle(color: Colors.blue, fontSize: 14),
     );
   }
 }

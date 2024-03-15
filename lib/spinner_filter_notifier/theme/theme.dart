@@ -100,7 +100,7 @@ class SFenceThemeData {
       backgroundColors.hashCode ^ hightlightedColors.hashCode ^ height.hashCode;
 }
 
-/// 多选状态下的样式
+/// 弹窗底部按钮样式
 class SBoxBotBtnData {
   /// 背景颜色
   final Color backgroundColor;

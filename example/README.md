@@ -1,6 +1,6 @@
-# spinner_box_example
+# example
 
-Demonstrates how to use the spinner_box plugin.
+A new Flutter project.
 
 ## Getting Started
 
