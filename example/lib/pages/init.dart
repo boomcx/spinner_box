@@ -18,7 +18,17 @@ class _InitPageState extends State<InitPage> {
     text(key: 'text1', type: MoreContentType.wrap, count: 9),
   ]);
 
-  final _controler = PopupValueNotifier.titles(const ['Controller + children'].toSpinnerData);
+  final _controler =
+      PopupValueNotifier.titles(const ['Controller + children'].toSpinnerData);
+
+  @override
+  void initState() {
+    super.initState();
+    /// 设置已选中项
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controler.updateName('hahahah', index: 0);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

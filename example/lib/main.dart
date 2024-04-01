@@ -12,6 +12,7 @@ import '/pages/rebuilder.dart';
 import '/pages/theme.dart';
 
 import 'pages/normal.dart';
+// import 'pages/params.dart';
 import 'pages/theme_header.dart';
 
 void main() {
@@ -79,13 +80,13 @@ class _Theme extends StatelessWidget {
           onPressed: () {
             const ThemePage().push(context);
           },
-          child: const _Title('Custom Theme'),
+          child: const _Title('自定义弹窗主题'),
         ),
         ElevatedButton(
           onPressed: () {
             const ThemeHeaderPage().push(context);
           },
-          child: const _Title('Custom Header Theme'),
+          child: const _Title('自定义头部主题'),
         ),
       ],
     );
@@ -113,6 +114,13 @@ class _Builder extends StatelessWidget {
           },
           child: const _Title('Rebuilder'),
         ),
+        // 未完成
+        // ElevatedButton(
+        //   onPressed: () {
+        //     const SelectParamsPage().push(context);
+        //   },
+        //   child: const _Title('默认选中参数'),
+        // ),
       ],
     );
   }
