@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_filter_notifier/theme/theme.dart';
-// import 'package:tuple/tuple.dart';
 
 import '../popup_message.dart';
 import 'providers/entity.dart';

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-// import 'package:tuple/tuple.dart';
 
 import '../spinner_filter.dart';
 import 'entity.dart';
@@ -50,10 +49,10 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     return instance;
   }
 
-  /// 事件传递
+  /// 选项状态重置
   final VoidCallback? onReseted;
 
-  /// 事件传递
+  /// 点击事件拦截，获取到处理结果后继续执行
   final SpinnerFilterIntercept? onItemIntercept;
 
   /// 外部传入自定义视图
@@ -207,27 +206,27 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   }
 
   /// 点击按钮选项
-  /// `tuple` 包含当前点击的分组数据 和 分组下标
+  /// `data` 包含当前点击的分组数据 和 分组下标
   /// `index` 按钮下标
-  void itemOnSelected(STabEntityAndIndexData tuple, int index) async {
+  void itemOnSelected(STabEntityAndIndexData data, int index) async {
     if (onItemIntercept != null) {
-      final isIntercept = await onItemIntercept!.call(tuple.$1, index);
+      final isIntercept = await onItemIntercept!.call(data.$1, index);
       if (isIntercept == true) {
         return;
       }
     }
 
     // 重置额外输入（可添加互斥，额外输入与筛选按钮可合并返回）
-    resetAttachment(tuple.$1.key);
+    resetAttachment(data.$1.key);
 
-    final group = tuple.$1;
+    final group = data.$1;
     final single = group.isRadio;
 
     var groups = value.items;
     for (var i = 0; i < groups.length; i++) {
       var tempGroup = groups[i];
       // 当前操做的数据组
-      if (i == tuple.$2) {
+      if (i == data.$2) {
         // 修改按钮选中状态
         var items = tempGroup.items;
         for (var k = 0; k < items.length; k++) {

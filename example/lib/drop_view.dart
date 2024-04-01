@@ -58,15 +58,7 @@ class _DropViewPageState extends State<DropViewPage> {
                 ).heightPart,
                 SpinnerFilter(
                   data: _filterData,
-                  attachment: [
-                    // const Tuple2(2, Text('attachment1')),
-                    // Tuple2(
-                    //     2,
-                    //     Container(
-                    //       height: 130,
-                    //       color: Colors.red,
-                    //       child: const Text('attachment2'),
-                    //     )),
+                  attachment: [ 
                     MyWidget2(data: _filterData),
                     MyWidget1(_textEditing, data: _filterData),
                   ],

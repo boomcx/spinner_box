@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import '../theme/theme.dart';
 
-class Button extends StatelessWidget {
-  const Button(
+class WrapButton extends StatelessWidget {
+  const WrapButton(
     this.name,
     this.isSelected, {
     super.key,

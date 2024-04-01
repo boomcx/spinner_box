@@ -57,8 +57,8 @@ class _CheckListCnt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
-    final tuple = _FilterGroupScope.of(context);
-    final items = tuple.$1.items;
+    final data = _FilterGroupScope.of(context);
+    final items = data.$1.items;
 
     return ListView.builder(
       padding: EdgeInsets.zero,
@@ -71,12 +71,12 @@ class _CheckListCnt extends StatelessWidget {
           valueListenable: item,
           builder: (context, value, child) => TapScope(
             onPressed: () {
-              notifier.itemOnSelected(tuple, index);
+              notifier.itemOnSelected(data, index);
             },
             child: _CheckListItem(
               name: item.name,
               isSelect: item.selected,
-              isMulti: !tuple.$1.isRadio,
+              isMulti: !data.$1.isRadio,
             ),
           ),
         );
@@ -91,9 +91,9 @@ class _GroupBtnsCnt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
-    final tuple = _FilterGroupScope.of(context);
+    final data = _FilterGroupScope.of(context);
     final theme = SpinnerBoxTheme.of(context).wrap;
-    final items = tuple.$1.items;
+    final items = data.$1.items;
 
     return Wrap(
         spacing: theme.spacing,
@@ -103,18 +103,18 @@ class _GroupBtnsCnt extends StatelessWidget {
             final item = items[index];
             return ValueListenableBuilder(
               valueListenable: item,
-              builder: (context, value, child) => Button(
+              builder: (context, value, child) => WrapButton(
                 item.name,
                 item.selected,
                 onPressed: () {
-                  notifier.itemOnSelected(tuple, index);
+                  notifier.itemOnSelected(data, index);
                 },
               ),
             );
           }),
           ...List.generate(notifier.attachment.length, (index) {
             final attach = notifier.attachment[index];
-            if (attach.groupKey == tuple.$1.key) {
+            if (attach.groupKey == data.$1.key) {
               return attach;
             }
             return const SizedBox();

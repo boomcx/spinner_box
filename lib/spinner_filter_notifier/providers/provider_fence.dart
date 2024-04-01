@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-// import 'package:tuple/tuple.dart';
 
 import 'entity.dart';
 import 'state.dart';
@@ -185,7 +184,6 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 点击按钮选项
-  /// `tuple` 包含当前点击的分组数据 和 分组下标
   /// `index` 按钮下标
   void itemOnSelected(int index, int column,
       [bool isHighlighted = true]) async {
