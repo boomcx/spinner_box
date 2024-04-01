@@ -62,8 +62,8 @@ class _SpinnerFenceState extends State<SpinnerFence> {
         final data = notifier.outside;
         // 筛选出全部选中的结果
         widget.onCompleted(
-          result.item1,
-          result.item2.join('/'),
+          result.$1,
+          result.$2.join('/'),
           data,
           notifier.value.onlyClosed,
         );

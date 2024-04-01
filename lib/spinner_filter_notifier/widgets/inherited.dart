@@ -30,10 +30,10 @@ class _FilterGroupScope extends InheritedWidget {
     required super.child,
   });
 
-  final Tuple2<SpinnerEntity, int> data;
+  final STabEntityAndIndexData data;
 
   // 子树中的widget获取共享数据
-  static Tuple2<SpinnerEntity, int> of(BuildContext context) {
+  static STabEntityAndIndexData of(BuildContext context) {
     final scope =
         context.dependOnInheritedWidgetOfExactType<_FilterGroupScope>();
     return scope!.data;

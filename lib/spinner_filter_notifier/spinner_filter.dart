@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_filter_notifier/theme/theme.dart';
-import 'package:tuple/tuple.dart';
+// import 'package:tuple/tuple.dart';
 
 import '../popup_message.dart';
 import 'providers/entity.dart';
@@ -13,6 +13,9 @@ part './widgets/group.dart';
 part './widgets/check_list_item.dart';
 part './widgets/explain_icon.dart';
 part './widgets/attachment_view.dart';
+
+/// 包含当前点击的分组数据 和 分组下标
+typedef STabEntityAndIndexData = (SpinnerEntity entity, int index);
 
 /// List / Wrap 形式的显示视图
 class SpinnerFilter extends StatefulWidget {
@@ -75,8 +78,8 @@ class _SpinnerFilterState extends State<SpinnerFilter> {
         final data = notifier.outside;
         // 筛选出全部选中的结果
         widget.onCompleted(
-          result.item1,
-          result.item2,
+          result.$1,
+          result.$2,
           data,
           notifier.value.onlyClosed,
         );
@@ -186,7 +189,7 @@ class _SpinnerContent extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         return _FilterGroupScope(
-          data: Tuple2(items[index], index),
+          data: (items[index], index),
           child: const _GroupContent(),
         );
       },

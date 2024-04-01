@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
+// import 'package:tuple/tuple.dart';
 
 import '../spinner_filter.dart';
 import 'entity.dart';
@@ -166,7 +166,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   }
 
   /// 获取选择的结果
-  Tuple2<Map<String, List<dynamic>>, String> getResult() {
+  (Map<String, List<dynamic>>, String) getResult() {
     final items = value.items;
     final reslut = <String, List>{};
     final reslutNames = [];
@@ -180,9 +180,9 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         for (var element in attachment) {
           if (element.groupKey == key && element.extraData != null) {
             final res = element.getResult();
-            resGroup = res.item1;
-            if (res.item2.isNotEmpty) {
-              reslutNames.add(res.item2);
+            resGroup = res.$1;
+            if (res.$2.isNotEmpty) {
+              reslutNames.add(res.$2);
             }
             break;
           }
@@ -203,31 +203,31 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       reslut.addAll(resGroup);
     }
 
-    return Tuple2(reslut, reslutNames.join('/'));
+    return (reslut, reslutNames.join('/'));
   }
 
   /// 点击按钮选项
   /// `tuple` 包含当前点击的分组数据 和 分组下标
   /// `index` 按钮下标
-  void itemOnSelected(Tuple2<SpinnerEntity, int> tuple, int index) async {
+  void itemOnSelected(STabEntityAndIndexData tuple, int index) async {
     if (onItemIntercept != null) {
-      final isIntercept = await onItemIntercept!.call(tuple.item1, index);
+      final isIntercept = await onItemIntercept!.call(tuple.$1, index);
       if (isIntercept == true) {
         return;
       }
     }
 
     // 重置额外输入（可添加互斥，额外输入与筛选按钮可合并返回）
-    resetAttachment(tuple.item1.key);
+    resetAttachment(tuple.$1.key);
 
-    final group = tuple.item1;
+    final group = tuple.$1;
     final single = group.isRadio;
 
     var groups = value.items;
     for (var i = 0; i < groups.length; i++) {
       var tempGroup = groups[i];
       // 当前操做的数据组
-      if (i == tuple.item2) {
+      if (i == tuple.$2) {
         // 修改按钮选中状态
         var items = tempGroup.items;
         for (var k = 0; k < items.length; k++) {

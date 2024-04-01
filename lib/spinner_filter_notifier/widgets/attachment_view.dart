@@ -47,7 +47,7 @@ abstract class AttachmentView extends StatelessWidget {
   }
 
   /// 获取选中返回值
-  Tuple2<Map<String, List<dynamic>>, String> getResult() {
+   (Map<String, List<dynamic>>, String) getResult() {
     final resGroup = {groupKey: []};
     // final reslutNames = [];
 
@@ -58,7 +58,7 @@ abstract class AttachmentView extends StatelessWidget {
       // reslutNames.add(extraName);
     }
 
-    return Tuple2(resGroup, extraName);
+    return  (resGroup, extraName);
   }
 
   @override

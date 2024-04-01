@@ -5,7 +5,7 @@ class _GroupContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final group = _FilterGroupScope.of(context).item1;
+    final group = _FilterGroupScope.of(context).$1;
 
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -27,7 +27,7 @@ class _GroupHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final group = _FilterGroupScope.of(context).item1;
+    final group = _FilterGroupScope.of(context).$1;
     final theme = SpinnerBoxTheme.of(context).header;
 
     if (group.title.isEmpty) return const SizedBox();
@@ -58,7 +58,7 @@ class _CheckListCnt extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifier = _FilterNotiferScope.of(context);
     final tuple = _FilterGroupScope.of(context);
-    final items = tuple.item1.items;
+    final items = tuple.$1.items;
 
     return ListView.builder(
       padding: EdgeInsets.zero,
@@ -76,7 +76,7 @@ class _CheckListCnt extends StatelessWidget {
             child: _CheckListItem(
               name: item.name,
               isSelect: item.selected,
-              isMulti: !tuple.item1.isRadio,
+              isMulti: !tuple.$1.isRadio,
             ),
           ),
         );
@@ -93,7 +93,7 @@ class _GroupBtnsCnt extends StatelessWidget {
     final notifier = _FilterNotiferScope.of(context);
     final tuple = _FilterGroupScope.of(context);
     final theme = SpinnerBoxTheme.of(context).wrap;
-    final items = tuple.item1.items;
+    final items = tuple.$1.items;
 
     return Wrap(
         spacing: theme.spacing,
@@ -114,7 +114,7 @@ class _GroupBtnsCnt extends StatelessWidget {
           }),
           ...List.generate(notifier.attachment.length, (index) {
             final attach = notifier.attachment[index];
-            if (attach.groupKey == tuple.item1.key) {
+            if (attach.groupKey == tuple.$1.key) {
               return attach;
             }
             return const SizedBox();

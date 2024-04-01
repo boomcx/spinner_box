@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
+// import 'package:tuple/tuple.dart';
 
 import 'entity.dart';
 import 'state.dart';
@@ -138,11 +138,11 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 获取选择的结果
-  Tuple2<List<SpinnerItemData>, List<String>> getResult() {
+  (List<SpinnerItemData>, List<String>) getResult() {
     if (value.singleConditionAndSingleSelect) {
       final lastList = getColumn(value.idxList.length - 1);
       final item = lastList[value.idxList.last];
-      return Tuple2([item], [item.name]);
+      return ([item], [item.name]);
     }
 
     final resluts = <SpinnerItemData>[];
@@ -155,7 +155,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
       }
     }
 
-    return Tuple2(resluts, reslutNames);
+    return (resluts, reslutNames);
   }
 
   /// 判断子集是否有选中

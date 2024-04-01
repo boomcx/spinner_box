@@ -12,7 +12,7 @@ import '/pages/rebuilder.dart';
 import '/pages/theme.dart';
 
 import 'pages/normal.dart';
-// import 'pages/params.dart';
+import 'pages/params.dart';
 import 'pages/theme_header.dart';
 
 void main() {
@@ -114,13 +114,12 @@ class _Builder extends StatelessWidget {
           },
           child: const _Title('Rebuilder'),
         ),
-        // 未完成
-        // ElevatedButton(
-        //   onPressed: () {
-        //     const SelectParamsPage().push(context);
-        //   },
-        //   child: const _Title('默认选中参数'),
-        // ),
+        ElevatedButton(
+          onPressed: () {
+            const SelectParamsPage().push(context);
+          },
+          child: const _Title('默认选中参数'),
+        ),
       ],
     );
   }
