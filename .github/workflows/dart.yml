@@ -24,6 +24,8 @@ jobs:
         with:
           flutter-version: '3.19.5'
       - name: cd example
+        run: |
+          echo "This command runs in the 'example' directory."
         working-directory: ./example
       - run: flutter config --enable-web
       - run: flutter pub get
