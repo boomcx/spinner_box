@@ -42,6 +42,7 @@ class SpinnerBox extends StatefulWidget {
     this.prefix,
     this.suffix,
     this.theme = defaultPinnerTheme,
+    this.barrierColor,
   }) {
     isRebuilder = false;
     widgets = children;
@@ -75,6 +76,7 @@ class SpinnerBox extends StatefulWidget {
     this.prefix,
     this.suffix,
     this.theme = defaultPinnerTheme,
+    this.barrierColor,
   }) {
     isRebuilder = false;
     controller = PopupValueNotifier.titles(titles);
@@ -91,6 +93,7 @@ class SpinnerBox extends StatefulWidget {
     this.prefix,
     this.suffix,
     this.theme = defaultPinnerTheme,
+    this.barrierColor,
   }) {
     isRebuilder = true;
     controller = PopupValueNotifier.titles(titles);
@@ -115,11 +118,14 @@ class SpinnerBox extends StatefulWidget {
   /// 弹框内容构建
   late SpinnerBoxBuilder widgetsBuilder;
 
-  /// 逻辑操作
+  /// 逻辑控制器
   late PopupValueNotifier controller;
 
-  /// 视图配置
+  /// 顶部按钮视图配置
   final SpinnerHeaderTheme theme;
+
+  /// 弹窗遮罩背景色
+  final Color? barrierColor;
 
   @override
   State<SpinnerBox> createState() => _SpinnerBoxState();
@@ -180,7 +186,7 @@ class _SpinnerBoxState extends State<SpinnerBox> {
 
     _router = TransPopupRouter(
       offsetY: _notifier.spinnerRect().bottom,
-      barrierColor: Colors.black12,
+      barrierColor: widget.barrierColor ?? Colors.black12,
       pageBuilder: (context, animation, secondaryAnimation) => content,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return Align(
