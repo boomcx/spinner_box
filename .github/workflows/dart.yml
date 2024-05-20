@@ -1,0 +1,51 @@
+name: Flutter Web
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/*.png'
+      - '**/*.jpg'
+ 
+jobs:
+  build:
+    name: Build Web
+    env:
+      my_secret: ${{secrets.commit_secret}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.5'
+      # - name: cd example
+      #   run: |
+      #     echo "This command runs in the 'example' directory."
+      # - run: flutter config --enable-web
+      # - run: flutter pub get
+      # - run: flutter build web --release
+      - run: |
+          flutter config --enable-web
+          flutter pub get
+          flutter build web --release
+          cd build/web
+          git init
+          # type configurations: your user.email and user.name followed lines 
+          # git config --global user.email your_email 
+          # git config --global user.name your_name 
+          git config --global user.email 707939932@qq.com
+          git config --global user.name boomcx
+          git status
+          # change this remote url for examle your remote url is https://github.com/boomcx/spinner_box.git then the following:
+          git remote add origin https://${{secrets.commit_secret}}@github.com/boomcx/spinner_box.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "update"
+          git push origin gh-pages -f
+        working-directory: ./example
+    
