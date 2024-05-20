@@ -19,18 +19,20 @@ jobs:
       my_secret: ${{secrets.commit_secret}}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.5'
-      - name: cd example
-        run: |
-          echo "This command runs in the 'example' directory."
-        working-directory: ./example
-      - run: flutter config --enable-web
-      - run: flutter pub get
-      - run: flutter build web --release
+      # - name: cd example
+      #   run: |
+      #     echo "This command runs in the 'example' directory."
+      # - run: flutter config --enable-web
+      # - run: flutter pub get
+      # - run: flutter build web --release
       - run: |
+          flutter config --enable-web
+          flutter pub get
+          flutter build web --release
           cd build/web
           git init
           # type configurations: your user.email and user.name followed lines 
@@ -45,3 +47,5 @@ jobs:
           git add --all
           git commit -m "update"
           git push origin gh-pages -f
+        working-directory: ./example
+    
