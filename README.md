@@ -2,7 +2,9 @@ The drop-down criteria filter box supports single selection, multiple selection,
 
 [![pub package](https://img.shields.io/pub/v/spinner_box.svg?label=spinner_box&color=blue)](https://pub.dev/packages/spinner_box)
 
-[插件详细讲解 - 掘金](https://juejin.cn/post/7227012644506435642)
+[demo link](https://boomcx.github.io/spinner_box/)：flutter web link。
+
+[Example description](https://juejin.cn/post/7227012644506435642)
 
 # Spinner Box
 
