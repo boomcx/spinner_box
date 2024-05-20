@@ -32,7 +32,7 @@ jobs:
       - run: |
           flutter config --enable-web
           flutter pub get
-          flutter build web --release
+          flutter build web --release --base-href=/spinner_box/
           cd build/web
           git init
           # type configurations: your user.email and user.name followed lines 
