@@ -73,6 +73,9 @@ class TransPopupRouter extends TransModalRoute {
       Animation<double> secondaryAnimation, Widget child) {
     return transitionsBuilder(context, animation, secondaryAnimation, child);
   }
+
+  @override
+  bool get popGestureEnabled => true;
 }
 
 /// 显示下拉展示筛选模态推送框
