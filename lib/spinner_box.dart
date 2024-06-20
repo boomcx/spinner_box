@@ -1,3 +1,5 @@
+library spinner_box;
+
 export './popup_message.dart';
 
 export './spinner/spinner.dart';

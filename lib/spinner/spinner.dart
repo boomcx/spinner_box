@@ -43,6 +43,7 @@ class SpinnerBox extends StatefulWidget {
     this.suffix,
     this.theme = defaultPinnerTheme,
     this.barrierColor,
+    this.transitionsBuilder,
   }) {
     isRebuilder = false;
     widgets = children;
@@ -77,6 +78,7 @@ class SpinnerBox extends StatefulWidget {
     this.suffix,
     this.theme = defaultPinnerTheme,
     this.barrierColor,
+    this.transitionsBuilder,
   }) {
     isRebuilder = false;
     controller = PopupValueNotifier.titles(titles);
@@ -94,6 +96,7 @@ class SpinnerBox extends StatefulWidget {
     this.suffix,
     this.theme = defaultPinnerTheme,
     this.barrierColor,
+    this.transitionsBuilder,
   }) {
     isRebuilder = true;
     controller = PopupValueNotifier.titles(titles);
@@ -126,6 +129,9 @@ class SpinnerBox extends StatefulWidget {
 
   /// 弹窗遮罩背景色
   final Color? barrierColor;
+
+  /// 弹出内容显示动画
+  final SpinnerViewTransitionsBuilder? transitionsBuilder;
 
   @override
   State<SpinnerBox> createState() => _SpinnerBoxState();
@@ -188,24 +194,7 @@ class _SpinnerBoxState extends State<SpinnerBox> {
       offsetY: _notifier.spinnerRect().bottom,
       barrierColor: widget.barrierColor ?? Colors.black12,
       pageBuilder: (context, animation, secondaryAnimation) => content,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return Align(
-          alignment: Alignment.topCenter,
-          child: SizeTransition(
-            sizeFactor: CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeOut,
-            ),
-            child: FadeTransition(
-              opacity: CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOut,
-              ),
-              child: child,
-            ),
-          ),
-        );
-      },
+      transitionsBuilder: widget.transitionsBuilder,
     );
 
     content.show(_router);

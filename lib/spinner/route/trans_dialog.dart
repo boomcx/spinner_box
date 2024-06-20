@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
-import './trans_route.dart';
+import './trans_route_new.dart';
 
 Widget _defaultTransitionsBuilder(
     BuildContext context,
     Animation<double> animation,
     Animation<double> secondaryAnimation,
     Widget child) {
-  return child;
+  return Align(
+    alignment: Alignment.topCenter,
+    child: SizeTransition(
+      sizeFactor: CurvedAnimation(
+        parent: animation,
+        curve: Curves.linear,
+      ),
+      child: FadeTransition(
+        opacity: CurvedAnimation(
+          parent: animation,
+          curve: Curves.linear,
+        ),
+        child: child,
+      ),
+    ),
+  );
 }
+
+typedef SpinnerViewTransitionsBuilder = Widget Function(
+    BuildContext, Animation<double>, Animation<double>, Widget);
 
 class TransPopupRouter extends TransModalRoute {
   TransPopupRouter({
@@ -16,7 +34,7 @@ class TransPopupRouter extends TransModalRoute {
     required this.pageBuilder,
     this.barrierColor,
     this.barrierDismissible = true,
-    this.transitionsBuilder = _defaultTransitionsBuilder,
+    this.transitionsBuilder,
     this.transitionDuration = const Duration(milliseconds: 300),
     this.reverseTransitionDuration = const Duration(milliseconds: 100),
     this.maintainState = true,
@@ -36,7 +54,7 @@ class TransPopupRouter extends TransModalRoute {
   /// {@endtemplate}
   ///
   /// The default transition is a jump cut (i.e. no animation).
-  final RouteTransitionsBuilder transitionsBuilder;
+  final RouteTransitionsBuilder? transitionsBuilder;
 
   @override
   final Duration transitionDuration;
@@ -71,7 +89,8 @@ class TransPopupRouter extends TransModalRoute {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    return transitionsBuilder(context, animation, secondaryAnimation, child);
+    return (transitionsBuilder ?? _defaultTransitionsBuilder)
+        .call(context, animation, secondaryAnimation, child);
   }
 
   @override
