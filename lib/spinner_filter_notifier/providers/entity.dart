@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 const double kBotBtnHeight = 64;
 
@@ -23,17 +24,20 @@ class SpinnerEntity {
   /// 标题，空不显示
   final String title;
 
+  /// 富文本标题外部自定义
+  final RichText? titleRichText;
+
   /// 额外视图的选择结构（eg: picker，input...）
   final dynamic extraData;
 
   /// 每组内容的显示风格
   final MoreContentType type;
 
-  /// 问号描述，点击显示内容
+  /// 问号描述，点击显示内容。默认为空不显示解释图标
   final String desc;
 
   /// 标题后面的额外图片（本地图片）
-  final String titleSuffix;
+  // final String titleSuffix;
 
   /// 选项集
   final List<SpinnerItemData> items;
@@ -44,7 +48,7 @@ class SpinnerEntity {
     this.title = '',
     this.type = MoreContentType.wrap,
     this.desc = '',
-    this.titleSuffix = '',
+    this.titleRichText,
     this.extraData,
     this.items = const [],
   });
@@ -69,8 +73,8 @@ class SpinnerEntity {
     if (json["desc"] is String) {
       entity = entity.copyWith(desc: json["desc"]);
     }
-    if (json["titleSuffix"] is String) {
-      entity = entity.copyWith(titleSuffix: json["titleSuffix"]);
+    if (json["titleRichText"] is RichText) {
+      entity = entity.copyWith(titleRichText: json["titleRichText"]);
     }
     if (json["items"] is List) {
       entity = entity.copyWith(
@@ -94,7 +98,7 @@ class SpinnerEntity {
     data["title"] = title;
     data["type"] = type;
     data["desc"] = desc;
-    data["titleSuffix"] = titleSuffix;
+    data["titleRichText"] = titleRichText;
     data["items"] = items.map((e) => e.toJson()).toList();
     return data;
   }
@@ -105,7 +109,7 @@ class SpinnerEntity {
     String? title,
     MoreContentType? type,
     String? desc,
-    String? titleSuffix,
+    RichText? titleRichText,
     dynamic extraData,
     List<SpinnerItemData>? items,
   }) =>
@@ -115,7 +119,7 @@ class SpinnerEntity {
         title: title ?? this.title,
         type: type ?? this.type,
         desc: desc ?? this.desc,
-        titleSuffix: titleSuffix ?? this.titleSuffix,
+        titleRichText: titleRichText ?? this.titleRichText,
         items: items ?? this.items,
         extraData: extraData,
       );

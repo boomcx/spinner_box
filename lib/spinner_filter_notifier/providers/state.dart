@@ -38,12 +38,19 @@ class SpinnerFilterState {
 
 /// 栅栏筛选配置
 class SpinnerFenceState {
+  /// 是否为单选
   final bool singleConditionAndSingleSelect;
+
+  /// 是否完成筛选
   final bool isCompleted;
 
   /// 仅关闭筛选弹窗
   final bool onlyClosed;
+
+  /// 每一列，选中项的索引
   final List<int> idxList;
+
+  /// 筛选数据
   final SpinnerEntity data;
 
   const SpinnerFenceState({

@@ -264,7 +264,8 @@ var def = [
       key: 'group1',
       title: '分组1-多选',
       isRadio: false,
-      titleSuffix: 'assets/icon.png',
+      // titleSuffix: 'assets/icon.png',
+      titleRichText: RichText(text: const TextSpan(text: '富文本')),
       items: [
         SpinnerItemData(name: '不限', result: '', isMutex: true),
         ...List.generate(10, (index) {

@@ -37,14 +37,9 @@ class _GroupHeader extends StatelessWidget {
       child: Wrap(
         spacing: theme.spacing,
         children: [
-          Text(group.title, style: theme.style),
+          if (group.titleRichText != null) group.titleRichText!,
+          if (group.title.isNotEmpty) Text(group.title, style: theme.style),
           if (group.desc.isNotEmpty) _ExplainIcon(desc: group.desc),
-          if (group.titleSuffix.isNotEmpty)
-            Image.asset(
-              group.titleSuffix,
-              height: 15,
-              fit: BoxFit.fitHeight,
-            ),
         ],
       ),
     );
