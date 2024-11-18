@@ -58,15 +58,15 @@ class _DropViewPageState extends State<DropViewPage> {
                 ).heightPart,
                 SpinnerFilter(
                   data: _filterData,
-                  attachment: [ 
+                  attachment: [
                     MyWidget2(data: _filterData),
                     MyWidget1(_textEditing, data: _filterData),
                   ],
                   onReseted: () {},
-                  onItemIntercept: (p0, p1) {
-                    if (p1 == 2) {
+                  onItemIntercept: (entity, item, index) {
+                    if (index == 2) {
                       // ignore: avoid_print
-                      print('key = ${p0.key}; index = 2, 我拦截的选中事件');
+                      print('key = ${entity.key}; index = 2, 我拦截的选中事件');
                       return true;
                     }
                     return false;

@@ -20,7 +20,6 @@ class _SelectParamsPageState extends State<SelectParamsPage> {
     data.items.first.selected = false;
     data.items[2].selected = true;
     // var items = <SpinnerItemData>[];
-
     // data.items.forEach((element) {
     //   items.add(element.copyWith(selected: true));
     // });

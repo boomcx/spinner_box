@@ -30,10 +30,10 @@ class _FilterGroupScope extends InheritedWidget {
     required super.child,
   });
 
-  final STabEntityAndIndexData data;
+  final SpinnerEntityIndexData data;
 
   // 子树中的widget获取共享数据
-  static STabEntityAndIndexData of(BuildContext context) {
+  static SpinnerEntityIndexData of(BuildContext context) {
     final scope =
         context.dependOnInheritedWidgetOfExactType<_FilterGroupScope>();
     return scope!.data;

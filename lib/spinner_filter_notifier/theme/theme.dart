@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -199,6 +200,9 @@ class SBoxBotBtnData {
 /// `MoreContentType.column` 样式配置
 class SColumnThemeData {
   /// 文字内容字体
+  final TextStyle interceptStyle;
+
+  /// 文字内容字体
   final TextStyle selectedStyle;
 
   /// 文字内容字体
@@ -237,13 +241,16 @@ class SColumnThemeData {
         color: Color(0xffE72410), fontSize: 14, fontWeight: FontWeight.w600),
     this.unselectedStyle = const TextStyle(
         color: Color(0xff20263A), fontSize: 14, fontWeight: FontWeight.normal),
+    this.interceptStyle = const TextStyle(
+        color: Color(0xff999999), fontSize: 14, fontWeight: FontWeight.normal),
   });
 
   @override
   bool operator ==(covariant SColumnThemeData other) {
     if (identical(this, other)) return true;
 
-    return other.selectedStyle == selectedStyle &&
+    return other.interceptStyle == interceptStyle &&
+        other.selectedStyle == selectedStyle &&
         other.unselectedStyle == unselectedStyle &&
         other.height == height &&
         other.icon1 == icon1 &&
@@ -256,7 +263,8 @@ class SColumnThemeData {
 
   @override
   int get hashCode {
-    return selectedStyle.hashCode ^
+    return interceptStyle.hashCode ^
+        selectedStyle.hashCode ^
         unselectedStyle.hashCode ^
         height.hashCode ^
         icon1.hashCode ^
@@ -268,6 +276,7 @@ class SColumnThemeData {
   }
 
   SColumnThemeData copyWith({
+    TextStyle? interceptStyle,
     TextStyle? selectedStyle,
     TextStyle? unselectedStyle,
     double? height,
@@ -279,6 +288,7 @@ class SColumnThemeData {
     int? maxLine,
   }) {
     return SColumnThemeData(
+      interceptStyle: interceptStyle ?? this.interceptStyle,
       selectedStyle: selectedStyle ?? this.selectedStyle,
       unselectedStyle: unselectedStyle ?? this.unselectedStyle,
       height: height ?? this.height,
@@ -303,24 +313,35 @@ class SWrapThemeData {
   /// 按钮内间距
   final EdgeInsets itemPadding;
 
-  /// 文字内容字体
+  /// 可拦截按钮文字内容字体样式
+  final TextStyle interceptStyle;
+
+  /// 按钮选中文字内容字体
   final TextStyle selectedStyle;
 
-  /// 文字内容字体
+  /// 未选中文字内容字体
   final TextStyle unselectedStyle;
 
-  /// 按钮装饰
+  /// 可拦截按钮文字按钮装饰
+  final BoxDecoration interceptDecoration;
+
+  /// 选中按钮装饰
   final BoxDecoration selectedDecoration;
 
-  /// 按钮装饰
+  /// 未选中按钮装饰
   final BoxDecoration unselectedDecoration;
 
   const SWrapThemeData({
     this.runSpacing = 10,
     this.spacing = 10,
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+    this.interceptStyle = const TextStyle(color: Colors.grey, fontSize: 12),
     this.selectedStyle = const TextStyle(color: Colors.white, fontSize: 12),
     this.unselectedStyle = const TextStyle(color: Colors.black87, fontSize: 12),
+    this.interceptDecoration = const BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(4)),
+      gradient: LinearGradient(colors: [Color(0xfff3f3f3), Color(0xfff3f3f3)]),
+    ),
     this.selectedDecoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(4)),
       gradient: LinearGradient(colors: [Color(0xffF56E60), Color(0xffE72410)]),
@@ -338,8 +359,10 @@ class SWrapThemeData {
     return other.runSpacing == runSpacing &&
         other.spacing == spacing &&
         other.itemPadding == itemPadding &&
+        other.interceptStyle == interceptStyle &&
         other.selectedStyle == selectedStyle &&
         other.unselectedStyle == unselectedStyle &&
+        other.interceptDecoration == interceptDecoration &&
         other.selectedDecoration == selectedDecoration &&
         other.unselectedDecoration == unselectedDecoration;
   }
@@ -349,8 +372,10 @@ class SWrapThemeData {
     return runSpacing.hashCode ^
         spacing.hashCode ^
         itemPadding.hashCode ^
+        interceptStyle.hashCode ^
         selectedStyle.hashCode ^
         unselectedStyle.hashCode ^
+        interceptDecoration.hashCode ^
         selectedDecoration.hashCode ^
         unselectedDecoration.hashCode;
   }
@@ -359,8 +384,10 @@ class SWrapThemeData {
     double? runSpacing,
     double? spacing,
     EdgeInsets? itemPadding,
+    TextStyle? interceptStyle,
     TextStyle? selectedStyle,
     TextStyle? unselectedStyle,
+    BoxDecoration? interceptDecoration,
     BoxDecoration? selectedDecoration,
     BoxDecoration? unselectedDecoration,
   }) {
@@ -368,8 +395,10 @@ class SWrapThemeData {
       runSpacing: runSpacing ?? this.runSpacing,
       spacing: spacing ?? this.spacing,
       itemPadding: itemPadding ?? this.itemPadding,
+      interceptStyle: interceptStyle ?? this.interceptStyle,
       selectedStyle: selectedStyle ?? this.selectedStyle,
       unselectedStyle: unselectedStyle ?? this.unselectedStyle,
+      interceptDecoration: interceptDecoration ?? this.interceptDecoration,
       selectedDecoration: selectedDecoration ?? this.selectedDecoration,
       unselectedDecoration: unselectedDecoration ?? this.unselectedDecoration,
     );

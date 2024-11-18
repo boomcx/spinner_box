@@ -1,14 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 /// 保存当前筛选菜单的数据项，并配合`PopupValueNotifier`完成各项内容的监听
 ///
 class PopupState {
   /// 渲染数据
-  List<SpinnerData> items;
+  List<SpinnerHeaderData> items;
 
   /// 原始数据
-  final List<SpinnerData> orginItems;
+  final List<SpinnerHeaderData> orginItems;
 
   /// 当前选中的选项卡
   int selected;
@@ -30,7 +29,7 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
       : status = state.orginItems.map((e) => false).toList();
 
   /// 标题初始化
-  factory PopupValueNotifier.titles(List<SpinnerData> titles) =>
+  factory PopupValueNotifier.titles(List<SpinnerHeaderData> titles) =>
       PopupValueNotifier(
         PopupState(items: List.of(titles), orginItems: List.of(titles)),
       );
@@ -41,8 +40,8 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
   /// 用于记录 `CompositedTransformFollower` 位置
   final GlobalKey targetKey = GlobalKey();
 
-  List<SpinnerData> get items => value.items;
-  List<SpinnerData> get orginItems => value.orginItems;
+  List<SpinnerHeaderData> get items => value.items;
+  List<SpinnerHeaderData> get orginItems => value.orginItems;
 
   /// 保存每个选项卡对应的视图是否打开
   final List<bool> status;
@@ -120,34 +119,56 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
   }
 }
 
+@Deprecated('请使用 SpinnerHeaderData')
+class SpinnerData {}
+
 /// 初始化传入的标题内容
-class SpinnerData {
+///
+/// ```
+/// [title] 标题
+/// [icon] 图片路径，本地路径
+/// [iconSelected] 图片路径，本地路径
+/// ```
+///
+class SpinnerHeaderData {
   /// 标题
   final String title;
 
-  /// 图片路径
+  /// 图片路径，本地路径
   final String? icon;
   final String? iconSelected;
 
-  SpinnerData(
+  SpinnerHeaderData(
     this.title, {
     this.icon,
     this.iconSelected,
   });
 
-  SpinnerData copyWith({
+  SpinnerHeaderData copyWith({
     String? title,
     String? icon,
     String? iconSelected,
   }) {
-    return SpinnerData(
+    return SpinnerHeaderData(
       title ?? this.title,
       icon: icon ?? this.icon,
       iconSelected: icon ?? this.iconSelected,
     );
   }
+
+  factory SpinnerHeaderData.fromJson(Map<String, dynamic> json) {
+    return SpinnerHeaderData(
+      json['title'] as String,
+      icon: json['icon'],
+      iconSelected: json['iconSelected'],
+    );
+  }
+
+  Map<String, dynamic> toJson() =>
+      {'title': title, 'icon': icon, 'iconSelected': iconSelected};
 }
 
 extension SpinnerDataExt on List<String> {
-  List<SpinnerData> get toSpinnerData => map((e) => SpinnerData(e)).toList();
+  List<SpinnerHeaderData> get toSpinnerData =>
+      map((e) => SpinnerHeaderData(e)).toList();
 }

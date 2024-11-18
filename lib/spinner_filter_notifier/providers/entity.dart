@@ -6,14 +6,36 @@ const double kBotBtnHeight = 64;
 
 /// 内容显示类型
 enum MoreContentType {
-  /// 按钮样式
+  /// 按钮样式，默认样式
   wrap,
 
   /// 列表样式
-  column,
+  column;
+
+  static MoreContentType fromIndex(int? type) {
+    switch (type) {
+      case 0:
+        return MoreContentType.wrap;
+      case 1:
+        return MoreContentType.column;
+      default:
+        return MoreContentType.wrap;
+    }
+  }
 }
 
 /// 弹框显示配置
+///
+/// ``` [items] 选项
+/// [title] 标题
+/// [desc] 描述
+/// [isRadio] 是否单选
+/// [extraData] 额外数据
+/// [titleRichText] 富文本标题外部自定义
+/// [titleSuffix] 标题后面的额外图片（本地图片）
+/// [type] 每组内容的显示风格，通过网络数据 fromJson 可以定义成 int 类型
+/// ```
+///
 class SpinnerEntity {
   /// 服务器字段
   final String key;
@@ -69,6 +91,8 @@ class SpinnerEntity {
     }
     if (json["type"] is MoreContentType) {
       entity = entity.copyWith(type: json["type"]);
+    } else if (json["type"] is int) {
+      entity = entity.copyWith(type: MoreContentType.fromIndex(json["type"]));
     }
     if (json["desc"] is String) {
       entity = entity.copyWith(desc: json["desc"]);
@@ -136,8 +160,16 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
   /// 以保证选中时输出实际类容的集合
   final dynamic result;
 
-  /// 是否选互斥（选中时清空当前其他选中项，一般用于 `全部` `不限` 等合并条件项）
+  /// 是否选中互斥（选中时清空当前其他选中项，一般用于 `全部` `不限` 等合并条件项）
   final bool isMutex;
+
+  /// 当前按钮是否支持点击拦截都可以点击，只是不触发选中
+  /// 
+  /// ！注意被设置为可拦截按钮后，将不会被选中，也不会触发`SpinnerFilter.onItemIntercept`  
+  ///
+  /// `isItemIntercept` 为 `true` 时，额外响应`SpinnerFilter.onItemIntercept`的拦截方法
+  /// 用来配置自定义的支持拦截逻辑的按钮样式
+  final bool isItemIntercept;
 
   /// 下级选项
   final List<SpinnerItemData> items;
@@ -191,6 +223,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
     this.result,
     this.isMutex = false,
     this.items = const [],
+    this.isItemIntercept = false,
     bool selected = false,
   }) : _value = selected;
 
@@ -202,6 +235,9 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
     entity = entity.copyWith(result: json["result"]);
     if (json["selected"] is bool) {
       entity = entity.copyWith(selected: json["selected"]);
+    }
+    if (json["isItemIntercept"] is bool) {
+      entity = entity.copyWith(isItemIntercept: json["isItemIntercept"]);
     }
     // if (json["highlighted"] is bool) {
     //   entity = entity.copyWith(highlighted: json["highlighted"]);
@@ -226,6 +262,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
     data["result"] = result;
     data["selected"] = selected;
     // data["highlighted"] = highlighted;
+    data["isItemIntercept"] = isItemIntercept;
     data["isMutex"] = isMutex;
     data["items"] = items.map((e) => e.toJson()).toList();
     return data;
@@ -236,6 +273,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
     dynamic result,
     bool? selected,
     // bool? highlighted,
+    bool? isItemIntercept,
     bool? isMutex,
     List<SpinnerItemData>? items,
   }) =>
@@ -244,6 +282,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
         result: result ?? this.result,
         selected: selected ?? this.selected,
         // highlighted: highlighted ?? this.highlighted,
+        isItemIntercept: isItemIntercept ?? this.isItemIntercept,
         isMutex: isMutex ?? this.isMutex,
         items: items ?? this.items,
       );
@@ -280,7 +319,6 @@ extension ListFormatX on List<SpinnerItemData> {
     return getLevel(this);
   }
 }
-
 
 // class EntityNotifier {
 //   EntityNotifier(this.entity) {

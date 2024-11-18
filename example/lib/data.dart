@@ -47,7 +47,9 @@ SpinnerEntity text({
           final space = Random().nextInt(3) + 2;
           final posi = max(Random().nextInt(text.length) - space, 0);
           final name = text.substring(posi, posi + space);
-          return SpinnerItemData.fromJson({'name': name, 'result': name});
+          final intercept = Random().nextInt(10) > 5;
+          return SpinnerItemData.fromJson(
+              {'name': name, 'result': name, 'isItemIntercept': intercept});
         }),
       ]);
 }

@@ -7,7 +7,8 @@ import 'entity.dart';
 import 'state.dart';
 
 /// 点击拦截的回调
-typedef SpinnerFilterIntercept = FutureOr<bool> Function(SpinnerEntity, int);
+typedef SpinnerFilterIntercept = FutureOr<bool> Function(
+    SpinnerEntity entity, SpinnerItemData item, int index);
 
 /// 完成筛选的回调
 typedef SpinnerFilterResponse = Function(
@@ -53,6 +54,10 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   final VoidCallback? onReseted;
 
   /// 点击事件拦截，获取到处理结果后继续执行
+  ///
+  /// 原逻辑为通过定义拦截事件后去捕获异步返回状态，
+  /// 现在在原逻辑上额外增加`SpinnerItemData.isItemIntercept`字段，用于控制是否执行拦截事件,
+  /// 更趋近数据驱动的模式
   final SpinnerFilterIntercept? onItemIntercept;
 
   /// 外部传入自定义视图
@@ -208,9 +213,10 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
   /// 点击按钮选项
   /// `data` 包含当前点击的分组数据 和 分组下标
   /// `index` 按钮下标
-  void itemOnSelected(STabEntityAndIndexData data, int index) async {
-    if (onItemIntercept != null) {
-      final isIntercept = await onItemIntercept!.call(data.$1, index);
+  void itemOnSelected(SpinnerEntityIndexData data, int index) async {
+    if (onItemIntercept != null || data.$1.items[index].isItemIntercept) {
+      final isIntercept =
+          await onItemIntercept?.call(data.$1, data.$1.items[index], index);
       if (isIntercept == true) {
         return;
       }

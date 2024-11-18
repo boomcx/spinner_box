@@ -72,7 +72,7 @@ class SpinnerBox extends StatefulWidget {
   /// ```
   SpinnerBox.builder({
     super.key,
-    required List<SpinnerData> titles,
+    required List<SpinnerHeaderData> titles,
     required SpinnerBoxBuilder builder,
     this.prefix,
     this.suffix,
@@ -90,7 +90,7 @@ class SpinnerBox extends StatefulWidget {
   ///
   SpinnerBox.rebuilder({
     super.key,
-    required List<SpinnerData> titles,
+    required List<SpinnerHeaderData> titles,
     required SpinnerBoxBuilder builder,
     this.prefix,
     this.suffix,
@@ -407,7 +407,7 @@ class _Button extends StatelessWidget {
   });
 
   final double maxWidth;
-  final SpinnerData item;
+  final SpinnerHeaderData item;
   final bool isSelected;
   final bool isHighlight;
 

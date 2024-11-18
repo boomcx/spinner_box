@@ -19,7 +19,7 @@ class _MultiPageState extends State<MultiPage> {
   ];
 
   var _condition3 = [
-    years(key: 'year3', isRadio: true, count: 3),
+    text(key: 'text1', type: MoreContentType.column, count: 8, isRadio: false),
     text(key: 'text1', type: MoreContentType.wrap, count: 15),
     text(key: 'text2', type: MoreContentType.wrap, isRadio: false, count: 8),
   ];
@@ -58,8 +58,8 @@ class _MultiPageState extends State<MultiPage> {
                 ).heightPart,
                 SpinnerFilter(
                   data: _condition3,
-                  onItemIntercept: (p0, p1) {
-                    if (p0.key == 'text2' && p1 == 2) {
+                  onItemIntercept: (entity, item, index) async {
+                    if (item.isItemIntercept) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('欸~ 就是选不了~')),
                       );

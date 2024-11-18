@@ -14,7 +14,7 @@ part './widgets/explain_icon.dart';
 part './widgets/attachment_view.dart';
 
 /// 包含当前点击的分组数据 和 分组下标
-typedef STabEntityAndIndexData = (SpinnerEntity entity, int index);
+typedef SpinnerEntityIndexData = (SpinnerEntity entity, int index);
 
 /// List / Wrap 形式的显示视图
 class SpinnerFilter extends StatefulWidget {
@@ -37,6 +37,10 @@ class SpinnerFilter extends StatefulWidget {
   /// 选中项目的时候，拦截处理（用于交互前的特殊判断）
   /// 返回值 `true`，表示拦截选中事件
   /// `false` 则可以选中
+  ///
+  /// 原逻辑为通过定义拦截事件后去捕获异步返回状态，
+  /// 现在在原逻辑上额外增加`SpinnerItemData.isItemIntercept`字段，用于控制是否执行拦截事件,
+  /// 更趋近数据驱动的模式
   final SpinnerFilterIntercept? onItemIntercept;
 
   /// 选择完成回调

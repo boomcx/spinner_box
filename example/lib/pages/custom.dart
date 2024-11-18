@@ -59,8 +59,8 @@ class _CustomPageState extends State<CustomPage> {
                     _InputAttach(data: _condition3),
                     _PickerAttach(data: _condition3)
                   ],
-                  onItemIntercept: (p0, p1) {
-                    if (p0.key == 'text2' && p1 == 2) {
+                  onItemIntercept: (entity, item, index) {
+                    if (entity.key == 'text2' && index == 2) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('欸~ 拦截了就是选不了~')),
                       );

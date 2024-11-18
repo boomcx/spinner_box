@@ -64,15 +64,14 @@ class _CheckListCnt extends StatelessWidget {
         final item = items[index];
         return ValueListenableBuilder(
           valueListenable: item,
-          builder: (context, value, child) => TapScope(
+          builder: (context, value, child) => _CheckListItem(
+            item.name,
+            item.selected,
+            item.isItemIntercept,
+            isMulti: !data.$1.isRadio,
             onPressed: () {
               notifier.itemOnSelected(data, index);
             },
-            child: _CheckListItem(
-              name: item.name,
-              isSelect: item.selected,
-              isMulti: !data.$1.isRadio,
-            ),
           ),
         );
       },
@@ -101,6 +100,7 @@ class _GroupBtnsCnt extends StatelessWidget {
               builder: (context, value, child) => WrapButton(
                 item.name,
                 item.selected,
+                item.isItemIntercept,
                 onPressed: () {
                   notifier.itemOnSelected(data, index);
                 },
