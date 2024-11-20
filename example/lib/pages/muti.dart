@@ -59,7 +59,10 @@ class _MultiPageState extends State<MultiPage> {
                 SpinnerFilter(
                   data: _condition3,
                   onItemIntercept: (entity, item, index) async {
-                    if (item.isItemIntercept) {
+                    // 可以从数据源来确定拦截按钮，也可以从点击时通过额外逻辑来判定
+                    // 但按钮置灰样式只能通过数据源配置处理
+                    if (item.isItemIntercept ||
+                        (entity.key == 'text2' && index == 2)) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('欸~ 就是选不了~')),
                       );

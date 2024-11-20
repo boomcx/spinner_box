@@ -35,12 +35,11 @@ class SpinnerFilter extends StatefulWidget {
   final VoidCallback? onReseted;
 
   /// 选中项目的时候，拦截处理（用于交互前的特殊判断）
-  /// 返回值 `true`，表示拦截选中事件
-  /// `false` 则可以选中
+  /// 返回值 `true`表示拦截选中事件，`false`表示可以选中
   ///
   /// 原逻辑为通过定义拦截事件后去捕获异步返回状态，
-  /// 现在在原逻辑上额外增加`SpinnerItemData.isItemIntercept`字段，用于控制是否执行拦截事件,
-  /// 更趋近数据驱动的模式
+  /// 现在在原逻辑上额外增加`SpinnerItemData.isItemIntercept`字段，用于控制是否执行拦截事件，更方便理解和UI处理
+  /// （保留原逻辑做全局事件兼容）
   final SpinnerFilterIntercept? onItemIntercept;
 
   /// 选择完成回调
