@@ -10,28 +10,70 @@ The drop-down criteria filter box supports single selection, multiple selection,
 
 ![snapshoot.jpg](https://github.com/boomcx/spinner_box/blob/main/example/assets/snapshoot.jpg?raw=true)
 
-
 ### Simple use
 
-```dart
-  SpinnerBox.rebuilder(
-            titles: const ['单选条件', '单选条件'],
+``` dart
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('多选操作')),
+      body: Column(
+        children: [
+          SpinnerBox.rebuilder(
+            titles: const ['多选条件', '多选条件', '混合条件+拦截'].toSpinnerData,
             builder: (notifier) {
               return [
                 SpinnerFilter(
                   data: _condition1,
-                  onCompleted: (result, name, data) {
+                  onCompleted: (result, name, data, onlyClosed) {
+                    _condition1 = data;
                     notifier.updateName(name);
                     setState(() {
                       _result = result;
-                      _condition1 = data;
                     });
                   },
                 ).heightPart,
-                ...
+                SpinnerFilter(
+                  data: _condition2,
+                  onCompleted: (result, name, data, onlyClosed) {
+                    _condition2 = data;
+                    notifier.updateName(name);
+                    setState(() {
+                      _result = result;
+                    });
+                  },
+                ).heightPart,
+                SpinnerFilter(
+                  data: _condition3,
+                  onItemIntercept: (entity, item, index) async {
+                    if (item.isItemIntercept) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('欸~ 就是选不了~')),
+                      );
+                      return true;
+                    }
+                    return false;
+                  },
+                  onCompleted: (result, name, data, onlyClosed) {
+                    _condition3 = data;
+                    notifier.updateName(name);
+                    setState(() {
+                      _result = result;
+                    });
+                  },
+                ).heightPart,
               ];
             },
           ),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Text('筛选结果: $_result'),
+          ),
+        ],
+      ),
+    );
+  }
 ```
 
 ### Update the title or highlighting of the selected item

@@ -39,19 +39,19 @@ class _MultiPageState extends State<MultiPage> {
                 SpinnerFilter(
                   data: _condition1,
                   onCompleted: (result, name, data, onlyClosed) {
+                    _condition1 = data;
                     notifier.updateName(name);
                     setState(() {
                       _result = result;
-                      _condition1 = data;
                     });
                   },
                 ).heightPart,
                 SpinnerFilter(
                   data: _condition2,
                   onCompleted: (result, name, data, onlyClosed) {
+                    _condition2 = data;
                     notifier.updateName(name);
                     setState(() {
-                      _condition2 = data;
                       _result = result;
                     });
                   },
@@ -68,9 +68,9 @@ class _MultiPageState extends State<MultiPage> {
                     return false;
                   },
                   onCompleted: (result, name, data, onlyClosed) {
+                    _condition3 = data;
                     notifier.updateName(name);
                     setState(() {
-                      _condition3 = data;
                       _result = result;
                     });
                   },

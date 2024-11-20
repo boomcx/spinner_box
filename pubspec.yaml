@@ -1,6 +1,6 @@
 name: spinner_box
 description: The drop-down criteria filter box supports single selection, multiple selection, and user-defined filtering content.
-version: 0.1.2
+version: 0.1.3
 homepage: https://github.com/boomcx/spinner_box.git
 # publish_to: https://pub.dartlang.org
 

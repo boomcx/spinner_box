@@ -69,9 +69,9 @@ class _CustomPageState extends State<CustomPage> {
                     return false;
                   },
                   onCompleted: (result, name, data, onlyClosed) {
+                    _condition3 = data;
                     notifier.updateName(name);
                     setState(() {
-                      _condition3 = data;
                       _result = result;
                     });
                   },
