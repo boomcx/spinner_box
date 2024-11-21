@@ -8,7 +8,7 @@ The drop-down criteria filter box supports single selection, multiple selection,
 
 # Spinner Box
 
-![snapshoot.jpg](https://github.com/boomcx/spinner_box/blob/main/example/assets/snapshoot.jpg?raw=true)
+![snapshoot.jpg](https://github.com/boomcx/images/blob/main/spinner_box/snapshoot.jpg?raw=true)
 
 ### Simple use
 
