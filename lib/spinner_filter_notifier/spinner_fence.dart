@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'providers/entity.dart';
 import 'providers/provider_fence.dart';
 import 'theme/theme.dart';
-import 'widgets/asset.dart';
+import '../asset.dart';
 import 'widgets/buttons.dart';
 
 part './widgets/fence.dart';

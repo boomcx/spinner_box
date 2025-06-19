@@ -4,7 +4,7 @@ import 'package:spinner_box/spinner_filter_notifier/theme/theme.dart';
 import '../popup_message.dart';
 import 'providers/entity.dart';
 import 'providers/provider.dart';
-import 'widgets/asset.dart';
+import '../asset.dart';
 import 'widgets/buttons.dart';
 
 part './widgets/inherited.dart';

@@ -64,6 +64,13 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
     updateSelected(-1);
   }
 
+  /// 手动打开弹窗
+  ///
+  /// `index` 需要打开的选项卡的下标位置
+  void opened([int index = 0]) {
+    updateSelected(index);
+  }
+
   /// 设置选中
   void updateSelected(int index) {
     if (value.selected == index) {

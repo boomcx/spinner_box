@@ -636,10 +636,18 @@ abstract class TransModalRoute<T> extends TransitionRoute<T>
     return super.popDisposition;
   }
 
+  // @override
+  // void onPopInvoked(bool didPop) {
+  //   for (final PopEntry popEntry in _popEntries) {
+  //     popEntry.onPopInvoked?.call(didPop);
+  //   }
+  // }
+
   @override
-  void onPopInvoked(bool didPop) {
+  void onPopInvokedWithResult(bool didPop, T? result) {
+    super.onPopInvokedWithResult(didPop, result);
     for (final PopEntry popEntry in _popEntries) {
-      popEntry.onPopInvoked.call(didPop);
+      popEntry.onPopInvokedWithResult.call(didPop, result);
     }
   }
 

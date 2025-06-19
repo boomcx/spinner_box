@@ -83,8 +83,9 @@ class SpinnerHeaderTheme {
 
   /// 之前样式太过固定
   /// 以下针对`SpinnerHeader`的`item`配置
-  /// 标题icon的大小，默认25
-  /// 如果是自定义输入图片，折限制为高度显示
+  /// 标题icon的大小，默认 10x10 正方形，异形图片以高度限制为准
+  ///
+  /// 如果是自定义输入图片，则限制为高度显示
   final double iconSize;
 
   /// icon的位置，默认居右
@@ -112,8 +113,8 @@ class SpinnerHeaderTheme {
     this.arrowColor = const Color(0xff9B9EAC),
     this.padding = EdgeInsets.zero,
     this.outsideFocus = false,
-    this.iconSize = 25,
-    this.iconPading = const EdgeInsets.symmetric(horizontal: 4),
+    this.iconSize = 10,
+    this.iconPading = const EdgeInsets.only(left: 4),
     this.textDirection,
     this.isIconAnimate = true,
   });

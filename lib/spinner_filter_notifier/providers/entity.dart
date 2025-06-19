@@ -149,6 +149,8 @@ class SpinnerEntity {
       );
 }
 
+
+
 /// 继承 `ChangeNotifier` `ValueListenable`
 /// 写入自变量 `selected`，方便监听点击选中状态
 class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {

@@ -26,11 +26,11 @@ class _CheckListItem extends StatelessWidget {
     if (!isIntercept) {
       if (isMulti) {
         icon = isSelect
-            ? (theme.iconMulti1 ?? Assets.name('muti_select'))
-            : (theme.iconMulti2 ?? Assets.name('muti_unselect'));
+            ? (theme.iconMulti1 ?? Assets.icMutiSelected)
+            : (theme.iconMulti2 ?? Assets.icMutiUnselected);
       } else {
         icon = isSelect
-            ? (theme.icon1 ?? Assets.name('single_select'))
+            ? (theme.icon1 ?? Assets.icSingleSelected)
             : (theme.icon2 ?? const SizedBox());
       }
     }

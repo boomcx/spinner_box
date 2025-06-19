@@ -132,15 +132,15 @@ class _FenceListItem extends StatelessWidget {
     final fence = SpinnerBoxTheme.of(context).fence;
 
     Widget icon = item.selected
-        ? (theme.icon1 ?? Assets.name('single_select'))
+        ? (theme.icon1 ?? Assets.icSingleSelected)
         : (theme.icon2 ?? const SizedBox());
     if (!notifier.value.data.isRadio) {
       if (item.selected) {
         icon = item.isSelectedAll
-            ? (theme.iconMulti1 ?? Assets.name('muti_select'))
-            : (theme.iconMulti3 ?? Assets.name('muti_select_not_all'));
+            ? (theme.iconMulti1 ?? Assets.icMutiSelected)
+            : (theme.iconMulti3 ?? Assets.icMutiSemiSelected);
       } else {
-        icon = (theme.iconMulti2 ?? Assets.name('muti_unselect'));
+        icon = (theme.iconMulti2 ?? Assets.icMutiUnselected);
       }
     }
 

@@ -27,7 +27,9 @@ class _SinglePageState extends State<SinglePage> {
       body: Column(
         children: [
           SpinnerBox.builder(
-            titles: const ['单选条件', '单选条件'].toSpinnerData,
+            titles: const ['单选', '单选条件'].toSpinnerData,
+            prefix: Container(color: Colors.red),
+            isExpandPrefix: true,
             builder: (notifier) {
               return [
                 SpinnerFilter(

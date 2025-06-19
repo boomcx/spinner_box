@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:spinner_box/asset.dart';
 import './state.dart';
 import 'route/trans_dialog.dart';
 import 'theme.dart';
@@ -439,7 +440,7 @@ class _CompsitedTarget extends StatelessWidget {
   }
 }
 
-class _Button extends StatelessWidget {
+class _Button extends StatefulWidget {
   const _Button(
     this.item,
     this.isSelected,
@@ -457,24 +458,60 @@ class _Button extends StatelessWidget {
   final SpinnerHeaderTheme config;
 
   @override
+  State<_Button> createState() => _ButtonState();
+}
+
+class _ButtonState extends State<_Button> {
+  ///计算文本宽度
+  static Size _boundingTextSize({
+    required BuildContext context,
+    required String text,
+    required TextStyle style,
+    int maxLines = 2 ^ 31,
+    double maxWidth = double.infinity,
+  }) {
+    if (text.isEmpty) {
+      return Size.zero;
+    }
+    final TextPainter textPainter = TextPainter(
+        textDirection: TextDirection.ltr,
+        locale: Localizations.localeOf(context),
+        text: TextSpan(text: text, style: style),
+        maxLines: maxLines)
+      ..layout(maxWidth: maxWidth);
+    return textPainter.size;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final flag = isSelected || isHighlight;
-    final iconSize = config.iconSize;
+    final flag = widget.isSelected || widget.isHighlight;
+    final iconSize = widget.config.iconSize;
+
+    final textSize = _boundingTextSize(
+      context: context,
+      text: widget.item.title,
+      style: widget.config.style,
+      maxLines: 1,
+    );
+
+    final constraintsWidth = widget.maxWidth > 50
+        ? widget.maxWidth - iconSize - 20 - widget.config.iconPading.horizontal
+        : textSize.width + iconSize + widget.config.iconPading.horizontal;
 
     Widget icon;
-    if (item.icon != null) {
+    if (widget.item.icon != null) {
       icon = AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: flag
             ? Image.asset(
-                item.iconSelected ?? item.icon!,
+                widget.item.iconSelected ?? widget.item.icon!,
                 width: iconSize,
                 height: iconSize,
                 fit: BoxFit.contain,
                 // package: 'spinner_box',
               )
             : Image.asset(
-                item.icon!,
+                widget.item.icon!,
                 width: iconSize,
                 height: iconSize,
                 fit: BoxFit.contain,
@@ -483,14 +520,21 @@ class _Button extends StatelessWidget {
       );
     } else {
       icon = AnimatedRotation(
-        turns: isSelected ? 0 : 0.5,
+        turns: widget.isSelected ? 0.5 : 0,
         duration: const Duration(milliseconds: 250),
         alignment: Alignment.center,
-        child: Icon(
-          Icons.arrow_drop_up_rounded,
-          size: min(config.height, iconSize),
-          color: flag ? config.selectedStyle.color : config.arrowColor,
+        child: Assets.icArrDown(
+          height: min(widget.config.height, iconSize),
+          color: flag
+              ? widget.config.selectedStyle.color
+              : widget.config.arrowColor,
         ),
+        // icon 图片有过大的内边距
+        // child: Icon(
+        //   Icons.arrow_drop_up_rounded,
+        //   size: min(config.height, iconSize),
+        //   color: flag ? config.selectedStyle.color : config.arrowColor,
+        // ),
       );
     }
 
@@ -498,21 +542,19 @@ class _Button extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        textDirection: config.textDirection,
+        textDirection: widget.config.textDirection,
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: maxWidth - iconSize - 20 - config.iconPading.horizontal,
-            ),
+            constraints: BoxConstraints(maxWidth: constraintsWidth),
             child: Text(
-              item.title,
-              style: flag ? config.selectedStyle : config.style,
+              widget.item.title,
+              style: flag ? widget.config.selectedStyle : widget.config.style,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
           ),
           Padding(
-            padding: config.iconPading,
+            padding: widget.config.iconPading,
             child: icon,
           ),
         ],
