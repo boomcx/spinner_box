@@ -12,7 +12,7 @@ typedef SpinnerBoxBuilder = List<SpinnerPopScope> Function(
 ///
 // ignore: must_be_immutable
 class SpinnerBox extends StatefulWidget {
-  /// 普通构建方式，需要额外对数据源进行变更
+  /// 普通构建方式，必须对数据源进行监听，否则下次弹窗不会保存历史选中数据
   ///
   /// 使用示例：
   ///
@@ -36,7 +36,7 @@ class SpinnerBox extends StatefulWidget {
   /// ```
   SpinnerBox({
     super.key,
-    required this.controller,
+    required PopupValueNotifier controller,
     // required this.titles,
     required List<SpinnerPopScope> children,
     this.prefix,
@@ -48,10 +48,11 @@ class SpinnerBox extends StatefulWidget {
     this.transitionsBuilder,
   }) {
     isRebuilder = false;
+    spinnerController = controller;
     widgets = children;
   }
 
-  /// 普通构建方式，需要额外对数据源进行变更
+  /// 每次唤起弹框，都会重新构建内部视图，可以减少对数据源的监听修改
   ///
   /// 使用示例：
   ///
@@ -74,7 +75,8 @@ class SpinnerBox extends StatefulWidget {
   /// ```
   SpinnerBox.builder({
     super.key,
-    required List<SpinnerHeaderData> titles,
+    List<SpinnerHeaderData>? titles,
+    PopupValueNotifier? controller,
     required SpinnerBoxBuilder builder,
     this.prefix,
     this.isExpandPrefix = false,
@@ -84,14 +86,21 @@ class SpinnerBox extends StatefulWidget {
     this.barrierColor,
     this.transitionsBuilder,
   }) {
-    isRebuilder = false;
-    controller = PopupValueNotifier.titles(titles);
-    widgets = builder.call(controller);
+    assert(titles != null || controller != null,
+        '`SpinnerBox.builder` 构造方法 `titles` 或者 `controller` 参数不能同时为空！');
+    isRebuilder = true;
+    if (titles?.isNotEmpty == true) {
+      spinnerController = PopupValueNotifier.titles(titles!);
+    } else if (controller != null) {
+      spinnerController = controller;
+    }
+    // widgets = builder.call(controller);
+    widgetsBuilder = builder;
   }
 
-  /// 每次唤起弹框，都会重新构建内部视图
-  /// 可以减少对数据源的监听修改
+  /// 每次唤起弹框，都会重新构建内部视图，可以减少对数据源的监听修改
   ///
+  @Deprecated('合并迁移到`builder`方法中,请使用`SpinnerBox.builder`')
   SpinnerBox.rebuilder({
     super.key,
     required List<SpinnerHeaderData> titles,
@@ -105,7 +114,7 @@ class SpinnerBox extends StatefulWidget {
     this.transitionsBuilder,
   }) {
     isRebuilder = true;
-    controller = PopupValueNotifier.titles(titles);
+    spinnerController = PopupValueNotifier.titles(titles);
     widgetsBuilder = builder;
   }
 
@@ -130,7 +139,7 @@ class SpinnerBox extends StatefulWidget {
   late SpinnerBoxBuilder widgetsBuilder;
 
   /// 逻辑控制器
-  late PopupValueNotifier controller;
+  late PopupValueNotifier spinnerController;
 
   /// 顶部按钮视图配置
   final SpinnerHeaderTheme theme;
@@ -153,7 +162,7 @@ class _SpinnerBoxState extends State<SpinnerBox> {
 
   @override
   void initState() {
-    _notifier = widget.controller;
+    _notifier = widget.spinnerController;
     super.initState();
 
     _notifier.addListener(() {

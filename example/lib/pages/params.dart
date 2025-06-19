@@ -40,7 +40,7 @@ class _SelectParamsPageState extends State<SelectParamsPage> {
 通过参数`SpinnerItemData`中`select`值设置，来默认显示已选中条件
 '''),
             const SizedBox(height: 10),
-            SpinnerBox.rebuilder(
+            SpinnerBox.builder(
                 titles: const ['默认选中参数'].toSpinnerData,
                 builder: (notifier) => [
                       SpinnerFilter(

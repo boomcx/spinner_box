@@ -28,7 +28,7 @@ class _RebuilderPageState extends State<RebuilderPage> {
 每一次打开筛选弹框都会重新构建筛选视图，所以当筛选条件改变时并不需要通知视图刷新
 '''),
             const SizedBox(height: 10),
-            SpinnerBox.rebuilder(
+            SpinnerBox.builder(
                 titles: const ['Rebuilder'].toSpinnerData,
                 builder: (notifier) => [
                       SpinnerFilter(

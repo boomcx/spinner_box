@@ -26,7 +26,7 @@ class _SinglePageState extends State<SinglePage> {
       appBar: AppBar(title: const Text('单选操作')),
       body: Column(
         children: [
-          SpinnerBox.rebuilder(
+          SpinnerBox.builder(
             titles: const ['单选条件', '单选条件'].toSpinnerData,
             builder: (notifier) {
               return [

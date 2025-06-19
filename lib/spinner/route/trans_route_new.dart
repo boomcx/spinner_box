@@ -639,7 +639,7 @@ abstract class TransModalRoute<T> extends TransitionRoute<T>
   @override
   void onPopInvoked(bool didPop) {
     for (final PopEntry popEntry in _popEntries) {
-      popEntry.onPopInvoked?.call(didPop);
+      popEntry.onPopInvoked.call(didPop);
     }
   }
 

@@ -32,7 +32,7 @@ class _MultiPageState extends State<MultiPage> {
       appBar: AppBar(title: const Text('多选操作')),
       body: Column(
         children: [
-          SpinnerBox.rebuilder(
+          SpinnerBox.builder(
             titles: const ['多选条件', '多选条件', '混合条件+拦截'].toSpinnerData,
             builder: (notifier) {
               return [

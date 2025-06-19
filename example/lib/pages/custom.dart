@@ -27,7 +27,7 @@ class _CustomPageState extends State<CustomPage> {
       appBar: AppBar(title: const Text('多选操作')),
       body: Column(
         children: [
-          SpinnerBox.rebuilder(
+          SpinnerBox.builder(
             titles: const ['自定义弹窗', '自定义弹窗', '拼接自定义'].toSpinnerData,
             builder: (notifier) {
               return [

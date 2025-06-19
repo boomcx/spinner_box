@@ -228,7 +228,7 @@ class _FilterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SpinnerBox.rebuilder(
+    return SpinnerBox.builder(
       prefix: prefix,
       suffix: suffix,
       titles: const ['未更新数据源1', '未更新数据源2'].toSpinnerData,

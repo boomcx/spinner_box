@@ -26,7 +26,7 @@ class _ThemeHeaderPageState extends State<ThemeHeaderPage> {
       appBar: AppBar(title: const Text('单选操作')),
       body: Column(
         children: [
-          SpinnerBox.rebuilder(
+          SpinnerBox.builder(
             titles: [
               SpinnerHeaderData('单选条件单选条件单选条件单选条件单选条件单选条件',
                   icon: 'assets/icon.png'),
