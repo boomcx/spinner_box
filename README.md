@@ -1,4 +1,6 @@
-The drop-down criteria filter box supports single selection, multiple selection, and user-defined filtering content.
+#### 下拉筛选菜单框，支持单选、多选、栅栏样式及自定义显示内容
+
+！！！由于分体式设计，给定默认选中值时，需要外部初始化`SpinnerController`后手动使用给菜单栏标题赋值
 
 [![pub package](https://img.shields.io/pub/v/spinner_box.svg?label=spinner_box&color=blue)](https://pub.dev/packages/spinner_box)
 
@@ -10,7 +12,7 @@ The drop-down criteria filter box supports single selection, multiple selection,
 
 ![snapshoot.jpg](https://github.com/boomcx/images/blob/main/spinner_box/snapshoot.jpg?raw=true)
 
-### Simple use
+### 使用案例
 
 ```dart
 
@@ -20,7 +22,7 @@ The drop-down criteria filter box supports single selection, multiple selection,
       appBar: AppBar(title: const Text('多选操作')),
       body: Column(
         children: [
-          SpinnerBox.rebuilder(
+          SpinnerBox.builder(
             titles: const ['多选条件', '多选条件', '混合条件+拦截'].toSpinnerData,
             builder: (notifier) {
               return [
@@ -79,10 +81,27 @@ The drop-down criteria filter box supports single selection, multiple selection,
   }
 ```
 
-### Update the title or highlighting of the selected item
+### 外部初始化`SpinnerController`
 
 ```dart
-  notifier.updateName(name);
+
+   var popupController = PopupValueNotifier.titles(['全部'].toSpinnerData);
+
+   ...
+
+  SpinnerBox.builder(
+    controller: controller.popupController,
+    builder: (popupController) {
+      ...
+  });
+
+
+```
+
+### 更新所选项的标题或设置高亮显示
+
+```dart
+  spinnerController.updateName(name);
 or
-  notifier.setHighlight(true)
+  spinnerController.setHighlight(true)
 ```
