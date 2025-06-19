@@ -38,8 +38,8 @@ class _SelectParamsPageState extends State<SelectParamsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('''
-            通过参数`SpinnerItemData`中`select`值设置，来默认显示已选中条件
+            const Text('''通过参数`SpinnerItemData`中`select`值设置，来默认显示已选中条件；
+但需要手动控制标题文本的显示。
             '''),
             const SizedBox(height: 10),
             SpinnerBox.builder(
