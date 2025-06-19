@@ -76,12 +76,16 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
 
   /// 外部设置某一个选项卡仅高亮显示（优先级最高）
   /// `index` 高亮下标，默认为当前点击的下标
-  void setHighlight(bool isHightlight, [int? index]) {
+  /// `name` 选项卡名称（需要显示的名称，任意值）
+  void setHighlight(bool isHightlight, [int? index, String? name]) {
     int current = index ?? value.selected;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var data = Map.of(value.highlightSpec);
       data['high_$current'] = isHightlight;
       value.highlightSpec = data;
+      if (name != null && name.isNotEmpty) {
+        value.items[current] = value.items[current].copyWith(title: name);
+      }
       notifyListeners();
     });
   }
