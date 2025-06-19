@@ -85,13 +85,13 @@
 
 ```dart
 
-   var popupController = PopupValueNotifier.titles(['全部'].toSpinnerData);
+   var spinnerController = PopupValueNotifier.titles(['全部'].toSpinnerData);
 
    ...
 
   SpinnerBox.builder(
-    controller: controller.popupController,
-    builder: (popupController) {
+    controller: spinnerController,
+    builder: (spinner) {
       ...
   });
 

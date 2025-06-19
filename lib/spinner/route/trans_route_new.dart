@@ -636,20 +636,20 @@ abstract class TransModalRoute<T> extends TransitionRoute<T>
     return super.popDisposition;
   }
 
-  // @override
-  // void onPopInvoked(bool didPop) {
-  //   for (final PopEntry popEntry in _popEntries) {
-  //     popEntry.onPopInvoked?.call(didPop);
-  //   }
-  // }
-
   @override
-  void onPopInvokedWithResult(bool didPop, T? result) {
-    super.onPopInvokedWithResult(didPop, result);
+  void onPopInvoked(bool didPop) {
     for (final PopEntry popEntry in _popEntries) {
-      popEntry.onPopInvokedWithResult.call(didPop, result);
+      popEntry.onPopInvoked?.call(didPop);
     }
   }
+
+  // @override
+  // void onPopInvokedWithResult(bool didPop, T? result) {
+  //   super.onPopInvokedWithResult(didPop, result);
+  //   for (final PopEntry popEntry in _popEntries) {
+  //     popEntry.onPopInvokedWithResult.call(didPop, result);
+  //   }
+  // }
 
   /// Enables this route to veto attempts by the user to dismiss it.
   ///
