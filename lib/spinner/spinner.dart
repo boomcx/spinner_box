@@ -87,13 +87,15 @@ class SpinnerBox extends StatefulWidget {
     this.barrierColor,
     this.transitionsBuilder,
   }) {
-    assert(titles != null || controller != null,
-        '`SpinnerBox.builder` 构造方法 `titles` 或者 `controller` 参数不能同时为空！');
+    assert(
+        (titles?.isNotEmpty == true || controller != null) &&
+            !(titles?.isNotEmpty == true && controller != null),
+        '`SpinnerBox.builder` 构造方法 `titles` 或者 `controller` 有且只有一个有效。');
     isRebuilder = true;
-    if (titles?.isNotEmpty == true) {
-      spinnerController = PopupValueNotifier.titles(titles!);
-    } else if (controller != null) {
+    if (controller != null) {
       spinnerController = controller;
+    } else if (titles?.isNotEmpty == true) {
+      spinnerController = PopupValueNotifier.titles(titles!);
     }
     // widgets = builder.call(controller);
     widgetsBuilder = builder;
