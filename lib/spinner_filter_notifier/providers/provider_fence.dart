@@ -16,7 +16,9 @@ typedef SpinnerFenceIntercept = FutureOr<bool> Function(
 
 /// 完成筛选的回调
 typedef SpinnerFenceResponse = Function(
-  /// 所有选中的集合
+  /// 选中的集合,如果下级为全选中,则只返回当前数据
+  ///
+  /// eg：地址选择中，选中北京全部区县，则返回北京。在半选状态下，返回当前选中的区县
   List<SpinnerItemData> results,
 
   /// 所有选中名称的集合
@@ -88,7 +90,8 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
     runLoop(List<SpinnerItemData> list) {
       for (var i = 0; i < list.length; i++) {
         final item = list[i];
-        if (item.selected) {
+        if (item.selected == SCheckedStatus.checked ||
+            item.selected == SCheckedStatus.semiChecked) {
           idxList.add(i);
           if (idxList.length < count) {
             runLoop(item.items);
@@ -118,15 +121,21 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
 
   /// 重置
   /// `key` 当前组的字段
-  void reset([String? key]) {
+  /// `isMutex` 是否设置互斥
+  void reset({
+    String? key,
+    bool isMutex = true,
+  }) {
     // 按钮重置
     var items = value.data.items;
 
-    chidrenSelected(items, false);
+    chidrenSelected(items, SCheckedStatus.unchecked);
 
-    for (var e in items) {
-      e.selected = e.isMutex;
-      // e.highlighted = e.isMutex;
+    if (isMutex) {
+      for (var e in items) {
+        e.selected =
+            e.isMutex ? SCheckedStatus.checked : SCheckedStatus.unchecked;
+      }
     }
 
     value = value.copyWith(idxList: value.idxList.map((e) => 0).toList());
@@ -137,7 +146,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 获取选择的结果
-  (List<SpinnerItemData>, List<String>) getResult() {
+  (List<SpinnerItemData> selectedList, List<String> names) getResult() {
     if (value.singleConditionAndSingleSelect) {
       final lastList = getColumn(value.idxList.length - 1);
       final item = lastList[value.idxList.last];
@@ -147,12 +156,21 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
     final resluts = <SpinnerItemData>[];
     final reslutNames = <String>[];
 
-    for (var element in value.data.items) {
-      if (element.selected) {
-        resluts.add(element);
-        reslutNames.add(element.name);
+    deepForEach(List<SpinnerItemData> list) {
+      for (var e in list) {
+        if (e.selected == SCheckedStatus.checked) {
+          resluts.add(e);
+          reslutNames.add(e.name);
+        } else if (e.selected == SCheckedStatus.semiChecked) {
+          // jsonList.add(e.toJson());
+          if (e.items.isNotEmpty) {
+            deepForEach(e.items);
+          }
+        }
       }
     }
+
+    deepForEach(value.data.items);
 
     return (resluts, reslutNames);
   }
@@ -160,7 +178,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   /// 判断子集是否有选中
   bool chidrenSelectedStatus(List<SpinnerItemData> list) {
     for (var element in list) {
-      if (element.selected) {
+      if (element.selected == SCheckedStatus.checked) {
         return true;
       }
       if (element.items.isNotEmpty) {
@@ -173,7 +191,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 设置子集选中
-  chidrenSelected(List<SpinnerItemData> list, bool state) {
+  chidrenSelected(List<SpinnerItemData> list, SCheckedStatus state) {
     for (var element in list) {
       element.selected = state;
       // element.highlighted = false;
@@ -184,7 +202,10 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
   }
 
   /// 点击按钮选项
+  ///
+  ///
   /// `index` 按钮下标
+  /// `column` 当前列
   void itemOnSelected(int index, int column,
       [bool isHighlighted = true]) async {
     if (onItemIntercept != null) {
@@ -199,35 +220,66 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
     final item = items[index];
 
     // 处理互斥选项
-    for (var e in items) {
-      // 如果当前为全选，则清空其他选项
-      if (item.isMutex) {
-        if (e.name != item.name) {
-          e.selected = false;
-          chidrenSelected(e.items, false);
-        }
-      } else {
+    if (item.isMutex) {
+      reset(isMutex: false);
+    } else {
+      for (var e in value.data.items) {
         if (e.isMutex) {
-          e.selected = false;
-          chidrenSelected(e.items, false);
+          e.selected = SCheckedStatus.unchecked;
+          break;
         }
       }
     }
+
+    // for (var e in items) {
+    //   // 如果当前为全选，则清空其他选项
+    //   if (item.isMutex) {
+    //     if (e.name != item.name) {
+    //       e.selected = SCheckedStatus.unchecked;
+    //       chidrenSelected(e.items, SCheckedStatus.unchecked);
+    //     }
+    //   } else {
+    //     if (e.isMutex) {
+    //       e.selected = SCheckedStatus.unchecked;
+    //       chidrenSelected(e.items, SCheckedStatus.unchecked);
+    //     }
+    //   }
+    // }
+
+    // 子集遍历选中
+    var selected = SCheckedStatus.checked;
+    if (item.selected == SCheckedStatus.checked ||
+        item.selected == SCheckedStatus.semiChecked) {
+      selected = SCheckedStatus.unchecked;
+    }
+    _itemCheckedAndChildren(item, (e) {
+      e.selected = selected;
+    });
 
     // 设置当前及子集选中
-    item.selected = !item.selected;
-    chidrenSelected(item.items, item.selected);
+    // item.selected = item.selected == SCheckedStatus.unchecked
+    //     ? SCheckedStatus.checked
+    //     : SCheckedStatus.unchecked;
+    // chidrenSelected(item.items, item.selected);
 
-    for (var i = 0; i < value.idxList.length; i++) {
-      if (i >= column) {
-        break;
-      }
-      final idx = value.idxList[i];
-      final list = getColumn(i);
-      if (list[idx].items.isNotEmpty) {
-        list[idx].selected = chidrenSelectedStatus(list[idx].items);
-      }
-    }
+    // for (var i = 0; i < value.idxList.length; i++) {
+    //   if (i >= column) {
+    //     break;
+    //   }
+    //   final idx = value.idxList[i];
+    //   final list = getColumn(i);
+    //   if (list[idx].items.isNotEmpty) {
+    //     list[idx].selected = chidrenSelectedStatus(list[idx].items)
+    //         ? SCheckedStatus.checked
+    //         : SCheckedStatus.unchecked;
+    //   }
+    // }
+
+    // 父级遍历选中
+    final firstItem = value.data.items[value.idxList.first];
+    _fatherCheckedFormChildren(firstItem, (e) {
+      e.selected = _isChildrenAllChecked(e);
+    });
 
     // 切换选中项
     itemOnHightlighted(index, column);
@@ -281,10 +333,12 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
       final item = items[index];
 
       // 清空之前选项
-      chidrenSelected(value.data.items, false);
+      chidrenSelected(value.data.items, SCheckedStatus.unchecked);
 
       // 设置当前及子集选中
-      item.selected = !item.selected;
+      item.selected = item.selected == SCheckedStatus.unchecked
+          ? SCheckedStatus.checked
+          : SCheckedStatus.unchecked;
 
       for (var i = 0; i < value.idxList.length; i++) {
         if (i >= column) {
@@ -293,12 +347,73 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
         final idx = value.idxList[i];
         final list = getColumn(i);
         if (list[idx].items.isNotEmpty) {
-          list[idx].selected = chidrenSelectedStatus(list[idx].items);
+          list[idx].selected = chidrenSelectedStatus(list[idx].items)
+              ? SCheckedStatus.checked
+              : SCheckedStatus.unchecked;
         }
       }
 
       // 结束选择
       completed();
+    }
+  }
+
+  /// 关联当前item和子集的选中状态
+  SCheckedStatus _isChildrenAllChecked(SpinnerItemData item) {
+    if (item.items.isEmpty) {
+      return item.selected;
+    }
+    int checkedCount = 0;
+    for (var e in item.items) {
+      // 有半选，上级一定是半选
+      if (e.selected == SCheckedStatus.semiChecked) {
+        return SCheckedStatus.semiChecked;
+      } else if (e.selected == SCheckedStatus.checked) {
+        checkedCount++;
+      }
+    }
+    if (checkedCount == item.items.length) {
+      return SCheckedStatus.checked;
+    } else if (checkedCount > 0) {
+      return SCheckedStatus.semiChecked;
+    }
+    return SCheckedStatus.unchecked;
+  }
+
+  /// 向上关联
+  _fatherCheckedFormChildren(
+      SpinnerItemData item, void Function(SpinnerItemData) elementOperate) {
+    for (var e in item.items) {
+      if (e.items.isNotEmpty) {
+        _deepForEach(e.items, elementOperate);
+      }
+      elementOperate.call(e);
+    }
+    elementOperate.call(item);
+  }
+
+  /// 向下关联
+  _itemCheckedAndChildren(
+      SpinnerItemData item, void Function(SpinnerItemData) elementOperate) {
+    elementOperate.call(item);
+    for (var e in item.items) {
+      elementOperate.call(e);
+      // deep for
+      if (e.items.isNotEmpty) {
+        _deepForEach(e.items, elementOperate);
+      }
+    }
+  }
+
+  /// 深度遍历
+  _deepForEach(List<SpinnerItemData> list,
+      void Function(SpinnerItemData) elementOperate) {
+    for (var e in list) {
+      elementOperate.call(e);
+      // deep for
+      if (e.items.isNotEmpty) {
+        _deepForEach(e.items, elementOperate);
+      }
     }
   }
 }

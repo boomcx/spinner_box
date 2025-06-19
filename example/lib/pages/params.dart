@@ -17,8 +17,8 @@ class _SelectParamsPageState extends State<SelectParamsPage> {
   @override
   void initState() {
     super.initState();
-    data.items.first.selected = false;
-    data.items[2].selected = true;
+    data.items.first.selected = SCheckedStatus.checked;
+    data.items[2].selected = SCheckedStatus.checked;
     // var items = <SpinnerItemData>[];
     // for (var element in data.items) {
     //   items.add(element.copyWith(selected: true));

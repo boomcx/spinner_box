@@ -131,14 +131,17 @@ class _FenceListItem extends StatelessWidget {
     final theme = SpinnerBoxTheme.of(context).column;
     final fence = SpinnerBoxTheme.of(context).fence;
 
-    Widget icon = item.selected
+    Widget icon = item.selected == SCheckedStatus.checked
         ? (theme.icon1 ?? Assets.icSingleSelected)
         : (theme.icon2 ?? const SizedBox());
     if (!notifier.value.data.isRadio) {
-      if (item.selected) {
-        icon = item.isSelectedAll
-            ? (theme.iconMulti1 ?? Assets.icMutiSelected)
-            : (theme.iconMulti3 ?? Assets.icMutiSemiSelected);
+      if (item.selected == SCheckedStatus.checked) {
+        // icon = item.isSelectedAll
+        //     ? (theme.iconMulti1 ?? Assets.icMutiSelected)
+        //     : (theme.iconMulti3 ?? Assets.icMutiSemiSelected);
+        icon = (theme.iconMulti1 ?? Assets.icMutiSelected);
+      } else if (item.selected == SCheckedStatus.semiChecked) {
+        icon = (theme.iconMulti3 ?? Assets.icMutiSemiSelected);
       } else {
         icon = (theme.iconMulti2 ?? Assets.icMutiUnselected);
       }
@@ -161,8 +164,9 @@ class _FenceListItem extends StatelessWidget {
           Expanded(
             child: Text(
               item.name,
-              style:
-                  item.selected ? theme.selectedStyle : theme.unselectedStyle,
+              style: item.selected != SCheckedStatus.unchecked
+                  ? theme.selectedStyle
+                  : theme.unselectedStyle,
               overflow: TextOverflow.ellipsis,
               maxLines: theme.maxLine,
             ),

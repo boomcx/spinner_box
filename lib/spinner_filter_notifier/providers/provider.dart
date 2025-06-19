@@ -154,7 +154,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
           // 修改按钮选中状态
           var items = tempGroup.items;
           for (var k = 0; k < items.length; k++) {
-            items[k].selected = false;
+            items[k].selected = SCheckedStatus.unchecked;
           }
           break;
         }
@@ -162,7 +162,9 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         // 修改按钮选中状态
         var items = tempGroup.items;
         for (var k = 0; k < items.length; k++) {
-          items[k].selected = items[k].isMutex;
+          items[k].selected = items[k].isMutex
+              ? SCheckedStatus.checked
+              : SCheckedStatus.unchecked;
         }
       }
     }
@@ -197,7 +199,7 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
       if (resGroup[key]?.isEmpty == true) {
         final list = group.items;
         for (var item in list) {
-          if (item.selected) {
+          if (item.selected == SCheckedStatus.checked) {
             resGroup[key]!.add(item.result);
             reslutNames.add(item.name);
           }
@@ -238,19 +240,21 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         for (var k = 0; k < items.length; k++) {
           // 单选
           if (single) {
-            items[k].selected = false;
+            items[k].selected = SCheckedStatus.unchecked;
           } else {
             if (items[index].isMutex) {
-              items[k].selected = false;
+              items[k].selected = SCheckedStatus.unchecked;
             } else {
               if (items[k].isMutex) {
-                items[k].selected = false;
+                items[k].selected = SCheckedStatus.unchecked;
               }
             }
           }
           // 多选
           if (index == k) {
-            items[k].selected = !items[k].selected;
+            items[k].selected = items[k].selected == SCheckedStatus.checked
+                ? SCheckedStatus.unchecked
+                : SCheckedStatus.checked;
           }
         }
       }

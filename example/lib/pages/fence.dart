@@ -11,7 +11,8 @@ class FencePage extends StatefulWidget {
 
 class _FencePageState extends State<FencePage> {
   final _condition1 = ValueNotifier(
-    fence(key: '', isRadio: false, count: 10),
+    fence(key: '', isRadio: false, count: 10)
+      ..items.insert(0, SpinnerItemData(name: '不限', result: '', isMutex: true)),
   );
   final _condition2 = ValueNotifier(
     fence(key: '', isRadio: true, count: 10),

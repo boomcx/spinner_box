@@ -17,7 +17,11 @@ SpinnerEntity years({
           ? ''
           : '描述文本描述文本描述文本描述文本描述文本描述文本描述文本描述文本',
       items: [
-        SpinnerItemData(name: '全部', result: '', selected: true, isMutex: true),
+        SpinnerItemData(
+            name: '全部',
+            result: '',
+            selected: SCheckedStatus.checked,
+            isMutex: true),
         SpinnerItemData(name: '-', result: ''),
         ...List.generate(
             count, (index) => (DateTime.now().year - index).toString()).map(
@@ -41,7 +45,11 @@ SpinnerEntity text({
           ? ''
           : '描述文本描述文本描述文本描述文本描述文本描述文本描述文本描述文本',
       items: [
-        SpinnerItemData(name: '全部', result: '', selected: true, isMutex: true),
+        SpinnerItemData(
+            name: '全部',
+            result: '',
+            selected: SCheckedStatus.checked,
+            isMutex: true),
         ...List.generate(count, (index) {
           const text = '庆历四年春滕子京谪守巴陵郡越明年政通人和百废具兴乃重修岳阳楼增其旧制刻唐贤今人诗赋于其上属予作文以记之';
           final space = Random().nextInt(3) + 2;

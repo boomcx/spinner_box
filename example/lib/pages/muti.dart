@@ -20,8 +20,8 @@ class _MultiPageState extends State<MultiPage> {
 
   var _condition3 = [
     text(key: 'text1', type: MoreContentType.column, count: 8, isRadio: false),
-    text(key: 'text1', type: MoreContentType.wrap, count: 15),
-    text(key: 'text2', type: MoreContentType.wrap, isRadio: false, count: 8),
+    text(key: 'text2', type: MoreContentType.wrap, count: 15),
+    text(key: 'text3', type: MoreContentType.wrap, isRadio: false, count: 8),
   ];
 
   Map<String, List<dynamic>> _result = {};

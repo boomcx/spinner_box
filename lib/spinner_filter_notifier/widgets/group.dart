@@ -66,7 +66,7 @@ class _CheckListCnt extends StatelessWidget {
           valueListenable: item,
           builder: (context, value, child) => _CheckListItem(
             item.name,
-            item.selected,
+            item.selected == SCheckedStatus.checked,
             item.isItemIntercept,
             isMulti: !data.$1.isRadio,
             onPressed: () {
@@ -99,7 +99,7 @@ class _GroupBtnsCnt extends StatelessWidget {
               valueListenable: item,
               builder: (context, value, child) => WrapButton(
                 item.name,
-                item.selected,
+                item.selected == SCheckedStatus.checked,
                 item.isItemIntercept,
                 onPressed: () {
                   notifier.itemOnSelected(data, index);

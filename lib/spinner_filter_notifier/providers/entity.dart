@@ -149,11 +149,27 @@ class SpinnerEntity {
       );
 }
 
+enum SCheckedStatus {
+  checked,
+  semiChecked,
+  unchecked;
 
+  String get name {
+    switch (this) {
+      case SCheckedStatus.checked:
+        return 'checked';
+      case SCheckedStatus.semiChecked:
+        return 'semi-checked';
+      default:
+        return '';
+    }
+  }
+}
 
 /// 继承 `ChangeNotifier` `ValueListenable`
 /// 写入自变量 `selected`，方便监听点击选中状态
-class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
+class SpinnerItemData extends ChangeNotifier
+    implements ValueListenable<SCheckedStatus> {
   /// 显示名称
   final String name;
 
@@ -162,12 +178,14 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
   /// 以保证选中时输出实际类容的集合
   final dynamic result;
 
-  /// 是否选中互斥（选中时清空当前其他选中项，一般用于 `全部` `不限` 等合并条件项）
+  /// 是否选中互斥
+  /// 
+  /// 选中时清空当前其他选中项，一般用于 `全部` `不限` 等合并条件项（栅栏样式时只作用于首列数据）
   final bool isMutex;
 
   /// 当前按钮是否支持点击拦截都可以点击，只是不触发选中
-  /// 
-  /// ！注意被设置为可拦截按钮后，将不会被选中，也不会触发`SpinnerFilter.onItemIntercept`  
+  ///
+  /// ！注意被设置为可拦截按钮后，将不会被选中，也不会触发`SpinnerFilter.onItemIntercept`
   ///
   /// `isItemIntercept` 为 `true` 时，额外响应`SpinnerFilter.onItemIntercept`的拦截方法
   /// 用来配置自定义的支持拦截逻辑的按钮样式
@@ -183,36 +201,36 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
   // }
 
   /// 选中状态
-  bool get selected => _value;
-  set selected(bool newValue) {
+  SCheckedStatus get selected => _value;
+  set selected(SCheckedStatus newValue) {
     value = newValue;
   }
 
   /// 带有子集选项时，判断当前选项的子选项是否全部选中
-  bool get isSelectedAll {
-    /// 设置子集选中
-    bool chidrenSelected(List<SpinnerItemData> list) {
-      for (var element in list) {
-        if (!element.selected) {
-          return false;
-        } else if (element.items.isNotEmpty) {
-          if (!chidrenSelected(element.items)) {
-            return false;
-          }
-        }
-      }
-      return true;
-    }
+  // bool get isSelectedAll {
+  //   /// 设置子集选中
+  //   bool chidrenSelected(List<SpinnerItemData> list) {
+  //     for (var element in list) {
+  //       if (element.selected == SCheckedStatus.unchecked) {
+  //         return false;
+  //       } else if (element.items.isNotEmpty) {
+  //         if (!chidrenSelected(element.items)) {
+  //           return false;
+  //         }
+  //       }
+  //     }
+  //     return true;
+  //   }
 
-    return chidrenSelected(items);
-  }
+  //   return chidrenSelected(items);
+  // }
 
   /// 不对外使用
   /// 外部使用 `selected` `isHighlight` 替代
   @override
-  bool get value => _value;
-  late bool _value;
-  set value(bool newValue) {
+  SCheckedStatus get value => _value;
+  late SCheckedStatus _value;
+  set value(SCheckedStatus newValue) {
     if (_value == newValue) {
       return;
     }
@@ -226,7 +244,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
     this.isMutex = false,
     this.items = const [],
     this.isItemIntercept = false,
-    bool selected = false,
+    SCheckedStatus selected = SCheckedStatus.unchecked,
   }) : _value = selected;
 
   factory SpinnerItemData.fromJson(Map<String, dynamic> json) {
@@ -235,7 +253,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
       entity = entity.copyWith(name: json["name"]);
     }
     entity = entity.copyWith(result: json["result"]);
-    if (json["selected"] is bool) {
+    if (json["selected"] is SCheckedStatus) {
       entity = entity.copyWith(selected: json["selected"]);
     }
     if (json["isItemIntercept"] is bool) {
@@ -263,6 +281,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
     data["name"] = name;
     data["result"] = result;
     data["selected"] = selected;
+    data["status"] = selected.name;
     // data["highlighted"] = highlighted;
     data["isItemIntercept"] = isItemIntercept;
     data["isMutex"] = isMutex;
@@ -273,7 +292,7 @@ class SpinnerItemData extends ChangeNotifier implements ValueListenable<bool> {
   SpinnerItemData copyWith({
     String? name,
     dynamic result,
-    bool? selected,
+    SCheckedStatus? selected,
     // bool? highlighted,
     bool? isItemIntercept,
     bool? isMutex,
