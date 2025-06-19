@@ -40,7 +40,9 @@ class SpinnerBox extends StatefulWidget {
     // required this.titles,
     required List<SpinnerPopScope> children,
     this.prefix,
+    this.isExpandPrefix = false,
     this.suffix,
+    this.isExpandSuffix = false,
     this.theme = defaultPinnerTheme,
     this.barrierColor,
     this.transitionsBuilder,
@@ -75,7 +77,9 @@ class SpinnerBox extends StatefulWidget {
     required List<SpinnerHeaderData> titles,
     required SpinnerBoxBuilder builder,
     this.prefix,
+    this.isExpandPrefix = false,
     this.suffix,
+    this.isExpandSuffix = false,
     this.theme = defaultPinnerTheme,
     this.barrierColor,
     this.transitionsBuilder,
@@ -93,7 +97,9 @@ class SpinnerBox extends StatefulWidget {
     required List<SpinnerHeaderData> titles,
     required SpinnerBoxBuilder builder,
     this.prefix,
+    this.isExpandPrefix = false,
     this.suffix,
+    this.isExpandSuffix = false,
     this.theme = defaultPinnerTheme,
     this.barrierColor,
     this.transitionsBuilder,
@@ -105,9 +111,11 @@ class SpinnerBox extends StatefulWidget {
 
   /// 前置视图
   final Widget? prefix;
+  final bool isExpandPrefix;
 
   /// 后置视图
   final Widget? suffix;
+  final bool isExpandSuffix;
 
   /// 是否重复构建builder
   late final bool isRebuilder;
@@ -280,29 +288,33 @@ class _CompositedFollower extends StatelessWidget {
             _notifier.closed();
           }
         },
-        child: Stack(
-          children: [
-            Container(),
-            GestureDetector(
-              onTap: () {
-                _hideKeyboard(context);
-                _node.requestFocus();
-              },
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(8)),
+        child: Material(
+          color: Colors.transparent,
+          type: MaterialType.transparency,
+          child: Stack(
+            children: [
+              Container(),
+              GestureDetector(
+                onTap: () {
+                  _hideKeyboard(context);
+                  _node.requestFocus();
+                },
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(8)),
+                  ),
+                  constraints: BoxConstraints(
+                    maxHeight: _maxHeight * scope.scale,
+                    maxWidth: width,
+                  ),
+                  child: scope.child,
                 ),
-                constraints: BoxConstraints(
-                  maxHeight: _maxHeight * scope.scale,
-                  maxWidth: width,
-                ),
-                child: scope.child,
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -324,6 +336,39 @@ class _CompsitedTarget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final prefix = widget.prefix == null
+        ? null
+        : Builder(builder: (context) {
+            final child = FocusScope(
+              child: widget.prefix!,
+              onFocusChange: (value) {
+                if (value) {
+                  _notifier.closed();
+                }
+              },
+            );
+            if (widget.isExpandPrefix) {
+              return Expanded(child: child);
+            }
+            return child;
+          });
+    final suffix = widget.suffix == null
+        ? null
+        : Builder(builder: (context) {
+            final child = FocusScope(
+              child: widget.suffix!,
+              onFocusChange: (value) {
+                if (value) {
+                  _notifier.closed();
+                }
+              },
+            );
+            if (widget.isExpandSuffix) {
+              return Expanded(child: child);
+            }
+            return child;
+          });
+
     return CompositedTransformTarget(
       link: _notifier.link,
       child: Container(
@@ -341,19 +386,11 @@ class _CompsitedTarget extends StatelessWidget {
               : null,
         ),
         child: Row(children: [
-          if (widget.prefix != null)
-            FocusScope(
-              child: widget.prefix!,
-              onFocusChange: (value) {
-                if (value) {
-                  _notifier.closed();
-                }
-              },
-            ),
+          if (prefix != null) prefix,
           ...List.generate(
             _notifier.orginItems.length,
-            (index) => Expanded(
-              child: LayoutBuilder(builder: (_, constraints) {
+            (index) {
+              final item = LayoutBuilder(builder: (_, constraints) {
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -379,18 +416,14 @@ class _CompsitedTarget extends StatelessWidget {
                     ),
                   ),
                 );
-              }),
-            ),
+              });
+
+              return (widget.isExpandPrefix || widget.isExpandSuffix)
+                  ? item
+                  : Expanded(child: item);
+            },
           ),
-          if (widget.suffix != null)
-            FocusScope(
-              child: widget.suffix!,
-              onFocusChange: (value) {
-                if (value) {
-                  _notifier.closed();
-                }
-              },
-            ),
+          if (suffix != null) suffix,
         ]),
       ),
     );
