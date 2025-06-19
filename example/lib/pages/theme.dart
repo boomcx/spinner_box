@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_box.dart';
-import 'package:spinner_box/spinner_filter_notifier/theme/theme.dart';
 
 import '../data.dart';
 
@@ -24,8 +23,8 @@ class _ThemePageState extends State<ThemePage> {
         key: 'column1', type: MoreContentType.column, count: 6, isRadio: false),
   ]);
 
-  final _controler =
-      PopupValueNotifier.titles(const ['wrap', 'column', 'fence'].toSpinnerData);
+  final _controler = PopupValueNotifier.titles(
+      const ['wrap', 'column', 'fence'].toSpinnerData);
 
   final SpinnerBoxThemeData themeData = SpinnerBoxThemeData(
     backgroundColor: Colors.lightBlueAccent,

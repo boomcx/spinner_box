@@ -6,19 +6,21 @@ class _GroupContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final group = _FilterGroupScope.of(context).$1;
+    final theme = SpinnerBoxTheme.of(context);
 
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const _GroupHeader(),
-            if (group.type == MoreContentType.column) const _CheckListCnt(),
-            if (group.type == MoreContentType.wrap) const _GroupBtnsCnt(),
-            // if (group.type == MoreContentType.fence) const _FenceCnt(),
-          ],
-        ));
+      padding: theme.boxPadding,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _GroupHeader(),
+          if (group.type == MoreContentType.column) const _CheckListCnt(),
+          if (group.type == MoreContentType.wrap) const _GroupBtnsCnt(),
+          // if (group.type == MoreContentType.fence) const _FenceCnt(),
+        ],
+      ),
+    );
   }
 }
 

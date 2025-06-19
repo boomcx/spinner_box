@@ -31,6 +31,9 @@ class SpinnerBoxThemeData {
   /// 弹窗背景颜色
   final Color backgroundColor;
 
+  /// 内边距
+  final EdgeInsets boxPadding;
+
   /// 标题样式配置
   final SHeaderThemeData header;
 
@@ -48,6 +51,7 @@ class SpinnerBoxThemeData {
 
   const SpinnerBoxThemeData({
     this.backgroundColor = Colors.white,
+    this.boxPadding = const EdgeInsets.symmetric(vertical: 16),
     this.header = const SHeaderThemeData(),
     this.wrap = const SWrapThemeData(),
     this.column = const SColumnThemeData(),
