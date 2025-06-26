@@ -76,7 +76,8 @@ class SpinnerHeaderTheme {
   final bool selectedMark;
 
   // 是否显示边框
-  final bool isShowBorder;
+  // final bool isShowBorder;
+  final Border? headerBorder;
 
   /// 页面其他部位是否含有焦点获取的组件（例如 页面顶部搜索输入框）
   final bool outsideFocus;
@@ -108,7 +109,8 @@ class SpinnerHeaderTheme {
       fontSize: 14,
     ),
     this.selectedMark = true,
-    this.isShowBorder = true,
+    // this.isShowBorder = true,
+    this.headerBorder,
     this.bgColor = Colors.white,
     this.arrowColor = const Color(0xff9B9EAC),
     this.padding = EdgeInsets.zero,
@@ -127,7 +129,7 @@ class SpinnerHeaderTheme {
     Color? bgColor,
     Color? arrowColor,
     bool? selectedMark,
-    bool? isShowBorder,
+    Border? headerBorder,
     bool? outsideFocus,
     double? iconSize,
     TextDirection? textDirection,
@@ -142,7 +144,7 @@ class SpinnerHeaderTheme {
       bgColor: bgColor ?? this.bgColor,
       arrowColor: arrowColor ?? this.arrowColor,
       selectedMark: selectedMark ?? this.selectedMark,
-      isShowBorder: isShowBorder ?? this.isShowBorder,
+      headerBorder: headerBorder ?? this.headerBorder,
       outsideFocus: outsideFocus ?? this.outsideFocus,
       iconSize: iconSize ?? this.iconSize,
       textDirection: textDirection ?? this.textDirection,

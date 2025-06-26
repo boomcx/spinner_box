@@ -390,12 +390,7 @@ class _CompsitedTarget extends StatelessWidget {
         padding: config.padding,
         decoration: BoxDecoration(
           color: config.bgColor,
-          border: config.isShowBorder
-              ? const Border(
-                  top: BorderSide(width: 1, color: Color(0xffeeeeee)),
-                  // bottom: BorderSide(width: 1, color: Color(0xffeeeeee)),
-                )
-              : null,
+          border: config.headerBorder,
         ),
         child: Row(children: [
           if (prefix != null) prefix,
