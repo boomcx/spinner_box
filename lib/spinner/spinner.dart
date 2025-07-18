@@ -9,6 +9,9 @@ import 'theme.dart';
 typedef SpinnerBoxBuilder = List<SpinnerPopScope> Function(
     PopupValueNotifier spinner);
 
+typedef SpinnerBoxIntercept = Future<bool> Function(
+    int index, PopupValueNotifier spinner);
+
 /// 自定义下拉菜单弹框
 ///
 // ignore: must_be_immutable
@@ -47,6 +50,7 @@ class SpinnerBox extends StatefulWidget {
     this.theme = defaultPinnerTheme,
     this.barrierColor,
     this.transitionsBuilder,
+    this.onIntercept,
   }) {
     isRebuilder = false;
     spinnerController = controller;
@@ -86,6 +90,7 @@ class SpinnerBox extends StatefulWidget {
     this.theme = defaultPinnerTheme,
     this.barrierColor,
     this.transitionsBuilder,
+    this.onIntercept,
   }) {
     assert(
         (titles?.isNotEmpty == true || controller != null) &&
@@ -115,6 +120,7 @@ class SpinnerBox extends StatefulWidget {
     this.theme = defaultPinnerTheme,
     this.barrierColor,
     this.transitionsBuilder,
+    this.onIntercept,
   }) {
     isRebuilder = true;
     spinnerController = PopupValueNotifier.titles(titles);
@@ -153,6 +159,11 @@ class SpinnerBox extends StatefulWidget {
   /// 弹出内容显示动画
   final SpinnerViewTransitionsBuilder? transitionsBuilder;
 
+  /// 点击时控制是否显示弹窗
+  ///
+  /// 返回`true`时不显示弹窗,返回`false`时显示弹窗
+  final SpinnerBoxIntercept? onIntercept;
+
   @override
   State<SpinnerBox> createState() => _SpinnerBoxState();
 }
@@ -171,7 +182,7 @@ class _SpinnerBoxState extends State<SpinnerBox> {
     _notifier.addListener(() {
       _closeWidget();
       if (_notifier.value.selected > -1) {
-        _showWidget();
+        _showFilterView();
       }
     });
   }
@@ -191,7 +202,7 @@ class _SpinnerBoxState extends State<SpinnerBox> {
     );
   }
 
-  _showWidget() {
+  _showFilterView() {
     final selected = _notifier.value.selected;
 
     final children = widget.isRebuilder
@@ -400,7 +411,15 @@ class _CompsitedTarget extends StatelessWidget {
               final item = LayoutBuilder(builder: (_, constraints) {
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: () {
+                  onTap: () async {
+                    if (widget.onIntercept != null) {
+                      final state =
+                          await widget.onIntercept!.call(index, _notifier);
+                      if (!state) {
+                        return;
+                      }
+                    }
+
                     _notifier.updateSelected(index);
                   },
                   child: Container(
