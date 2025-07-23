@@ -107,7 +107,7 @@ class PopupValueNotifier extends ValueNotifier<PopupState> {
     if (current < 0) {
       return;
     }
-    if (name.isEmpty || name == '不限' || name == '全部') {
+    if (name.isEmpty || name == value.orginItems[current].title) {
       value.items[current] = value.orginItems[current];
     } else if (value.orginItems.isNotEmpty && current > -1) {
       value.items[current] = value.items[current].copyWith(title: name);
