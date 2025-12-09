@@ -43,6 +43,11 @@ class SpinnerEntity {
   /// 是否单选
   final bool isRadio;
 
+  /// 是否显示底部操作按钮，给 `单选&单条件弹窗` `补充使用` 后续可能会优化
+  ///
+  /// 默认 false，通过`isRadio`否单选状态控制
+  final bool isShowButtons;
+
   /// 标题，空不显示
   final String title;
 
@@ -67,6 +72,7 @@ class SpinnerEntity {
   const SpinnerEntity({
     required this.key,
     this.isRadio = true,
+    this.isShowButtons = false,
     this.title = '',
     this.type = MoreContentType.wrap,
     this.desc = '',
@@ -85,6 +91,9 @@ class SpinnerEntity {
 
     if (json["isRadio"] is bool) {
       entity = entity.copyWith(isRadio: json["isRadio"]);
+    }
+    if (json["isShowButtons"] is bool) {
+      entity = entity.copyWith(isShowButtons: json["isShowButtons"]);
     }
     if (json["title"] is String) {
       entity = entity.copyWith(title: json["title"]);
@@ -119,6 +128,7 @@ class SpinnerEntity {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["key"] = key;
     data["isRadio"] = isRadio;
+    data["isShowButtons"] = isShowButtons;
     data["title"] = title;
     data["type"] = type;
     data["desc"] = desc;
@@ -130,6 +140,7 @@ class SpinnerEntity {
   SpinnerEntity copyWith({
     String? key,
     bool? isRadio,
+    bool? isShowButtons,
     String? title,
     MoreContentType? type,
     String? desc,
@@ -140,6 +151,7 @@ class SpinnerEntity {
       SpinnerEntity(
         key: key ?? this.key,
         isRadio: isRadio ?? this.isRadio,
+        isShowButtons: isShowButtons ?? this.isShowButtons,
         title: title ?? this.title,
         type: type ?? this.type,
         desc: desc ?? this.desc,
@@ -179,7 +191,7 @@ class SpinnerItemData extends ChangeNotifier
   final dynamic result;
 
   /// 是否选中互斥
-  /// 
+  ///
   /// 选中时清空当前其他选中项，一般用于 `全部` `不限` 等合并条件项（栅栏样式时只作用于首列数据）
   final bool isMutex;
 

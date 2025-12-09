@@ -2,9 +2,8 @@
 
 part of '../spinner_filter.dart';
 
-
 /// 追加特殊内容筛选框可以自定义组件，使用通用方法返回筛选条件结果
-/// 
+///
 /// 仅支持 `SpinnerFilterEntity-items`满足按钮需求时，追加局部视图时使用。
 /// 子类更新数据时使用 `updateExtra`，而不是 `entity-setter`
 abstract class AttachmentView extends StatelessWidget {
@@ -38,8 +37,8 @@ abstract class AttachmentView extends StatelessWidget {
   dynamic get extraData => extraNotifier.value;
 
   /// 更新数据并刷新UI
-  updateExtra(dynamic data) {
-    extraNotifier.value = data;
+  updateExtra(dynamic item) {
+    extraNotifier.value = item;
   }
 
   /// 清空当前选择数据
@@ -48,7 +47,7 @@ abstract class AttachmentView extends StatelessWidget {
   }
 
   /// 获取选中返回值
-   (Map<String, List<dynamic>>, String) getResult() {
+  (Map<String, List<dynamic>>, String) getResult() {
     final resGroup = {groupKey: []};
     // final reslutNames = [];
 
@@ -59,7 +58,7 @@ abstract class AttachmentView extends StatelessWidget {
       // reslutNames.add(extraName);
     }
 
-    return  (resGroup, extraName);
+    return (resGroup, extraName);
   }
 
   @override

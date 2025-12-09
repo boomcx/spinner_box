@@ -79,7 +79,8 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     final singleCondition = data.length == 1;
     final singleSelect = data.first.isRadio == true;
     return SpinnerFilterState(
-      singleConditionAndSingleSelect: singleCondition && singleSelect,
+      singleConditionAndSingleSelect:
+          data.first.isShowButtons ? false : (singleCondition && singleSelect),
       // items: data.map((e) => EntityNotifier(e)).toList(),
       //  解决 `List.of(data)` - `ChangeNotifier` 无法重建的问题
       items: SpinnerEntity.fromList(data.map((e) => e.toJson()).toList()),
@@ -177,7 +178,8 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
     final reslut = <String, List>{};
     final reslutNames = [];
 
-    for (var group in items) {
+    for (int i = 0; i < items.length; i++) {
+      var group = items[i];
       final key = group.key;
       var resGroup = {key: []};
 
@@ -187,6 +189,8 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
           if (element.groupKey == key && element.extraData != null) {
             final res = element.getResult();
             resGroup = res.$1;
+            // 同步原数据
+            items[i] = group.copyWith(extraData: resGroup[key]?.first);
             if (res.$2.isNotEmpty) {
               reslutNames.add(res.$2);
             }
@@ -208,7 +212,6 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
 
       reslut.addAll(resGroup);
     }
-
     return (reslut, reslutNames.join('/'));
   }
 

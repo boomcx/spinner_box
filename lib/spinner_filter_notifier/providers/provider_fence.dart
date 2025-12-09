@@ -74,7 +74,7 @@ class SpinnerFenceNotifier extends ValueNotifier<SpinnerFenceState> {
     final res = SpinnerEntity.fromJson(data.toJson());
     final singleSelect = data.isRadio == true;
     return SpinnerFenceState(
-      singleConditionAndSingleSelect: singleSelect,
+      singleConditionAndSingleSelect: data.isShowButtons ? false : singleSelect,
       // items: data.map((e) => EntityNotifier(e)).toList(),
       // 解决 `List.of(data)` - `ChangeNotifier` 无法重建的问题
       data: res,

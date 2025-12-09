@@ -13,6 +13,7 @@ SpinnerEntity years({
       title: '条件标题',
       isRadio: isRadio,
       type: type,
+      isShowButtons: true,
       desc: type == MoreContentType.column
           ? ''
           : '描述文本描述文本描述文本描述文本描述文本描述文本描述文本描述文本',
