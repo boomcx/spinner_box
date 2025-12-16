@@ -1,3 +1,6 @@
+## 0.1.6
+- 新增 `SpinnerEntity-isShowButtons` 属性，用于单选情况下控制弹窗底部`重置``确定`按钮显示
+- 修复 `AttachmentView` 中 `extra` 参数赋值问题
 
 ## 0.1.5
 - 弃用`rebuilder`构建，对`builder`构建方法提供 `titles` 或者 `controller` 两种参数输入模式；

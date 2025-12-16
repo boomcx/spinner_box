@@ -204,7 +204,13 @@ class SpinnerFilterNotifier extends ValueNotifier<SpinnerFilterState> {
         final list = group.items;
         for (var item in list) {
           if (item.selected == SCheckedStatus.checked) {
-            resGroup[key]!.add(item.result);
+            if (item.result == null || item.result == '') {
+              if (group.isRadio) {
+                resGroup[key]!.add(item.result);
+              }
+            } else {
+              resGroup[key]!.add(item.result);
+            }
             reslutNames.add(item.name);
           }
         }
