@@ -1,3 +1,14 @@
+## 0.10.7
+
+- 新增 `SpinnerBox.onIntercept` 拦截回调，支持通过外部条件控制是否显示筛选弹窗内容；
+- 新增 `SpinnerEntity.isShowButtons` 属性，用于单选情况下控制弹窗底部`重置``确定`按钮显示；
+- 修改 `SpinnerHeaderTheme.isShowBorder` 为 `headerBorder`，支持自定义 header 边框样式；
+- 新增 `SpinnerBoxThemeData.boxPadding` 属性，支持自定义筛选内容区域内边距；
+- 修复 `AttachmentView` 中 `extra` 参数赋值问题；
+- 修复数据源赋值逻辑，同步原始数据；
+- 修复默认选项判断及单选时空结果处理；
+- 导出 `spinner_filter_notifier/theme/theme.dart`，方便外部使用主题配置；
+
 ## 0.1.6
 - 新增 `SpinnerEntity-isShowButtons` 属性，用于单选情况下控制弹窗底部`重置``确定`按钮显示
 - 修复 `AttachmentView` 中 `extra` 参数赋值问题

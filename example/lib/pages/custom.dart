@@ -3,7 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_box.dart';
-import '/data.dart';
+
+import '../data.dart';
 
 class CustomPage extends StatefulWidget {
   const CustomPage({super.key});

@@ -2,17 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/drop_view.dart';
 
-import '/pages/custom.dart';
-import '/pages/init.dart';
-import '/pages/fence.dart';
-import '/pages/muti.dart';
-import '/pages/rebuilder.dart';
-import '/pages/theme.dart';
-
+import 'drop_view.dart';
+import 'pages/custom.dart';
+import 'pages/fence.dart';
+import 'pages/init.dart';
+import 'pages/muti.dart';
 import 'pages/normal.dart';
 import 'pages/params.dart';
+import 'pages/rebuilder.dart';
+import 'pages/theme.dart';
 import 'pages/theme_header.dart';
 
 void main() {

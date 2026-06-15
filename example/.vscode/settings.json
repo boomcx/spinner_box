@@ -1,0 +1,5 @@
+{
+  "dart.debugExternalPackageLibraries": true,
+  "dart.debugSdkLibraries": false,
+  "dart.flutterSdkPath": ".fvm/versions/3.35.7"
+}

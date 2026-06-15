@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spinner_box/spinner_box.dart';
-import '/data.dart';
+
+import '../data.dart';
 
 class MultiPage extends StatefulWidget {
   const MultiPage({super.key});
